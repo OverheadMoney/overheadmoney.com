@@ -1,0 +1,643 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Overhead — Small business money, without the fluff.</title>
+<meta name="description" content="The Overhead breaks down the real numbers behind running a small business — equipment leases, vendor contracts, financing, and the hidden fees quietly eating your margins. New video every week, plus free calculators to run your own numbers.">
+<link rel="canonical" href="https://overheadmoney.com/">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="icon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The Overhead — Small business money, without the fluff.">
+<meta property="og:description" content="Plain-English breakdowns of the overhead costs quietly eating your margins. New video every week. Free calculators to run your own numbers.">
+<meta property="og:url" content="https://overheadmoney.com/">
+<meta property="og:image" content="https://overheadmoney.com/og.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@OverheadMoney">
+<meta name="theme-color" content="#1E4034">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,800;1,500&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","name":"The Overhead","url":"https://overheadmoney.com/","logo":"https://overheadmoney.com/icon-512.png","email":"theoverheadshow@gmail.com","sameAs":["https://www.youtube.com/@OverheadMoney","https://x.com/OverheadMoney","https://instagram.com/OverheadMoney","https://tiktok.com/@OverheadMoney","https://pinterest.com/OverheadMoneyShow","https://www.facebook.com/overheadmoneyshow"]}
+</script>
+<style>
+:root{
+  --green:#1E4034; --green-deep:#16302A; --green-ink:#0F211C; --parch:#E8E8C8; --paper:#F6F7F3; --rule:#E1E5DF;
+  --ink:#1B2420; --muted:#5A6660; --gold:#C9A961;
+  --serif:"Playfair Display",Georgia,"Times New Roman",serif;
+  --sans:"Source Sans 3","Helvetica Neue",Arial,sans-serif;
+  --max:1160px; --ease:cubic-bezier(.22,.61,.36,1);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:clip}
+body{margin:0;font-family:var(--sans);font-size:18px;line-height:1.6;color:var(--ink);
+  background:var(--paper) repeating-linear-gradient(to bottom,transparent 0 47px,var(--rule) 47px 48px);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:var(--green);text-decoration:none}
+button{font-family:inherit}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+.caps{font-family:var(--serif);font-weight:800;text-transform:uppercase;letter-spacing:.036em}
+.eyebrow{font-family:var(--sans);font-weight:700;font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--green);margin:0 0 14px;display:flex;align-items:center;gap:12px}
+.eyebrow:before{content:"";width:28px;height:2px;background:currentColor;opacity:.6}
+h2{font-family:var(--serif);font-weight:800;font-size:clamp(32px,3.8vw,48px);line-height:1.08;margin:0 0 18px;color:var(--green);letter-spacing:-.005em}
+.lede{font-size:20px;color:var(--muted);max-width:680px;margin:0 0 44px}
+section{padding:96px 0;position:relative}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .8s var(--ease),transform .8s var(--ease)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.2s}.rv.d3{transition-delay:.3s}.rv.d4{transition-delay:.4s}.rv.d5{transition-delay:.5s}
+
+/* header */
+header{position:sticky;top:0;z-index:50;background:rgba(246,247,243,.82);backdrop-filter:blur(14px) saturate(1.3);-webkit-backdrop-filter:blur(14px) saturate(1.3);border-bottom:1px solid var(--rule);transition:box-shadow .3s}
+header.sc{box-shadow:0 10px 40px -20px rgba(27,36,32,.35)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:72px}
+.brand{display:flex;align-items:center;gap:12px;color:var(--green)}
+.brand img{width:40px;height:40px;border-radius:6px;box-shadow:0 4px 12px -4px rgba(0,0,0,.4)}
+.brand span{font-family:var(--serif);font-weight:800;font-size:19px;letter-spacing:.036em;text-transform:uppercase}
+.nav ul{display:flex;gap:28px;list-style:none;margin:0;padding:0}
+.nav ul a{font-weight:600;font-size:15px;letter-spacing:.04em;color:var(--ink);position:relative;padding:4px 0}
+.nav ul a:after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--green);transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease)}
+.nav ul a:hover:after{transform:scaleX(1)}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:15px 28px;border-radius:4px;font-weight:700;font-size:16px;letter-spacing:.04em;border:1.5px solid var(--parch);transition:transform .25s var(--ease),box-shadow .25s var(--ease),background .2s;position:relative;overflow:hidden;cursor:pointer}
+.btn:hover{transform:translateY(-2px);box-shadow:0 14px 30px -14px rgba(0,0,0,.5)}
+.btn:active{transform:translateY(0)}
+.btn-solid{background:var(--parch);color:var(--green)}
+.btn-solid:hover{background:#F1F1DA}
+.btn-ghost{color:var(--parch)}
+.btn-ghost:hover{background:rgba(232,232,200,.1)}
+.btn-green{background:var(--green);color:var(--parch);border-color:var(--green)}
+.btn-green:hover{background:var(--green-deep)}
+.btn .play{width:22px;height:22px;border-radius:50%;background:currentColor;display:inline-grid;place-items:center}
+.btn .play:after{content:"";border-left:8px solid var(--parch);border-top:5px solid transparent;border-bottom:5px solid transparent;margin-left:2px}
+.btn-solid .play:after{border-left-color:var(--parch)}
+.btn-green .play:after{border-left-color:var(--green)}
+.nav .btn{padding:10px 18px;font-size:14px}
+
+/* hero */
+.hero{background:radial-gradient(1200px 600px at 75% 20%,#28503F 0%,var(--green) 45%,var(--green-ink) 100%);color:var(--parch);position:relative;overflow:hidden;padding:0}
+.hero .grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(232,232,200,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(232,232,200,.05) 1px,transparent 1px);background-size:48px 48px;mask-image:radial-gradient(ellipse at 70% 40%,#000 20%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse at 70% 40%,#000 20%,transparent 75%)}
+.hero:before,.hero:after{content:"";position:absolute;left:0;right:0;height:1px;background:var(--parch);opacity:.25;z-index:2}
+.hero:before{top:22px}.hero:after{bottom:22px}
+.hero .wrap{padding:112px 24px 120px;display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center;position:relative;z-index:3}
+.hero h1{font-family:var(--serif);font-weight:800;font-size:clamp(40px,5.6vw,72px);line-height:1;margin:0 0 24px}
+.hero h1 .caps{display:block;letter-spacing:.036em}
+.hero h1 .caps .w{display:inline-block;opacity:0;transform:translateY(.6em) rotateX(-40deg);animation:wIn .9s var(--ease) forwards}
+.hero h1 .lower{display:block;font-weight:500;font-style:italic;font-size:.6em;margin-top:16px;letter-spacing:0;text-transform:none;opacity:0;animation:fadeUp 1s .7s var(--ease) forwards;color:var(--gold)}
+@keyframes wIn{to{opacity:1;transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:.95;transform:none}}
+.hero p.sub{font-size:20px;max-width:540px;margin:0 0 36px;opacity:0;animation:fadeUp 1s .9s var(--ease) forwards}
+.cta{display:flex;gap:14px;flex-wrap:wrap;opacity:0;animation:fadeUp 1s 1.05s var(--ease) forwards}
+.stats{display:flex;gap:36px;margin-top:44px;opacity:0;animation:fadeUp 1s 1.2s var(--ease) forwards;flex-wrap:wrap}
+.stat b{display:block;font-family:var(--serif);font-weight:800;font-size:34px;line-height:1;color:var(--parch)}
+.stat span{font-size:13px;letter-spacing:.14em;text-transform:uppercase;opacity:.7}
+
+/* 3D document stack */
+.stage{perspective:1400px;height:460px;position:relative}
+.stack{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .12s linear}
+.doc{position:absolute;width:300px;background:#fff;color:var(--ink);border-radius:6px;padding:22px 24px;box-shadow:0 40px 80px -30px rgba(0,0,0,.7),0 0 0 1px rgba(0,0,0,.06);transform-style:preserve-3d;font-size:13px;line-height:1.5;animation:float 7s ease-in-out infinite}
+.doc:nth-child(2){animation-delay:-2.3s}.doc:nth-child(3){animation-delay:-4.6s}
+@keyframes float{0%,100%{margin-top:0}50%{margin-top:-14px}}
+.doc .h{font-family:var(--serif);font-weight:800;font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--green);border-bottom:2px solid var(--green);padding-bottom:8px;margin-bottom:12px;display:flex;justify-content:space-between}
+.doc .h small{font-family:var(--sans);font-weight:600;letter-spacing:.1em;color:var(--muted);font-size:10px}
+.doc .r{display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed var(--rule)}
+.doc .r.hi{color:#8C2E2E;font-weight:700}
+.doc .r.hi span:first-child:before{content:"⚑ ";font-size:11px}
+.doc .r.tot{border-bottom:0;font-family:var(--serif);font-weight:800;font-size:16px;padding-top:10px}
+.doc .stamp{position:absolute;right:16px;top:14px;border:2.5px solid #8C2E2E;color:#8C2E2E;font-family:var(--serif);font-weight:800;letter-spacing:.14em;font-size:11px;padding:3px 8px;transform:rotate(-12deg);opacity:.85;text-transform:uppercase}
+.doc-1{left:6%;top:8%;transform:translateZ(40px) rotate(-6deg)}
+.doc-2{left:28%;top:24%;transform:translateZ(120px) rotate(3deg)}
+.doc-3{left:50%;top:2%;transform:translateZ(200px) rotate(-2deg)}
+.leak{position:absolute;left:0;right:0;bottom:-10px;height:40px;pointer-events:none}
+
+/* ticker */
+.ticker{max-width:100vw;background:var(--green-ink);color:var(--parch);border-top:1px solid rgba(232,232,200,.15);border-bottom:1px solid rgba(232,232,200,.15);overflow:hidden;white-space:nowrap;font-family:var(--serif);font-weight:700;font-size:15px;letter-spacing:.1em;text-transform:uppercase}
+.ticker .t{display:inline-block;padding:14px 0;animation:tk 60s linear infinite}
+.ticker:hover .t{animation-play-state:paused}
+.ticker span{padding:0 28px;opacity:.85}
+.ticker span i{font-style:normal;color:var(--gold);padding-right:28px}
+@keyframes tk{to{transform:translateX(-50%)}}
+
+/* video */
+.video{position:relative;aspect-ratio:16/9;background:var(--green);border-radius:8px;overflow:hidden;box-shadow:0 40px 80px -40px rgba(27,36,32,.6)}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video-row{display:flex;gap:16px;flex-wrap:wrap;margin-top:24px;align-items:center}
+.video-row small{color:var(--muted);font-size:15px}
+
+/* tools */
+.tools{background:linear-gradient(180deg,var(--paper) 0%,#EEF0EA 100%)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px}
+.tab{background:#fff;border:1px solid var(--rule);padding:12px 20px;border-radius:999px;font-weight:700;font-size:15px;letter-spacing:.03em;color:var(--muted);cursor:pointer;transition:.2s}
+.tab:hover{border-color:var(--green);color:var(--green)}
+.tab.on{background:var(--green);border-color:var(--green);color:var(--parch)}
+.tool{display:none;grid-template-columns:1fr 1fr;gap:40px;background:#fff;border:1px solid var(--rule);border-radius:8px;padding:40px;box-shadow:0 30px 60px -40px rgba(27,36,32,.4)}
+.tool.on{display:grid;animation:fadeUp .5s var(--ease)}
+.tool h3{font-family:var(--serif);font-weight:800;font-size:26px;margin:0 0 6px;color:var(--green)}
+.tool .why{color:var(--muted);font-size:16px;margin:0 0 24px}
+.f{margin-bottom:20px}
+.f label{display:flex;justify-content:space-between;font-weight:700;font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+.f label output{color:var(--green);font-family:var(--serif);font-size:18px;letter-spacing:0;text-transform:none}
+input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:6px;border-radius:3px;background:linear-gradient(90deg,var(--green) var(--p,50%),var(--rule) var(--p,50%));outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--parch);border:3px solid var(--green);box-shadow:0 4px 10px -3px rgba(0,0,0,.4);transition:transform .15s}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.15)}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--parch);border:3px solid var(--green)}
+.res{background:var(--green);color:var(--parch);border-radius:8px;padding:32px;position:relative;overflow:hidden;display:flex;flex-direction:column;justify-content:center}
+.res:before{content:"";position:absolute;inset:0;background:radial-gradient(500px 300px at 100% 0%,rgba(232,232,200,.12),transparent 60%)}
+.res .lbl{font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;opacity:.7;margin-bottom:6px}
+.res .big{font-family:var(--serif);font-weight:800;font-size:clamp(40px,4.5vw,58px);line-height:1;color:var(--parch);margin-bottom:6px;font-variant-numeric:tabular-nums}
+.res .big.bad{color:#F2C6C6}
+.res .cmp{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:22px 0;padding-top:20px;border-top:1px solid rgba(232,232,200,.2)}
+.res .cmp b{display:block;font-family:var(--serif);font-size:24px;font-weight:800;font-variant-numeric:tabular-nums}
+.res .cmp span{font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.7}
+.res .note{font-size:15px;opacity:.85;line-height:1.5;position:relative}
+.bar{height:12px;background:rgba(232,232,200,.15);border-radius:6px;overflow:hidden;margin-top:14px;position:relative}
+.bar i{display:block;height:100%;background:var(--parch);border-radius:6px;transition:width .6s var(--ease)}
+.bar i:first-child{position:relative;z-index:1}
+.bar i.b2{position:absolute;top:0;left:0;background:var(--gold);width:100%}
+.res .ep{position:absolute;right:18px;top:16px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;opacity:.6;border:1px solid rgba(232,232,200,.35);padding:4px 8px;border-radius:3px}
+
+/* cover cards */
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+.card{background:#fff;border:1px solid var(--rule);border-radius:8px;padding:34px 30px;position:relative;overflow:hidden;transform-style:preserve-3d;transition:transform .2s var(--ease),box-shadow .3s var(--ease);will-change:transform}
+.card:before{content:"";position:absolute;inset:0;background:radial-gradient(400px circle at var(--mx,50%) var(--my,50%),rgba(30,64,52,.10),transparent 45%);opacity:0;transition:opacity .3s;pointer-events:none}
+.card:hover{box-shadow:0 30px 60px -30px rgba(27,36,32,.45)}
+.card:hover:before{opacity:1}
+.card:after{content:"";position:absolute;left:0;top:0;right:0;height:4px;background:var(--green)}
+.card .num{font-family:var(--serif);font-weight:800;font-size:44px;line-height:1;color:var(--rule);margin-bottom:18px;transition:color .3s;transform:translateZ(20px)}
+.card:hover .num{color:var(--green)}
+.card h3{font-family:var(--serif);font-weight:700;font-size:22px;margin:0 0 10px;line-height:1.25;transform:translateZ(30px)}
+.card p{margin:0;color:var(--muted);font-size:17px;transform:translateZ(10px)}
+.card.dark{background:var(--green);border-color:var(--green);color:var(--parch)}
+.card.dark:after{background:var(--gold)}
+.card.dark .num,.card.dark h3{color:var(--parch)}
+.card.dark p{color:var(--parch);opacity:.85}
+.card.dark:before{background:radial-gradient(400px circle at var(--mx,50%) var(--my,50%),rgba(232,232,200,.16),transparent 45%)}
+
+/* scanner */
+.scan{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:start}
+.chk{list-style:none;padding:0;margin:0}
+.chk li{margin-bottom:12px}
+.chk label{display:grid;grid-template-columns:30px 1fr;gap:16px;align-items:start;background:#fff;border:1px solid var(--rule);border-radius:8px;padding:18px 20px;cursor:pointer;transition:.2s;position:relative}
+.chk label:hover{border-color:var(--green);transform:translateX(4px)}
+.chk input{position:absolute;opacity:0}
+.chk .bx{width:26px;height:26px;border:2px solid var(--green);border-radius:5px;display:grid;place-items:center;margin-top:2px;transition:.2s}
+.chk .bx:after{content:"";width:12px;height:7px;border-left:3px solid var(--parch);border-bottom:3px solid var(--parch);transform:rotate(-45deg) scale(0);transition:.2s}
+.chk input:checked~.bx{background:var(--green)}
+.chk input:checked~.bx:after{transform:rotate(-45deg) scale(1)}
+.chk b{display:block;font-family:var(--serif);font-size:18px;font-weight:700;margin-bottom:2px}
+.chk span{color:var(--muted);font-size:15.5px}
+.gauge{background:var(--green);color:var(--parch);border-radius:8px;padding:36px;text-align:center;position:sticky;top:96px;box-shadow:0 40px 80px -40px rgba(27,36,32,.6)}
+.gauge svg{width:100%;max-width:340px;display:block;margin:0 auto}
+.gauge .needle{transform-origin:170px 170px;transition:transform 1s var(--ease)}
+.gauge .v{font-family:var(--serif);font-weight:800;font-size:52px;line-height:1;margin:6px 0 4px;font-variant-numeric:tabular-nums}
+.gauge .l{font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;opacity:.7}
+.gauge .verdict{margin-top:20px;padding-top:20px;border-top:1px solid rgba(232,232,200,.2);font-family:var(--serif);font-style:italic;font-size:19px;min-height:60px;line-height:1.35}
+
+/* quote */
+.quote{background:var(--green);color:var(--parch);text-align:center;overflow:hidden}
+.quote:before,.quote:after{content:"";position:absolute;left:0;right:0;height:1px;background:var(--parch);opacity:.25}
+.quote:before{top:18px}.quote:after{bottom:18px}
+.quote .mark{font-family:var(--serif);font-size:200px;line-height:0;color:var(--gold);opacity:.25;position:absolute;left:50%;top:38%;transform:translateX(-50%)}
+.quote blockquote{font-family:var(--serif);font-weight:500;font-style:italic;font-size:clamp(25px,3.2vw,40px);line-height:1.3;max-width:900px;margin:0 auto 18px;position:relative}
+.quote cite{font-style:normal;font-family:var(--sans);font-size:13px;letter-spacing:.2em;text-transform:uppercase;opacity:.75}
+
+/* about */
+.about{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.about p{margin:0 0 18px;font-size:18px}
+.rules{list-style:none;padding:0;margin:0;border-top:1px solid var(--rule)}
+.rules li{padding:18px 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:44px 1fr;gap:16px;align-items:start;transition:padding-left .3s var(--ease)}
+.rules li:hover{padding-left:8px}
+.rules .k{font-family:var(--serif);font-weight:800;color:var(--green);font-size:20px;line-height:1.3}
+.rules b{display:block;font-family:var(--serif);font-weight:700;font-size:18px;margin-bottom:2px}
+.rules span{color:var(--muted);font-size:16px}
+
+/* follow */
+.follow{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.follow a{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--rule);padding:20px 22px;border-radius:8px;color:var(--ink);font-weight:700;transition:.25s var(--ease);position:relative;overflow:hidden}
+.follow a:before{content:"";position:absolute;inset:0;background:var(--green);transform:translateX(-101%);transition:transform .35s var(--ease)}
+.follow a:hover{color:var(--parch);transform:translateY(-3px);box-shadow:0 20px 40px -20px rgba(27,36,32,.5)}
+.follow a:hover:before{transform:none}
+.follow a>*{position:relative}
+.follow a small{font-weight:400;font-size:14px;display:block;opacity:.7}
+.follow a .arr{font-family:var(--serif);font-size:22px;transition:transform .3s}
+.follow a:hover .arr{transform:translateX(6px)}
+
+.contact{background:#fff;border:1px solid var(--rule);padding:44px;border-radius:8px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap;box-shadow:0 30px 60px -40px rgba(27,36,32,.4)}
+.contact h3{font-family:var(--serif);font-weight:800;font-size:28px;margin:0 0 6px;color:var(--green)}
+.contact p{margin:0;color:var(--muted);max-width:520px}
+.contact a.mail{font-family:var(--serif);font-weight:700;font-size:22px;color:var(--green);border-bottom:2px solid var(--parch);transition:.2s}
+.contact a.mail:hover{border-color:var(--green)}
+
+footer{background:var(--green-ink);color:var(--parch);padding:56px 0 44px;font-size:14px}
+footer .wrap{display:grid;grid-template-columns:1fr 1fr;gap:32px}
+footer .fb{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-weight:800;font-size:17px;letter-spacing:.036em;text-transform:uppercase;margin-bottom:10px}
+footer .fb img{width:28px;height:28px;border-radius:4px}
+footer p{margin:0 0 8px;opacity:.78;line-height:1.55}
+footer .legal{font-size:13px;opacity:.6}
+
+/* cursor glow */
+.glow{position:fixed;width:520px;height:520px;border-radius:50%;pointer-events:none;z-index:1;background:radial-gradient(circle,rgba(30,64,52,.07),transparent 60%);transform:translate(-50%,-50%);left:-999px;top:-999px;transition:opacity .4s;mix-blend-mode:multiply}
+
+@media (max-width:960px){
+  .hero .wrap{grid-template-columns:1fr;padding:80px 24px 72px}
+  .stage{height:380px;margin-top:10px}
+  .grid,.follow{grid-template-columns:1fr 1fr}
+  .about,footer .wrap,.tool,.scan{grid-template-columns:1fr}
+  .gauge{position:static}
+}
+@media (max-width:720px){
+  body{font-size:17px}
+  section{padding:68px 0}
+  .nav ul{display:none}
+  .brand span{font-size:14px;white-space:nowrap}
+  .nav .btn{white-space:nowrap;padding:9px 12px;font-size:12.5px}
+  .quote .mark{display:none}
+  .grid,.follow{grid-template-columns:1fr}
+  .tool{padding:26px}
+  .stage{height:330px}
+  .doc{width:240px;font-size:12px;padding:16px 18px}
+  .doc-1{left:0;top:6%}.doc-2{left:18%;top:28%}.doc-3{left:36%;top:0}
+  .contact{padding:28px}
+  .stats{gap:24px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation-duration:.001s!important;transition-duration:.001s!important}
+  .hero h1 .caps .w,.hero h1 .lower,.hero p.sub,.cta,.stats{opacity:1;transform:none}
+  .rv{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<div class="glow" id="glow"></div>
+
+<header id="hdr">
+  <div class="wrap nav">
+    <a class="brand" href="#top" aria-label="The Overhead"><img src="icon-180.png" alt=""><span>The Overhead</span></a>
+    <ul>
+      <li><a href="#latest">Latest</a></li>
+      <li><a href="#tools">Calculators</a></li>
+      <li><a href="#topics">What we cover</a></li>
+      <li><a href="#scanner">Red flags</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+    <a class="btn btn-green" href="https://www.youtube.com/@OverheadMoney?sub_confirmation=1" target="_blank" rel="noopener">Subscribe on YouTube</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="grid-bg"></div>
+    <div class="wrap">
+      <div>
+        <p class="eyebrow" style="color:var(--gold)">A weekly show about small business money</p>
+        <h1>
+          <span class="caps"><span class="w" style="animation-delay:.05s">Your</span> <span class="w" style="animation-delay:.15s">business</span> <span class="w" style="animation-delay:.25s">is</span> <span class="w" style="animation-delay:.35s">leaking</span> <span class="w" style="animation-delay:.45s">money</span></span>
+          <span class="lower">and nobody's telling you where.</span>
+        </h1>
+        <p class="sub">Equipment leases, vendor contracts, financing, hidden fees — the overhead quietly eating your margins, broken down in plain English by someone who spent twenty years on the vendor side of the table.</p>
+        <div class="cta">
+          <a class="btn btn-solid" href="https://go.overheadmoney.com/latest" target="_blank" rel="noopener"><span class="play"></span>Watch the latest episode</a>
+          <a class="btn btn-ghost" href="#tools">Run your own numbers ↓</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><b data-count="1000" data-suffix="+">0</b><span>Contracts read</span></div>
+          <div class="stat"><b data-count="20">0</b><span>Years inside</span></div>
+          <div class="stat"><b data-count="5">0</b><span>Things every contract hides</span></div>
+        </div>
+      </div>
+      <div class="stage" id="stage" aria-hidden="true">
+        <div class="stack" id="stack">
+          <div class="doc doc-1">
+            <div class="h">Proposal <small>Page 1 of 1</small></div>
+            <div class="r"><span>Monthly payment</span><span>$240.00</span></div>
+            <div class="r"><span>Service included</span><span>Yes</span></div>
+            <div class="r"><span>Install</span><span>Waived</span></div>
+            <div class="r"><span>Existing contract</span><span>We'll pay it off</span></div>
+            <div class="r tot"><span>Your price</span><span>$240 / mo</span></div>
+          </div>
+          <div class="doc doc-2">
+            <div class="stamp">Non-cancellable</div>
+            <div class="h">Lease agreement <small>Page 4 of 11</small></div>
+            <div class="r"><span>Term</span><span>60 months</span></div>
+            <div class="r hi"><span>Rolled-in balance</span><span>$3,360.00</span></div>
+            <div class="r hi"><span>Annual adjustment</span><span>Up to 10%</span></div>
+            <div class="r hi"><span>Return freight</span><span>Lessee</span></div>
+            <div class="r tot"><span>Real price</span><span>$352 / mo</span></div>
+          </div>
+          <div class="doc doc-3">
+            <div class="h">Invoice <small>Month 37</small></div>
+            <div class="r"><span>Lease payment</span><span>$296.10</span></div>
+            <div class="r hi"><span>Minimum volume charge</span><span>$145.00</span></div>
+            <div class="r hi"><span>Service — renewed</span><span>$89.00</span></div>
+            <div class="r"><span>Supplies</span><span>$41.20</span></div>
+            <div class="r tot"><span>Total due</span><span>$571.30</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="ticker" aria-hidden="true"><div class="t" id="tk"></div></div>
+
+  <section id="latest">
+    <div class="wrap">
+      <p class="eyebrow rv">Now playing</p>
+      <h2 class="rv d1">The latest episode</h2>
+      <p class="lede rv d2">New video every week. No gurus, no get-rich hype — just the numbers, and what to do about them.</p>
+      <div class="video rv d2" id="vid">
+        <iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=UUhiOdY6RvWG8Sp3KnwWAzuA&rel=0" title="The Overhead — latest episodes" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>
+      </div>
+      <div class="video-row rv d3">
+        <a class="btn btn-green" href="https://www.youtube.com/@OverheadMoney/videos" target="_blank" rel="noopener">Browse all episodes</a>
+        <small>Use the playlist icon in the player to jump between episodes.</small>
+      </div>
+    </div>
+  </section>
+
+  <section id="tools" class="tools">
+    <div class="wrap">
+      <p class="eyebrow rv">Run your own numbers</p>
+      <h2 class="rv d1">The math your vendor did. Now you do it.</h2>
+      <p class="lede rv d2">Three calculators, straight out of the episodes. Drag the sliders — every number updates live. Nothing is stored, nothing is sent anywhere.</p>
+      <div class="tabs rv d3">
+        <button class="tab on" data-t="esc">Escalator clause</button>
+        <button class="tab" data-t="min">Minimum volume trap</button>
+        <button class="tab" data-t="roll">The "free" payoff</button>
+      </div>
+
+      <div class="tool on rv d3" id="t-esc">
+        <div>
+          <h3>What does that "up to 8% a year" really cost?</h3>
+          <p class="why">Most agreements let the price rise on a schedule without asking you. The ceiling is usually the plan.</p>
+          <div class="f"><label>Monthly payment <output id="esc-p-o">$300</output></label><input type="range" id="esc-p" min="50" max="2500" step="10" value="300"></div>
+          <div class="f"><label>Annual increase <output id="esc-r-o">8%</output></label><input type="range" id="esc-r" min="0" max="15" step="0.5" value="8"></div>
+          <div class="f"><label>Term <output id="esc-t-o">60 months</output></label><input type="range" id="esc-t" min="12" max="84" step="12" value="60"></div>
+        </div>
+        <div class="res"><span class="ep">Episode 4</span>
+          <div class="lbl">You'll actually pay</div>
+          <div class="big bad" id="esc-total">$21,100</div>
+          <div class="cmp">
+            <div><b id="esc-remember">$18,000</b><span>What you remember signing</span></div>
+            <div><b id="esc-avg">$352 / mo</b><span>Real average payment</span></div>
+          </div>
+          <div class="bar"><i id="esc-b1" style="width:85%"></i><i class="b2" id="esc-b2"></i></div>
+          <p class="note" id="esc-note">Year five you're paying <b>$408</b> a month on a contract you remember as $300. Find the adjustment clause and compute year five before you sign.</p>
+        </div>
+      </div>
+
+      <div class="tool rv d3" id="t-min">
+        <div>
+          <h3>Your rate never changed. Your cost did.</h3>
+          <p class="why">A minimum monthly charge is the floor you pay whether you use it or not. Get smaller, and your real per-unit cost climbs.</p>
+          <div class="f"><label>Minimum charge <output id="min-c-o">$145</output></label><input type="range" id="min-c" min="25" max="1500" step="5" value="145"></div>
+          <div class="f"><label>Volume that covers <output id="min-b-o">5,000 pages</output></label><input type="range" id="min-b" min="500" max="30000" step="250" value="5000"></div>
+          <div class="f"><label>What you actually use <output id="min-a-o">3,000 pages</output></label><input type="range" id="min-a" min="100" max="30000" step="100" value="3000"></div>
+        </div>
+        <div class="res"><span class="ep">Episode 4</span>
+          <div class="lbl">Your real cost per page</div>
+          <div class="big bad" id="min-real">4.8¢</div>
+          <div class="cmp">
+            <div><b id="min-quoted">2.9¢</b><span>The rate you were quoted</span></div>
+            <div><b id="min-pct">+67%</b><span>More per page</span></div>
+          </div>
+          <div class="bar"><i id="min-b1" style="width:60%"></i><i class="b2" id="min-b2" style="width:100%"></i></div>
+          <p class="note" id="min-note">You're paying for <b>2,000 pages</b> a month you never print — <b>$696</b> a year for the crime of getting smaller. Pull twelve months of usage and compare it to the minimum.</p>
+        </div>
+      </div>
+
+      <div class="tool rv d3" id="t-roll">
+        <div>
+          <h3>"We'll pay off your existing contract."</h3>
+          <p class="why">That money doesn't evaporate. It gets rolled into the new agreement and financed. It isn't free — it's spread out.</p>
+          <div class="f"><label>Months left on old contract <output id="rl-m-o">14</output></label><input type="range" id="rl-m" min="1" max="48" step="1" value="14"></div>
+          <div class="f"><label>Old monthly payment <output id="rl-p-o">$240</output></label><input type="range" id="rl-p" min="50" max="2500" step="10" value="240"></div>
+          <div class="f"><label>New term <output id="rl-t-o">60 months</output></label><input type="range" id="rl-t" min="24" max="84" step="12" value="60"></div>
+          <div class="f"><label>Cost of money <output id="rl-r-o">9%</output></label><input type="range" id="rl-r" min="0" max="20" step="0.5" value="9"></div>
+        </div>
+        <div class="res"><span class="ep">Episode 4</span>
+          <div class="lbl">The "free" payoff, rolled in</div>
+          <div class="big bad" id="rl-bal">$3,360</div>
+          <div class="cmp">
+            <div><b id="rl-mo">$70 / mo</b><span>Added to every payment</span></div>
+            <div><b id="rl-tot">$4,186</b><span>Total repaid, with interest</span></div>
+          </div>
+          <div class="bar"><i id="rl-b1" style="width:80%"></i><i class="b2" id="rl-b2" style="width:100%"></i></div>
+          <p class="note" id="rl-note">Reasonable for a vendor to do — it's how most mid-term upgrades happen. Just make sure the payoff is written into the agreement, not the proposal.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="topics">
+    <div class="wrap">
+      <p class="eyebrow rv">What we cover</p>
+      <h2 class="rv d1">The overhead you don't owe.</h2>
+      <p class="lede rv d2">Five lanes, one rule: every episode ends with something you can check in your own agreements before Friday.</p>
+      <div class="grid">
+        <div class="card tilt rv d1"><div class="num">01</div><h3>Lease vs. buy math on business equipment</h3><p>Copiers, phone systems, vehicles, software seats. The full-term cost, the buyout nobody prices, and when leasing is the right call anyway.</p></div>
+        <div class="card tilt rv d2"><div class="num">02</div><h3>Vendor contracts and the fine print</h3><p>Auto-renewals, escalators, minimums, end-of-term fees. The five things every agreement hides and how to find them in twenty minutes.</p></div>
+        <div class="card tilt rv d3"><div class="num">03</div><h3>Negotiation tactics that actually work</h3><p>What the salesperson can and can't move, what leverage you have two years out, and what to get in writing before you sign.</p></div>
+        <div class="card tilt rv d2"><div class="num">04</div><h3>Cash flow, cost cutting, financing explained</h3><p>Where the money goes, which recurring charges move on their own, and how to read a financing offer like the person who wrote it.</p></div>
+        <div class="card tilt rv d3"><div class="num">05</div><h3>Office technology costs</h3><p>Printers, managed print, IT, telecom. The equipment side and the service side, and why one invoice is usually two contracts.</p></div>
+        <div class="card tilt dark rv d4"><div class="num">✓</div><h3>One thing to do this week</h3><p>Every episode closes with a single action — a document to pull, a line to find, a question to ask. Small, specific, and done before the weekend.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="scanner" class="tools">
+    <div class="wrap">
+      <p class="eyebrow rv">Contract red-flag scanner</p>
+      <h2 class="rv d1">Pull your biggest vendor agreement. Check what you find.</h2>
+      <p class="lede rv d2">Twenty minutes with your largest recurring bill. Tick each item you can't rule out, and the gauge tells you how much of the risk is sitting on your side of the table.</p>
+      <div class="scan">
+        <ul class="chk rv d2">
+          <li><label><input type="checkbox" data-w="20"><span class="bx"></span><div><b>The proposal promises something the agreement doesn't.</b><span>Free install, waived fees, "we'll pay off your old contract" — anything living in the sales document and not the signed one.</span></div></label></li>
+          <li><label><input type="checkbox" data-w="20"><span class="bx"></span><div><b>More than one end date behind one payment.</b><span>Equipment lease and service agreement on different terms, and the service one renews by itself.</span></div></label></li>
+          <li><label><input type="checkbox" data-w="20"><span class="bx"></span><div><b>A minimum you're regularly under.</b><span>Minimum volume, minimum charge, minimum spend — and your last twelve months don't reach it.</span></div></label></li>
+          <li><label><input type="checkbox" data-w="20"><span class="bx"></span><div><b>An adjustment or escalation clause with no cap in writing.</b><span>"Up to" a percentage annually, or worse, no number at all.</span></div></label></li>
+          <li><label><input type="checkbox" data-w="20"><span class="bx"></span><div><b>You don't know what leaving costs.</b><span>Return freight, de-install, restocking, buyout, fair market value — none of it priced in writing.</span></div></label></li>
+        </ul>
+        <div class="gauge rv d3">
+          <svg viewBox="0 0 340 200" aria-hidden="true">
+            <defs><linearGradient id="gg" x1="0" x2="1"><stop offset="0" stop-color="#E8E8C8"/><stop offset=".55" stop-color="#C9A961"/><stop offset="1" stop-color="#D96C6C"/></linearGradient></defs>
+            <path d="M30 170 A140 140 0 0 1 310 170" fill="none" stroke="rgba(232,232,200,.15)" stroke-width="22" stroke-linecap="round"/>
+            <path id="garc" d="M30 170 A140 140 0 0 1 310 170" fill="none" stroke="url(#gg)" stroke-width="22" stroke-linecap="round" stroke-dasharray="440" stroke-dashoffset="440" style="transition:stroke-dashoffset 1s var(--ease)"/>
+            <g class="needle" id="needle" style="transform:rotate(-90deg)"><line x1="170" y1="170" x2="170" y2="52" stroke="#E8E8C8" stroke-width="4" stroke-linecap="round"/><circle cx="170" cy="170" r="10" fill="#E8E8C8"/></g>
+          </svg>
+          <div class="v" id="gv">0%</div>
+          <div class="l">of the risk is on your side</div>
+          <div class="verdict" id="gverdict">Nothing ticked yet. That's either a clean agreement or one you haven't opened.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="quote">
+    <div class="wrap">
+      <div class="mark">“</div>
+      <blockquote class="rv">In a thousand contracts, I have never once found a surprise that broke in the customer's favor.</blockquote>
+      <cite class="rv d1">The Overhead — Episode 4</cite>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap about">
+      <div class="rv">
+        <p class="eyebrow">About the show</p>
+        <h2>Two decades inside the industry that sells you the overhead.</h2>
+        <p>The Overhead is made by someone who spent twenty years in the business equipment and financing industry — writing the proposals, structuring the leases, and reading the agreements that small business owners sign every day.</p>
+        <p>Most of what's in those agreements is legitimate. None of it is explained. This channel explains it: what the numbers mean, where the risk moves, and what to check in your own paperwork while you still have leverage.</p>
+        <p>The show is faceless on purpose. The information is the point.</p>
+      </div>
+      <div class="rv d2">
+        <p class="eyebrow">House rules</p>
+        <ul class="rules">
+          <li><span class="k">01</span><div><b>No guru hype.</b><span>No secrets, no courses, no claimed income. Just the math.</span></div></li>
+          <li><span class="k">02</span><div><b>Fair to vendors.</b><span>Most pricing is a real trade. We show you which side of it you're on.</span></div></li>
+          <li><span class="k">03</span><div><b>Every number is real.</b><span>Researched, computed, and stated with its range — never guessed.</span></div></li>
+          <li><span class="k">04</span><div><b>Not tax, legal, or financial advice.</b><span>Your accountant and attorney still get the final word.</span></div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="follow" style="padding-top:0">
+    <div class="wrap">
+      <p class="eyebrow rv">Follow along</p>
+      <h2 class="rv d1">Shorts, clips, and new episodes everywhere.</h2>
+      <div class="follow">
+        <a class="rv d1" href="https://www.youtube.com/@OverheadMoney" target="_blank" rel="noopener"><span>YouTube<small>@OverheadMoney — full episodes</small></span><span class="arr">→</span></a>
+        <a class="rv d2" href="https://instagram.com/OverheadMoney" target="_blank" rel="noopener"><span>Instagram<small>@OverheadMoney</small></span><span class="arr">→</span></a>
+        <a class="rv d3" href="https://tiktok.com/@OverheadMoney" target="_blank" rel="noopener"><span>TikTok<small>@OverheadMoney</small></span><span class="arr">→</span></a>
+        <a class="rv d2" href="https://x.com/OverheadMoney" target="_blank" rel="noopener"><span>X<small>@OverheadMoney</small></span><span class="arr">→</span></a>
+        <a class="rv d3" href="https://www.facebook.com/overheadmoneyshow" target="_blank" rel="noopener"><span>Facebook<small>/overheadmoneyshow</small></span><span class="arr">→</span></a>
+        <a class="rv d4" href="https://pinterest.com/OverheadMoneyShow" target="_blank" rel="noopener"><span>Pinterest<small>@OverheadMoneyShow</small></span><span class="arr">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" style="padding-top:0">
+    <div class="wrap">
+      <div class="contact rv">
+        <div>
+          <h3>Business inquiries</h3>
+          <p>Sponsorships, partnerships, and press. Topic requests welcome too — tell us which bill you want broken down.</p>
+        </div>
+        <a class="mail" href="mailto:theoverheadshow@gmail.com">theoverheadshow@gmail.com</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>
+      <div class="fb"><img src="icon-180.png" alt="">The Overhead</div>
+      <p>Small business money, without the fluff. New videos every week.</p>
+      <p class="legal">© <span id="y">2026</span> The Overhead. All rights reserved.</p>
+    </div>
+    <div>
+      <p class="legal">The Overhead is for general education only and is not tax, legal, accounting, or financial advice. The calculators on this page are illustrative and run entirely in your browser — nothing you enter is stored or transmitted. Every business and every agreement is different; consult your own accountant or attorney before acting on anything you see here.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const money=n=>'$'+Math.round(n).toLocaleString('en-US');
+const rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const fine=matchMedia('(pointer:fine)').matches;
+$('#y').textContent=new Date().getFullYear();
+
+/* header shadow */
+addEventListener('scroll',()=>$('#hdr').classList.toggle('sc',scrollY>10),{passive:true});
+
+/* reveal */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+$$('.rv').forEach(el=>io.observe(el));
+addEventListener('load',()=>setTimeout(()=>$$('.rv:not(.in)').forEach(el=>{const r=el.getBoundingClientRect();if(r.top<innerHeight&&r.bottom>0)el.classList.add('in')}),300));
+
+/* counters */
+const cio=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;cio.unobserve(e.target);
+  const el=e.target,end=+el.dataset.count,suf=el.dataset.suffix||'',t0=performance.now(),dur=1600;
+  (function tick(t){const p=Math.min(1,(t-t0)/dur),v=Math.round(end*(1-Math.pow(1-p,3)));el.textContent=v.toLocaleString()+suf;if(p<1)requestAnimationFrame(tick)})(t0);
+}),{threshold:.5});
+$$('[data-count]').forEach(el=>cio.observe(el));
+
+/* ticker */
+const items=['Free install','Rolled-in payoff','Annual adjustment: up to 10%','Minimum monthly charge','Auto-renewal','Return freight: lessee','Fair market value buyout','Non-cancellable','Sixty months','Two contracts, one invoice','Restocking fee','Final meter read','Evergreen clause','Price of getting smaller'];
+const one=items.map(i=>`<span><i>▪</i>${i}</span>`).join('');
+$('#tk').innerHTML=one+one;
+
+/* 3D stack parallax */
+const stage=$('#stage'),stack=$('#stack');
+if(fine&&!rm){
+  const hero=$('.hero');
+  hero.addEventListener('mousemove',e=>{const r=hero.getBoundingClientRect();const x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;
+    stack.style.transform=`rotateY(${x*22}deg) rotateX(${-y*16}deg)`;});
+  hero.addEventListener('mouseleave',()=>stack.style.transform='');
+}else{stack.style.transform='rotateY(-14deg) rotateX(6deg)'}
+
+/* cursor glow */
+const glow=$('#glow');
+if(fine&&!rm){addEventListener('mousemove',e=>{glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'},{passive:true})}else glow.remove();
+
+/* tilt cards with spotlight */
+if(fine&&!rm)$$('.tilt').forEach(c=>{
+  c.addEventListener('mousemove',e=>{const r=c.getBoundingClientRect(),x=(e.clientX-r.left)/r.width,y=(e.clientY-r.top)/r.height;
+    c.style.setProperty('--mx',x*100+'%');c.style.setProperty('--my',y*100+'%');
+    c.style.transform=`perspective(900px) rotateY(${(x-.5)*10}deg) rotateX(${(.5-y)*10}deg) translateY(-4px)`});
+  c.addEventListener('mouseleave',()=>c.style.transform='');
+});
+
+/* tabs */
+$$('.tab').forEach(t=>t.addEventListener('click',()=>{$$('.tab').forEach(x=>x.classList.remove('on'));t.classList.add('on');
+  $$('.tool').forEach(x=>x.classList.remove('on'));$('#t-'+t.dataset.t).classList.add('on')}));
+
+/* sliders */
+const sl=id=>$('#'+id), v=id=>+sl(id).value;
+function paint(r){r.style.setProperty('--p',((r.value-r.min)/(r.max-r.min)*100)+'%')}
+$$('input[type=range]').forEach(r=>{paint(r);r.addEventListener('input',()=>{paint(r);calc()})});
+
+function calc(){
+  /* escalator */
+  {const p=v('esc-p'),r=v('esc-r')/100,t=v('esc-t');let total=0,last=p;
+   for(let m=0;m<t;m++){const yr=Math.floor(m/12);last=p*Math.pow(1+r,yr);total+=last}
+   const rem=p*t;
+   sl('esc-p-o').value=money(p);sl('esc-r-o').value=v('esc-r')+'%';sl('esc-t-o').value=t+' months';
+   $('#esc-total').textContent=money(total);$('#esc-remember').textContent=money(rem);$('#esc-avg').textContent=money(total/t)+' / mo';
+   $('#esc-b1').style.width=(rem/total*100)+'%';
+   $('#esc-note').innerHTML=r>0?`By the final year you're paying <b>${money(last)}</b> a month on a contract you remember as ${money(p)} — <b>${money(total-rem)}</b> more than you think you agreed to. Compute the final-year payment before you sign.`:`With no escalator, you pay exactly what you signed. Ask for that cap in writing — if nobody will put it there, the cap is whatever they decide.`}
+  /* minimum */
+  {const c=v('min-c'),b=v('min-b'),a=v('min-a');const q=c/b,real=c/Math.max(a,1);const under=Math.max(0,b-a);
+   sl('min-c-o').value=money(c);sl('min-b-o').value=b.toLocaleString()+' pages';sl('min-a-o').value=a.toLocaleString()+' pages';
+   const cents=x=>(x*100).toFixed(1)+'¢';
+   $('#min-real').textContent=cents(a>=b?q:real);$('#min-quoted').textContent=cents(q);
+   const pct=a>=b?0:Math.round((real/q-1)*100);$('#min-pct').textContent=(pct>0?'+':'')+pct+'%';
+   $('#min-b1').style.width=Math.min(100,a/b*100)+'%';$('#min-b2').style.width='100%';
+   $('#min-note').innerHTML=a>=b?`You're over the minimum, so the quoted rate is real. Watch it if volume drops — that's when the floor starts costing you.`:`You're paying for <b>${under.toLocaleString()} pages</b> a month you never print — about <b>${money(under*q*12)}</b> a year for the crime of getting smaller. Pull twelve months of usage and compare it to the minimum.`}
+  /* rollover */
+  {const m=v('rl-m'),p=v('rl-p'),t=v('rl-t'),r=v('rl-r')/100/12;const bal=m*p;
+   const pay=r>0?bal*r/(1-Math.pow(1+r,-t)):bal/t;const tot=pay*t;
+   sl('rl-m-o').value=m;sl('rl-p-o').value=money(p);sl('rl-t-o').value=t+' months';sl('rl-r-o').value=v('rl-r')+'%';
+   $('#rl-bal').textContent=money(bal);$('#rl-mo').textContent=money(pay)+' / mo';$('#rl-tot').textContent=money(tot);
+   $('#rl-b1').style.width=(bal/tot*100)+'%';
+   $('#rl-note').innerHTML=`"Free" cost you <b>${money(tot-bal)}</b> in interest on top of the balance. Reasonable for a vendor to do — just make sure the payoff is written into the agreement as a signed addendum, not left in the proposal.`}
+}
+calc();
+
+/* gauge */
+const boxes=$$('.chk input');
+const verdicts=[[0,'Nothing ticked yet. That’s either a clean agreement or one you haven’t opened.'],[20,'One item. Fixable with a single addendum — get it in writing this week.'],[40,'Two items. You’re carrying risk the vendor priced and you didn’t. Worth a call.'],[60,'Three items. This agreement is doing exactly what it was designed to do. Time to read it properly.'],[80,'Four items. You’re on the wrong side of almost every trade in this contract.'],[100,'All five. In a thousand contracts, this is the one that never breaks in your favor. Start with the end-of-term clause — today.']];
+function gauge(){const s=boxes.reduce((a,b)=>a+(b.checked?+b.dataset.w:0),0);
+  $('#gv').textContent=s+'%';$('#needle').style.transform=`rotate(${-90+s*1.8}deg)`;$('#garc').style.strokeDashoffset=440-440*s/100;
+  $('#gverdict').textContent=verdicts.filter(x=>x[0]<=s).pop()[1]}
+boxes.forEach(b=>b.addEventListener('change',gauge));
+})();
+</script>
+</body>
+</html>
