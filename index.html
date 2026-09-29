@@ -196,6 +196,33 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 .gauge .l{font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;opacity:.7}
 .gauge .verdict{margin-top:20px;padding-top:20px;border-top:1px solid rgba(232,232,200,.2);font-family:var(--serif);font-style:italic;font-size:19px;min-height:60px;line-height:1.35}
 
+
+/* newsletter */
+.nl{background:var(--paper)}
+.nl-card{background:var(--green);color:var(--parch);border-radius:10px;padding:56px;display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;position:relative;overflow:hidden;box-shadow:0 40px 80px -40px rgba(27,36,32,.6)}
+.nl-card:before{content:"";position:absolute;inset:0;background:radial-gradient(700px 400px at 100% 0%,rgba(232,232,200,.12),transparent 60%);pointer-events:none}
+.nl-card>*{position:relative}
+.nl-card h2{color:var(--parch);margin-bottom:12px}
+.nl-card .eyebrow{color:var(--gold)}
+.nl-card p{margin:0 0 18px;opacity:.9;font-size:18px}
+.nl-card ul{list-style:none;margin:0;padding:0;font-size:16px}
+.nl-card li{padding:8px 0;border-top:1px solid rgba(232,232,200,.18);display:flex;gap:12px}
+.nl-card li:before{content:"→";color:var(--gold);font-family:var(--serif)}
+.nl-form{background:var(--green-ink);border:1px solid rgba(232,232,200,.2);border-radius:8px;padding:30px}
+.nl-form label{display:block;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;opacity:.75;margin:0 0 6px}
+.nl-form input[type=text],.nl-form input[type=email]{width:100%;padding:14px 16px;border-radius:4px;border:1.5px solid rgba(232,232,200,.3);background:rgba(232,232,200,.06);color:var(--parch);font-family:var(--sans);font-size:17px;margin-bottom:16px;transition:.2s}
+.nl-form input:focus{outline:none;border-color:var(--parch);background:rgba(232,232,200,.1)}
+.nl-form input::placeholder{color:rgba(232,232,200,.4)}
+.nl-form .btn{width:100%;justify-content:center;padding:16px}
+.nl-form .btn[disabled]{opacity:.6;cursor:wait}
+.nl-form .fine{font-size:13px;opacity:.6;margin:14px 0 0;line-height:1.45}
+.nl-form .msg{margin-top:14px;font-family:var(--serif);font-size:17px;min-height:24px;line-height:1.4}
+.nl-form .msg.ok{color:var(--gold)}
+.nl-form .msg.err{color:#F2C6C6}
+.hp{position:absolute;left:-9999px;top:-9999px;height:0;width:0;opacity:0}
+.nl-done{text-align:center;padding:20px 0}
+.nl-done .big{font-family:var(--serif);font-weight:800;font-size:34px;color:var(--parch);margin-bottom:8px}
+
 /* quote */
 .quote{background:var(--green);color:var(--parch);text-align:center;overflow:hidden}
 .quote:before,.quote:after{content:"";position:absolute;left:0;right:0;height:1px;background:var(--parch);opacity:.25}
@@ -245,7 +272,8 @@ footer .legal{font-size:13px;opacity:.6}
   .hero .wrap{grid-template-columns:1fr;padding:80px 24px 72px}
   .stage{height:380px;margin-top:10px}
   .grid,.follow{grid-template-columns:1fr 1fr}
-  .about,footer .wrap,.tool,.scan{grid-template-columns:1fr}
+  .about,footer .wrap,.tool,.scan,.nl-card{grid-template-columns:1fr}
+  .nl-card{padding:36px}
   .gauge{position:static}
 }
 @media (max-width:720px){
@@ -261,6 +289,8 @@ footer .legal{font-size:13px;opacity:.6}
   .doc{width:240px;font-size:12px;padding:16px 18px}
   .doc-1{left:0;top:6%}.doc-2{left:18%;top:28%}.doc-3{left:36%;top:0}
   .contact{padding:28px}
+  .nl-card{padding:26px}
+  .nl-form{padding:22px}
   .stats{gap:24px}
 }
 @media (prefers-reduced-motion:reduce){
@@ -281,6 +311,7 @@ footer .legal{font-size:13px;opacity:.6}
       <li><a href="#tools">Calculators</a></li>
       <li><a href="#topics">What we cover</a></li>
       <li><a href="#scanner">Red flags</a></li>
+      <li><a href="#newsletter">Newsletter</a></li>
       <li><a href="#about">About</a></li>
     </ul>
     <a class="btn btn-green" href="https://www.youtube.com/@OverheadMoney?sub_confirmation=1" target="_blank" rel="noopener">Subscribe on YouTube</a>
@@ -504,6 +535,39 @@ footer .legal{font-size:13px;opacity:.6}
     </div>
   </section>
 
+  <section id="newsletter" class="nl">
+    <div class="wrap">
+      <div class="nl-card rv">
+        <div>
+          <p class="eyebrow">The Friday memo</p>
+          <h2>One bill. One thing to check. Every Friday.</h2>
+          <p>A short email when the new episode drops: the number that matters, the clause to look for, and the one action to take before the weekend. Written by the same person who reads the contracts.</p>
+          <ul>
+            <li>No courses, no upsells, no "exclusive offers"</li>
+            <li>One email a week. Unsubscribe in one click.</li>
+            <li>Your address goes nowhere else. Ever.</li>
+          </ul>
+        </div>
+        <form class="nl-form" id="nlf" novalidate>
+          <div id="nl-fields">
+            <label for="nl-first">First name <span style="opacity:.5;text-transform:none;letter-spacing:0">(optional)</span></label>
+            <input type="text" id="nl-first" name="first" autocomplete="given-name" placeholder="Sam" maxlength="60">
+            <label for="nl-email">Email</label>
+            <input type="email" id="nl-email" name="email" autocomplete="email" placeholder="you@yourbusiness.com" required maxlength="120">
+            <div class="hp" aria-hidden="true"><label>Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
+            <button class="btn btn-solid" type="submit" id="nl-btn">Send me the Friday memo</button>
+            <p class="fine">By subscribing you agree to receive The Overhead's weekly email. Not tax, legal, or financial advice.</p>
+          </div>
+          <div class="nl-done" id="nl-done" hidden>
+            <div class="big">You're in.</div>
+            <p style="margin:0;opacity:.85">First memo lands Friday. Meanwhile, go pull your biggest vendor bill — you'll want it handy.</p>
+          </div>
+          <div class="msg" id="nl-msg" aria-live="polite"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+
   <section id="follow" style="padding-top:0">
     <div class="wrap">
       <p class="eyebrow rv">Follow along</p>
@@ -629,6 +693,26 @@ function calc(){
    $('#rl-note').innerHTML=`"Free" cost you <b>${money(tot-bal)}</b> in interest on top of the balance. Reasonable for a vendor to do — just make sure the payoff is written into the agreement as a signed addendum, not left in the proposal.`}
 }
 calc();
+
+
+/* newsletter */
+const NEWSLETTER_ENDPOINT='https://script.google.com/macros/s/AKfycbyjLAJoMEqICwKDuc4_aiCE7YEgJICjJJemooETPwaJFopQP_icJY-YcOyHfguQDE5l/exec';
+const nlf=$('#nlf');
+if(nlf){nlf.addEventListener('submit',async ev=>{ev.preventDefault();
+  const msg=$('#nl-msg'),btn=$('#nl-btn'),email=$('#nl-email').value.trim();
+  msg.className='msg';msg.textContent='';
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){msg.className='msg err';msg.textContent='That email doesn\u2019t look right \u2014 check it and try again.';$('#nl-email').focus();return}
+  if(NEWSLETTER_ENDPOINT.indexOf('http')!==0){msg.className='msg err';msg.textContent='Signup isn\u2019t wired up yet. Email value@overheadmoney.com and we\u2019ll add you by hand.';return}
+  btn.disabled=true;btn.textContent='One second\u2026';
+  const body=new URLSearchParams({email,first:$('#nl-first').value.trim(),company:nlf.company.value,source:'website',ref:location.href,ua:navigator.userAgent.slice(0,200)});
+  let status='ok';
+  try{const r=await fetch(NEWSLETTER_ENDPOINT,{method:'POST',body});const j=await r.json();status=j.status||'ok'}
+  catch(e){try{await fetch(NEWSLETTER_ENDPOINT,{method:'POST',body,mode:'no-cors'})}catch(e2){status='error'}}
+  btn.disabled=false;btn.textContent='Send me the Friday memo';
+  if(status==='ok'||status==='exists'){$('#nl-fields').hidden=true;$('#nl-done').hidden=false;if(status==='exists'){msg.className='msg ok';msg.textContent='You were already on the list \u2014 nothing to do.'}}
+  else if(status==='invalid'){msg.className='msg err';msg.textContent='That email was rejected. Try a different address.'}
+  else{msg.className='msg err';msg.textContent='Something went wrong on our end. Email value@overheadmoney.com and we\u2019ll add you by hand.'}
+})}
 
 /* gauge */
 const boxes=$$('.chk input');
