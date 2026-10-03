@@ -311,7 +311,7 @@ footer .legal{font-size:13px;opacity:.6}
       <li><a href="#tools">Calculators</a></li>
       <li><a href="#topics">What we cover</a></li>
       <li><a href="#scanner">Red flags</a></li>
-      <li><a href="#newsletter">Newsletter</a></li>
+      <li><a href="#newsletter">Free workbook</a></li>
       <li><a href="#about">About</a></li>
     </ul>
     <a class="btn btn-green" href="https://www.youtube.com/@OverheadMoney?sub_confirmation=1" target="_blank" rel="noopener">Subscribe on YouTube</a>
@@ -539,12 +539,12 @@ footer .legal{font-size:13px;opacity:.6}
     <div class="wrap">
       <div class="nl-card rv">
         <div>
-          <p class="eyebrow">The Friday memo</p>
-          <h2>One bill. One thing to check. Every Friday.</h2>
-          <p>A short email when the new episode drops: the number that matters, the clause to look for, and the one action to take before the weekend. Written by the same person who reads the contracts.</p>
+          <p class="eyebrow">Free interactive workbook</p>
+          <h2>The Vendor Contract Audit.</h2>
+          <p>Twenty minutes with your biggest recurring bill: five checks with live math on your own numbers, a renewal-deadline calculator, and a ready-to-send non-renewal letter. Enter your email and it lands in your inbox in under a minute.</p>
           <ul>
-            <li>No courses, no upsells, no "exclusive offers"</li>
-            <li>One email a week. Unsubscribe in one click.</li>
+            <li>Built from the same five things every contract hides</li>
+            <li>Works on any recurring vendor — equipment, phones, software, processing</li>
             <li>Your address goes nowhere else. Ever.</li>
           </ul>
         </div>
@@ -555,12 +555,13 @@ footer .legal{font-size:13px;opacity:.6}
             <label for="nl-email">Email</label>
             <input type="email" id="nl-email" name="email" autocomplete="email" placeholder="you@yourbusiness.com" required maxlength="120">
             <div class="hp" aria-hidden="true"><label>Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
-            <button class="btn btn-solid" type="submit" id="nl-btn">Send me the Friday memo</button>
-            <p class="fine">By subscribing you agree to receive The Overhead's weekly email. Not tax, legal, or financial advice.</p>
+            <button class="btn btn-solid" type="submit" id="nl-btn">Send me the workbook</button>
+            <p class="fine">You'll get the workbook, plus an occasional email from The Overhead when a new breakdown is worth your time. Reply "unsubscribe" anytime. Not tax, legal, or financial advice.</p>
           </div>
           <div class="nl-done" id="nl-done" hidden>
-            <div class="big">You're in.</div>
-            <p style="margin:0;opacity:.85">First memo lands Friday. Meanwhile, go pull your biggest vendor bill — you'll want it handy.</p>
+            <div class="big">Check your inbox.</div>
+            <p style="margin:0 0 18px;opacity:.85">The Vendor Contract Audit is on its way from value@overheadmoney.com. Go pull your biggest vendor bill — you'll want it handy.</p>
+            <a class="btn btn-solid" href="workbook/" style="width:auto">Open it right now →</a>
           </div>
           <div class="msg" id="nl-msg" aria-live="polite"></div>
         </form>
@@ -708,8 +709,8 @@ if(nlf){nlf.addEventListener('submit',async ev=>{ev.preventDefault();
   let status='ok';
   try{const r=await fetch(NEWSLETTER_ENDPOINT,{method:'POST',body});const j=await r.json();status=j.status||'ok'}
   catch(e){try{await fetch(NEWSLETTER_ENDPOINT,{method:'POST',body,mode:'no-cors'})}catch(e2){status='error'}}
-  btn.disabled=false;btn.textContent='Send me the Friday memo';
-  if(status==='ok'||status==='exists'){$('#nl-fields').hidden=true;$('#nl-done').hidden=false;if(status==='exists'){msg.className='msg ok';msg.textContent='You were already on the list \u2014 nothing to do.'}}
+  btn.disabled=false;btn.textContent='Send me the workbook';
+  if(status==='ok'||status==='exists'){$('#nl-fields').hidden=true;$('#nl-done').hidden=false;if(status==='exists'){msg.className='msg ok';msg.textContent='You were already on the list \u2014 we just sent the workbook again.'}}
   else if(status==='invalid'){msg.className='msg err';msg.textContent='That email was rejected. Try a different address.'}
   else{msg.className='msg err';msg.textContent='Something went wrong on our end. Email value@overheadmoney.com and we\u2019ll add you by hand.'}
 })}
