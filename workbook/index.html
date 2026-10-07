@@ -187,14 +187,16 @@ footer p{margin:0 0 6px;opacity:.65;max-width:900px}
   .ptable td:first-child{font-size:14.5px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+@page{margin:12mm}
 @media print{
-  body{background:#fff;font-size:12pt}
+  *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+  body{font-size:11pt}
   .top,.acts,.addrow,.x,.hero .meta,.noprint,.toast{display:none!important}
-  .hero{background:#fff;color:var(--ink)}.hero:before{display:none}.hero h1{color:var(--green)}.hero p{opacity:1}
   .layout{grid-template-columns:1fr;padding:0}.side{position:static}
-  .file{transform:none!important;box-shadow:none;border:1px solid var(--rule)}
-  .step,.score,.out{break-inside:avoid;box-shadow:none}
-  .score,.out{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .file{transform:none!important;box-shadow:none}
+  .step,.score,.out{box-shadow:none}
+  .step .hd,.ptable tr,.score,.file,.letter{break-inside:avoid}
+  h2,h3,.step .hd{break-after:avoid}
 }
 </style>
 </head>
