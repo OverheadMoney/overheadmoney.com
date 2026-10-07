@@ -12,6 +12,8 @@
     '.oc-step p{margin:0 0 16px;font-size:15px;opacity:.85;line-height:1.5}' +
     '.oc-step p b{opacity:1;word-break:break-all}' +
     '.oc-code{display:block;width:100%;box-sizing:border-box;padding:14px 10px!important;margin:0 0 14px!important;text-align:center;font-family:"Playfair Display",Georgia,serif!important;font-weight:800;font-size:34px!important;letter-spacing:.42em;text-indent:.42em;border-radius:6px!important}' +
+    '.oc-row{display:flex;gap:10px;align-items:stretch;margin:0 0 14px}.oc-row .oc-code{margin:0!important;flex:1;min-width:0}' +
+    '.oc-paste{flex:none;padding:0 18px;border-radius:6px;border:1.5px solid currentColor;background:transparent;color:inherit;font:inherit;font-weight:700;font-size:15px;cursor:pointer;opacity:.85}.oc-paste:hover{opacity:1}' +
     '.oc-links{display:flex;justify-content:space-between;gap:12px;margin-top:14px;font-size:13.5px}' +
     '.oc-links button{background:none;border:0;padding:0;color:inherit;opacity:.75;text-decoration:underline;cursor:pointer;font:inherit}' +
     '.oc-links button[disabled]{opacity:.4;cursor:default;text-decoration:none}' +
@@ -61,7 +63,7 @@
     form.innerHTML = '<div class="oc-step">' +
       '<h3>Check your inbox for a code.</h3>' +
       '<p>We sent a 6-digit code to <b>' + esc(data.email) + '</b> from value@overheadmoney.com. Enter it below to open the workbook.</p>' +
-      '<input class="oc-code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="6" placeholder="••••••" aria-label="6-digit code">' +
+      '<div class="oc-row"><input class="oc-code" type="text" inputmode="numeric" autocomplete="one-time-code" placeholder="••••••" aria-label="6-digit code"><button type="button" class="oc-paste" data-a="paste" aria-label="Paste code">Paste</button></div>' +
       '<button class="btn btn-solid light" type="submit">Confirm and open the workbook</button>' +
       '<div class="oc-msg" aria-live="polite"></div>' +
       '<div class="oc-links"><button type="button" data-a="resend">Resend code</button><button type="button" data-a="change">Use a different email</button></div>' +
@@ -70,10 +72,26 @@
     var resend = form.querySelector('[data-a=resend]');
     input.focus();
     cooldown(resend, 45);
-    input.addEventListener('input', function () {
-      input.value = input.value.replace(/\D/g, '').slice(0, 6);
-      if (input.value.length === 6) verify();
+    function setCode(t) {
+      var d = String(t || '').replace(/\D/g, '');
+      if (d.length > 6) { var m = String(t).match(/\b\d{6}\b/); d = m ? m[0] : d.slice(0, 6); }
+      input.value = d;
+      if (d.length === 6) verify();
+    }
+    input.addEventListener('input', function () { setCode(input.value); });
+    input.addEventListener('paste', function (e) {
+      var t = (e.clipboardData || window.clipboardData);
+      if (t) { e.preventDefault(); setCode(t.getData('text')); }
     });
+    var pasteBtn = form.querySelector('[data-a=paste]');
+    if (!(navigator.clipboard && navigator.clipboard.readText)) pasteBtn.style.display = 'none';
+    pasteBtn.onclick = function () {
+      navigator.clipboard.readText().then(function (t) {
+        if (!/\d/.test(t)) { msg.className = 'oc-msg err'; msg.textContent = 'No code on your clipboard yet. Copy it from the email first.'; return; }
+        setCode(t);
+      }).catch(function () { input.focus(); msg.className = 'oc-msg'; msg.textContent = 'Press and hold in the box, then tap Paste.'; });
+    };
+    form._ocSetCode = setCode;
     form.onsubmit = function (ev) { ev.preventDefault(); verify(); };
     form.querySelector('[data-a=change]').onclick = function () {
       form.dataset.step = ''; form.onsubmit = null; form.innerHTML = original;
@@ -93,7 +111,7 @@
       if (busy) return;
       var code = input.value.replace(/\D/g, '');
       if (code.length !== 6) { msg.className = 'oc-msg err'; msg.textContent = 'Enter all 6 digits.'; input.focus(); return; }
-      busy = true; btn.disabled = true; btn.textContent = 'Checking…'; msg.textContent = '';
+      busy = true; btn.disabled = true; btn.textContent = 'Verifying…'; msg.textContent = '';
       post({ action: 'verify', email: data.email, code: code }).then(function (j) {
         busy = false; btn.disabled = false; btn.textContent = 'Confirm and open the workbook';
         if ((j.status === 'ok' || j.status === 'exists') && j.key) return done(form, j.key);
@@ -127,6 +145,18 @@
     setTimeout(function () { location.href = url; }, 1400);
   }
 
-  function boot() { Array.prototype.forEach.call(document.querySelectorAll('form[data-optin]'), init); }
+  function boot() {
+    var forms = document.querySelectorAll('form[data-optin]');
+    Array.prototype.forEach.call(forms, init);
+    // One-tap confirm link from the code email: ...#e=EMAIL&c=CODE
+    var h = new URLSearchParams(location.hash.slice(1)), e = h.get('e'), c = h.get('c');
+    if (forms[0] && e && c && /^\d{6}$/.test(c)) {
+      try { history.replaceState(null, '', location.pathname + location.search); } catch (x) {}
+      var f = forms[0];
+      if (f.scrollIntoView) f.scrollIntoView({ block: 'center' });
+      codeStep(f, { action: 'request', email: e, source: f.getAttribute('data-source') || 'website' }, f.innerHTML);
+      setTimeout(function () { f._ocSetCode(c); }, 150);
+    }
+  }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
 })();
