@@ -187,6 +187,20 @@ footer p{margin:0 0 6px;opacity:.65;max-width:900px}
   .ptable td:first-child{font-size:14.5px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+/* opt-in gate */
+.gate{display:none}
+html.locked .gate{display:block}
+html.locked main,html.locked .hero .meta,html.locked .top .prog,html.locked .top .savebtn,html.locked .hero .dl-pdf{display:none!important}
+.gate .card{max-width:560px;margin:-40px auto 80px;position:relative;background:var(--green-ink);color:var(--parch);border-radius:10px;padding:34px;box-shadow:0 40px 80px -40px rgba(15,33,28,.7)}
+.gate h2{font-family:var(--serif);font-weight:800;font-size:28px;margin:0 0 8px}
+.gate p{margin:0 0 18px;opacity:.88}
+.gate label{display:block;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.75;margin:12px 0 6px}
+.gate input{width:100%;padding:12px 14px;border-radius:5px;border:1.5px solid rgba(232,232,200,.25);background:rgba(255,255,255,.06);color:var(--parch)}
+.gate input:focus{outline:none;border-color:var(--gold)}
+.gate .btn{width:100%;justify-content:center;margin-top:18px;padding:14px}
+.gate .fine{font-size:13px;opacity:.65;margin:14px 0 0}
+.gate .msg{font-size:14px;margin-top:10px;color:var(--redsoft)}
+.gate .hp{position:absolute;left:-9999px}
 @page{margin:12mm}
 @media print{
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
@@ -212,6 +226,12 @@ footer p{margin:0 0 6px;opacity:.65;max-width:900px}
 .printnote{display:none;margin:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.8}
 .savebtn[hidden]{display:none!important}
 </style>
+<script>
+(function(){var T='aea89d074c9',ok=false;
+try{var q=new URLSearchParams(location.search);if(q.get('k')===T){localStorage.setItem('overhead-wb-access','1');ok=true;history.replaceState(null,'',location.pathname+location.hash)}
+if(localStorage.getItem('overhead-wb-access')==='1'||localStorage.getItem('overhead-audit-v1'))ok=true}catch(e){if(location.search.indexOf('k='+T)>-1)ok=true}
+if(!ok)document.documentElement.classList.add('locked')})();
+</script>
 </head>
 <body>
 
@@ -229,7 +249,7 @@ footer p{margin:0 0 6px;opacity:.65;max-width:900px}
     <p class="eyebrow">Free workbook · The Overhead</p>
     <h1>The Vendor Contract Audit<em>Twenty minutes with your biggest recurring bill.</em></h1>
     <p>Pull the signed agreement and the last invoice for the vendor you pay the most every month. Work through the five checks below. Every number you enter updates your audit file live, and at the end you get a list of exactly what to fix and a ready-to-send letter.</p>
-    <p class="noprint" style="font-size:15px;opacity:.85;margin:-10px 0 26px">Prefer a file? <a href="Vendor-Contract-Audit.pdf" download style="color:var(--gold)">Download the fillable PDF version</a>.</p>
+    <p class="noprint dl-pdf" style="font-size:15px;opacity:.85;margin:-10px 0 26px">Prefer a file? <a href="vca-4330e09d3239.pdf" download style="color:var(--gold)">Download the fillable PDF version</a>.</p>
     <div class="meta">
       <div><b>5</b>Checks</div>
       <div><b>~20 min</b>Start to finish</div>
@@ -237,6 +257,21 @@ footer p{margin:0 0 6px;opacity:.65;max-width:900px}
     </div>
   </div>
 </header>
+
+<section class="gate" id="gate"><div class="wrap"><div class="card">
+  <h2>Get the workbook free.</h2>
+  <p>Enter your email and the workbook opens right here. We'll also send you the link and a fillable PDF copy so you can come back to it.</p>
+  <form id="gf" novalidate>
+    <label for="g-first">First name <span style="opacity:.6;text-transform:none;letter-spacing:0">(optional)</span></label>
+    <input id="g-first" name="first" autocomplete="given-name" maxlength="60" placeholder="Sam">
+    <label for="g-email">Email</label>
+    <input id="g-email" name="email" type="email" autocomplete="email" required maxlength="120" placeholder="you@yourbusiness.com">
+    <div class="hp" aria-hidden="true"><input name="company" tabindex="-1" autocomplete="off"></div>
+    <button class="btn light" type="submit" id="g-btn">Open the workbook</button>
+    <div class="msg" id="g-msg" aria-live="polite"></div>
+    <p class="fine">Plus an occasional email from The Overhead when a new breakdown is worth your time. Reply "unsubscribe" anytime. Your address goes nowhere else.</p>
+  </form>
+</div></div></section>
 
 <main class="wrap layout">
   <div class="steps">
@@ -608,6 +643,22 @@ if(fine&&!rm){addEventListener('mousemove',e=>{const x=e.clientX/innerWidth-.5,y
 else file.style.transform='rotateY(-6deg) rotateX(3deg)';
 
 drawPromises();drawAgrs();drawCosts();render();
+
+/* opt-in gate */
+const EP='https://script.google.com/macros/s/AKfycbyjLAJoMEqICwKDuc4_aiCE7YEgJICjJJemooETPwaJFopQP_icJY-YcOyHfguQDE5l/exec';
+$('#gf').addEventListener('submit',async ev=>{ev.preventDefault();
+  const f=ev.target,msg=$('#g-msg'),btn=$('#g-btn'),email=f.email.value.trim();msg.textContent='';
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){msg.textContent='That email doesn\u2019t look right \u2014 check it and try again.';f.email.focus();return}
+  btn.disabled=true;btn.textContent='One second\u2026';
+  const body=new URLSearchParams({email,first:f.first.value.trim(),company:f.company.value,source:'workbook-gate',ref:location.href,ua:navigator.userAgent.slice(0,200)});
+  let status='ok';
+  try{const r=await fetch(EP,{method:'POST',body});const j=await r.json();status=j.status||'ok'}
+  catch(e){try{await fetch(EP,{method:'POST',body,mode:'no-cors'})}catch(e2){status='error'}}
+  btn.disabled=false;btn.textContent='Open the workbook';
+  if(status==='ok'||status==='exists'){try{localStorage.setItem('overhead-wb-access','1')}catch(e){}document.documentElement.classList.remove('locked');toast('You\u2019re in \u2014 a copy is on its way to your inbox');scrollTo({top:0})}
+  else if(status==='invalid'){msg.textContent='That email was rejected. Try a different address.'}
+  else{msg.textContent='Something went wrong on our end. Email value@overheadmoney.com and we\u2019ll send it by hand.'}
+});
 })();
 </script>
 </body>
