@@ -197,7 +197,20 @@ footer p{margin:0 0 6px;opacity:.65;max-width:900px}
   .step,.score,.out{box-shadow:none}
   .step .hd,.ptable tr,.score,.file,.letter{break-inside:avoid}
   h2,h3,.step .hd{break-after:avoid}
+  .fld input,.fld select,.agr input:not([type=checkbox]),.costs input,.chk input,.costs input[type=checkbox]{display:none!important}
+  .pv{display:block!important}
+  .seg button:not(.on){display:none}.seg{border:0}.seg button.on{border-radius:999px}
+  .seg:not(:has(.on)):after{content:"—";color:var(--muted);padding:0 8px}
+  .out.wait,.costs .c.off{display:none!important}
+  .printnote{display:block!important}
+  .hero .wrap{padding:36px 24px 40px}.hero h1{font-size:40px}.hero p{font-size:15px;margin:0}
+  .side,#s0{break-inside:avoid}.side{margin-top:40px}.layout{padding-top:24px}
 }
+.pv{display:none;padding:9px 0 7px;border-bottom:1.5px solid var(--rule);font-weight:600;min-height:1.6em}
+.pv.empty{color:var(--muted);font-weight:400}
+.costs .pv{border:0;padding:0;text-align:right}
+.printnote{display:none;margin:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.8}
+.savebtn[hidden]{display:none!important}
 </style>
 </head>
 <body>
@@ -206,12 +219,13 @@ footer p{margin:0 0 6px;opacity:.65;max-width:900px}
   <div class="wrap">
     <a class="brand" href="https://overheadmoney.com/"><img src="../icon-180.png" alt=""><span>The Overhead</span></a>
     <div class="prog"><span id="progTxt">0 of 5 checks</span><div class="bar"><i id="progBar"></i></div></div>
-    <button class="btn" type="button" onclick="window.print()">Save as PDF</button>
+    <button class="btn savebtn" type="button" onclick="window.print()" hidden>Save my results as PDF</button>
   </div>
 </div>
 
 <header class="hero">
   <div class="wrap">
+    <p class="printnote" id="printNote"></p>
     <p class="eyebrow">Free workbook · The Overhead</p>
     <h1>The Vendor Contract Audit<em>Twenty minutes with your biggest recurring bill.</em></h1>
     <p>Pull the signed agreement and the last invoice for the vendor you pay the most every month. Work through the five checks below. Every number you enter updates your audit file live, and at the end you get a list of exactly what to fix and a ready-to-send letter.</p>
@@ -325,7 +339,7 @@ footer p{margin:0 0 6px;opacity:.65;max-width:900px}
         <div class="letter" id="letter"></div>
         <div class="acts noprint" style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
           <button class="btn" type="button" id="lCopy">Copy letter</button>
-          <button class="btn ghost" type="button" onclick="window.print()">Print</button>
+          <button class="btn ghost savebtn" type="button" onclick="window.print()" hidden>Print</button>
         </div>
         <p class="tip" style="margin-top:16px">Check the agreement's notices clause for the required method — many specify certified mail or a specific address. Send it so you can prove delivery and the date. This is a template, not legal advice.</p>
       </div>
@@ -342,7 +356,7 @@ footer p{margin:0 0 6px;opacity:.65;max-width:900px}
       </div>
       <ol id="actions"></ol>
       <div class="acts noprint" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px">
-        <button class="btn light" type="button" onclick="window.print()">Save the whole audit as PDF</button>
+        <button class="btn light savebtn" type="button" onclick="window.print()" hidden>Save my results as PDF</button>
         <a class="btn ghost" style="color:var(--parch);border-color:var(--parch)" href="https://go.overheadmoney.com/latest" target="_blank" rel="noopener">Watch The Overhead</a>
       </div>
     </section>
@@ -551,8 +565,27 @@ ${biz}`;
   const n=[1,2,3,4,5].filter(i=>S.done[i]).length;
   [1,2,3,4,5].forEach(i=>{$('#s'+i).classList.toggle('done',!!S.done[i]);const b=$(`[data-done="${i}"]`);b.textContent=S.done[i]?'✓ Done — undo':`Mark check ${i} done`});
   $('#progTxt').textContent=`${n} of 5 checks`;$('#progBar').style.width=(n/5*100)+'%';
+  $$('.out').forEach(o=>{const k=o.querySelector('.k');o.classList.toggle('wait',!!k&&k.textContent==='Waiting on you')});
+  const touched=Object.keys(S.fields).length||S.promises.some(p=>p.v)||Object.values(S.done).some(Boolean)||S.agrs.some(a=>a.start)||S.costs.some(c=>c.on);
+  $$('.savebtn').forEach(b=>b.hidden=!touched);
   save();
 }
+
+/* printing: show answers as plain text, never empty form boxes */
+function snapshot(){
+  $$('.pv').forEach(e=>e.remove());
+  $$('.fld input,.fld select,.agr input:not([type=checkbox]),.costs input[type=number]').forEach(el=>{
+    let v=el.tagName==='SELECT'?el.options[el.selectedIndex].text:el.value.trim();
+    if(v&&el.type==='date'){v=fmtD(new Date(v+'T12:00:00'))}
+    if(v&&el.closest('.money,.costs'))v='$'+(+v).toLocaleString('en-US');
+    if(v&&el.closest('.pct'))v+='%';
+    const d=document.createElement('div');d.className='pv'+(v?'':' empty');d.textContent=v||'—';el.after(d)});
+  $$('.chk input').forEach(el=>{const d=document.createElement('span');d.className='pv';d.style.display='inline';d.textContent=el.checked?'✓':'✗';el.after(d)});
+  $$('.costs .c').forEach(c=>{const cb=c.querySelector('input[type=checkbox]');c.classList.toggle('off',!cb.checked)});
+  $('#printNote').textContent='Your audit · saved '+fmtD(new Date())+' · overheadmoney.com/workbook';
+}
+addEventListener('beforeprint',snapshot);
+addEventListener('afterprint',()=>$$('.pv').forEach(e=>e.remove()));
 
 /* calendar file */
 function downloadICS(d,vendor){
