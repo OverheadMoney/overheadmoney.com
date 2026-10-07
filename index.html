@@ -542,14 +542,14 @@ footer .legal{font-size:13px;opacity:.6}
         <div>
           <p class="eyebrow">Free interactive workbook</p>
           <h2>The Vendor Contract Audit.</h2>
-          <p>Twenty minutes with your biggest recurring bill: five checks with live math on your own numbers, a renewal-deadline calculator, and a ready-to-send non-renewal letter. Enter your email and it lands in your inbox in under a minute.</p>
+          <p>Twenty minutes with your biggest recurring bill: five checks with live math on your own numbers, a renewal-deadline calculator, and a ready-to-send non-renewal letter. Enter your email, confirm the 6-digit code we send you, and it opens right away.</p>
           <ul>
             <li>Built from the same five things every contract hides</li>
             <li>Works on any recurring vendor — equipment, phones, software, processing</li>
             <li>Your address goes nowhere else. Ever.</li>
           </ul>
         </div>
-        <form class="nl-form" id="nlf" novalidate>
+        <form class="nl-form" id="nlf" novalidate data-optin data-source="website">
           <div id="nl-fields">
             <label for="nl-first">First name <span style="opacity:.5;text-transform:none;letter-spacing:0">(optional)</span></label>
             <input type="text" id="nl-first" name="first" autocomplete="given-name" placeholder="Sam" maxlength="60">
@@ -557,7 +557,7 @@ footer .legal{font-size:13px;opacity:.6}
             <input type="email" id="nl-email" name="email" autocomplete="email" placeholder="you@yourbusiness.com" required maxlength="120">
             <div class="hp" aria-hidden="true"><label>Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label></div>
             <button class="btn btn-solid" type="submit" id="nl-btn">Send me the workbook</button>
-            <p class="fine">You'll get the workbook, plus an occasional email from The Overhead when a new breakdown is worth your time. Reply "unsubscribe" anytime. Not tax, legal, or financial advice.</p>
+            <p class="fine">We'll email you a 6-digit code to confirm it's you. You'll get the workbook, plus an occasional email from The Overhead when a new breakdown is worth your time. Reply "unsubscribe" anytime. Not tax, legal, or financial advice.</p>
           </div>
           <div class="nl-done" id="nl-done" hidden>
             <div class="big">Check your inbox.</div>
@@ -697,25 +697,6 @@ function calc(){
 calc();
 
 
-/* newsletter */
-const NEWSLETTER_ENDPOINT='https://script.google.com/macros/s/AKfycbyjLAJoMEqICwKDuc4_aiCE7YEgJICjJJemooETPwaJFopQP_icJY-YcOyHfguQDE5l/exec';
-const nlf=$('#nlf');
-if(nlf){nlf.addEventListener('submit',async ev=>{ev.preventDefault();
-  const msg=$('#nl-msg'),btn=$('#nl-btn'),email=$('#nl-email').value.trim();
-  msg.className='msg';msg.textContent='';
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){msg.className='msg err';msg.textContent='That email doesn\u2019t look right \u2014 check it and try again.';$('#nl-email').focus();return}
-  if(NEWSLETTER_ENDPOINT.indexOf('http')!==0){msg.className='msg err';msg.textContent='Signup isn\u2019t wired up yet. Email value@overheadmoney.com and we\u2019ll add you by hand.';return}
-  btn.disabled=true;btn.textContent='One second\u2026';
-  const body=new URLSearchParams({email,first:$('#nl-first').value.trim(),company:nlf.company.value,source:'website',ref:location.href,ua:navigator.userAgent.slice(0,200)});
-  let status='ok';
-  try{const r=await fetch(NEWSLETTER_ENDPOINT,{method:'POST',body});const j=await r.json();status=j.status||'ok'}
-  catch(e){try{await fetch(NEWSLETTER_ENDPOINT,{method:'POST',body,mode:'no-cors'})}catch(e2){status='error'}}
-  btn.disabled=false;btn.textContent='Send me the workbook';
-  if(status==='ok'||status==='exists'){$('#nl-fields').hidden=true;$('#nl-done').hidden=false;if(status==='exists'){msg.className='msg ok';msg.textContent='You were already on the list \u2014 we just sent the workbook again.'}}
-  else if(status==='invalid'){msg.className='msg err';msg.textContent='That email was rejected. Try a different address.'}
-  else{msg.className='msg err';msg.textContent='Something went wrong on our end. Email value@overheadmoney.com and we\u2019ll add you by hand.'}
-})}
-
 /* gauge */
 const boxes=$$('.chk input');
 const verdicts=[[0,'Nothing ticked yet. That’s either a clean agreement or one you haven’t opened.'],[20,'One item. Fixable with a single addendum — get it in writing this week.'],[40,'Two items. You’re carrying risk the vendor priced and you didn’t. Worth a call.'],[60,'Three items. This agreement is doing exactly what it was designed to do. Time to read it properly.'],[80,'Four items. You’re on the wrong side of almost every trade in this contract.'],[100,'All five. In a thousand contracts, this is the one that never breaks in your favor. Start with the end-of-term clause — today.']];
@@ -725,5 +706,6 @@ function gauge(){const s=boxes.reduce((a,b)=>a+(b.checked?+b.dataset.w:0),0);
 boxes.forEach(b=>b.addEventListener('change',gauge));
 })();
 </script>
+<script src="/optin.js" defer></script>
 </body>
 </html>

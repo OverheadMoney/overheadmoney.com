@@ -190,6 +190,7 @@ footer p{margin:0 0 6px;opacity:.65;max-width:900px}
 /* opt-in gate */
 .gate{display:none}
 html.locked .gate{display:block}
+html.opening main,html.opening .gate{display:none!important}
 html.locked main,html.locked .hero .meta,html.locked .top .prog,html.locked .top .savebtn,html.locked .hero .dl-pdf{display:none!important}
 .gate .card{max-width:560px;margin:-40px auto 80px;position:relative;background:var(--green-ink);color:var(--parch);border-radius:10px;padding:34px;box-shadow:0 40px 80px -40px rgba(15,33,28,.7)}
 .gate h2{font-family:var(--serif);font-weight:800;font-size:28px;margin:0 0 8px}
@@ -201,6 +202,7 @@ html.locked main,html.locked .hero .meta,html.locked .top .prog,html.locked .top
 .gate .fine{font-size:13px;opacity:.65;margin:14px 0 0}
 .gate .msg{font-size:14px;margin-top:10px;color:var(--redsoft)}
 .gate .hp{position:absolute;left:-9999px}
+.gate .card:has(form[data-step=code])>h2,.gate .card:has(form[data-step=code])>p{display:none}
 @page{margin:12mm}
 @media print{
   *{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
@@ -226,12 +228,7 @@ html.locked main,html.locked .hero .meta,html.locked .top .prog,html.locked .top
 .printnote{display:none;margin:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.8}
 .savebtn[hidden]{display:none!important}
 </style>
-<script>
-(function(){var T='aea89d074c9',ok=false;
-try{var q=new URLSearchParams(location.search);if(q.get('k')===T){localStorage.setItem('overhead-wb-access','1');ok=true;history.replaceState(null,'',location.pathname+location.hash)}
-if(localStorage.getItem('overhead-wb-access')==='1'||localStorage.getItem('overhead-audit-v1'))ok=true}catch(e){if(location.search.indexOf('k='+T)>-1)ok=true}
-if(!ok)document.documentElement.classList.add('locked')})();
-</script>
+<script>(function(){var h=location.hash.indexOf("k=")>-1,s;try{s=localStorage.getItem("overhead-wb-key")}catch(e){}document.documentElement.classList.add(h||s?"opening":"locked")})()</script>
 </head>
 <body>
 
@@ -249,7 +246,6 @@ if(!ok)document.documentElement.classList.add('locked')})();
     <p class="eyebrow">Free workbook · The Overhead</p>
     <h1>The Vendor Contract Audit<em>Twenty minutes with your biggest recurring bill.</em></h1>
     <p>Pull the signed agreement and the last invoice for the vendor you pay the most every month. Work through the five checks below. Every number you enter updates your audit file live, and at the end you get a list of exactly what to fix and a ready-to-send letter.</p>
-    <p class="noprint dl-pdf" style="font-size:15px;opacity:.85;margin:-10px 0 26px">Prefer a file? <a href="vca-4330e09d3239.pdf" download style="color:var(--gold)">Download the fillable PDF version</a>.</p>
     <div class="meta">
       <div><b>5</b>Checks</div>
       <div><b>~20 min</b>Start to finish</div>
@@ -260,162 +256,20 @@ if(!ok)document.documentElement.classList.add('locked')})();
 
 <section class="gate" id="gate"><div class="wrap"><div class="card">
   <h2>Get the workbook free.</h2>
-  <p>Enter your email and the workbook opens right here. We'll also send you the link and a fillable PDF copy so you can come back to it.</p>
-  <form id="gf" novalidate>
+  <p>Five checks on your own numbers, about twenty minutes. Confirm your email and it opens right here.</p>
+  <form id="gf" novalidate data-optin data-source="workbook-gate">
     <label for="g-first">First name <span style="opacity:.6;text-transform:none;letter-spacing:0">(optional)</span></label>
     <input id="g-first" name="first" autocomplete="given-name" maxlength="60" placeholder="Sam">
     <label for="g-email">Email</label>
     <input id="g-email" name="email" type="email" autocomplete="email" required maxlength="120" placeholder="you@yourbusiness.com">
     <div class="hp" aria-hidden="true"><input name="company" tabindex="-1" autocomplete="off"></div>
-    <button class="btn light" type="submit" id="g-btn">Open the workbook</button>
+    <button class="btn light" type="submit" id="g-btn">Email me a code</button>
     <div class="msg" id="g-msg" aria-live="polite"></div>
-    <p class="fine">Plus an occasional email from The Overhead when a new breakdown is worth your time. Reply "unsubscribe" anytime. Your address goes nowhere else.</p>
+    <p class="fine">We'll email a 6-digit code to confirm it's you, then the workbook opens right here. You'll also get the link and a fillable PDF copy. Plus an occasional email from The Overhead when a new breakdown is worth your time. Reply "unsubscribe" anytime.</p>
   </form>
 </div></div></section>
 
-<main class="wrap layout">
-  <div class="steps">
-
-    <!-- STEP 0 -->
-    <section class="step" id="s0">
-      <div class="hd"><div class="no">✎</div><div><h2>Which agreement are we auditing?</h2><p class="why">Start with the one that costs the most every month. Copiers, phones, software, merchant services, waste, security — any recurring vendor works.</p></div></div>
-      <div class="bd">
-        <div class="g3">
-          <div class="fld"><label for="vName">Vendor</label><input id="vName" placeholder="e.g. Acme Office Systems" maxlength="60"></div>
-          <div class="fld"><label for="vType">What it covers</label>
-            <select id="vType"><option>Office equipment</option><option>Phones / telecom</option><option>Software / SaaS</option><option>Payment processing</option><option>Waste / facilities</option><option>Security / alarm</option><option>Other</option></select></div>
-          <div class="fld money"><label for="vPay">Monthly payment</label><input id="vPay" type="number" min="0" step="1" value="300"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- STEP 1 -->
-    <section class="step" id="s1">
-      <div class="hd"><div class="no">1</div><div><h2>The quote is not the contract</h2><p class="why">The proposal is a sales document. The signed agreement is the only one a court or a collections department will ever read. Anything promised in one and missing from the other doesn't exist.</p></div></div>
-      <div class="bd">
-        <p class="tip">Put the proposal next to the signed agreement. For each promise you were given, mark whether it appears <b>in the signed agreement</b> — not the proposal, not an email.</p>
-        <table class="ptable" id="promises"><thead><tr><th>Promise you were given</th><th>In the signed agreement?</th></tr></thead><tbody></tbody></table>
-        <div class="addrow noprint"><input id="pNew" placeholder="Add another promise you were given…" maxlength="80"><button class="btn ghost" type="button" id="pAdd">Add</button></div>
-        <div class="out" id="o1"></div>
-      </div>
-      <div class="ft"><small>Fix: every missing promise goes into a signed addendum, or it doesn't exist.</small><button class="btn ghost noprint" type="button" data-done="1">Mark check 1 done</button></div>
-    </section>
-
-    <!-- STEP 2 -->
-    <section class="step" id="s2">
-      <div class="hd"><div class="no">2</div><div><h2>One payment, two contracts</h2><p class="why">The equipment is usually a lease with a finance company. The service is with the dealer. One invoice, two agreements, two end dates — and only one of them is negotiable after you sign.</p></div></div>
-      <div class="bd">
-        <p class="tip">List every agreement tied to this one payment. If the end dates don't match, you'll be paying for one after the other is gone.</p>
-        <div id="agrs"></div>
-        <button class="btn ghost noprint" type="button" id="aAdd">+ Add agreement</button>
-        <div class="tl"><svg id="tlSvg" viewBox="0 0 700 120" aria-label="Agreement timeline"></svg></div>
-        <div class="out" id="o2"></div>
-      </div>
-      <div class="ft"><small>Fix: write every end date on one page. More than one date means more than one contract.</small><button class="btn ghost noprint" type="button" data-done="2">Mark check 2 done</button></div>
-    </section>
-
-    <!-- STEP 3 -->
-    <section class="step" id="s3">
-      <div class="hd"><div class="no">3</div><div><h2>The minimum is your real price</h2><p class="why">Minimum volume, minimum charge, minimum spend — whatever it's called, it's the floor you pay whether you use it or not. Get smaller, and your real per-unit cost climbs.</p></div></div>
-      <div class="bd">
-        <div class="g3">
-          <div class="fld money"><label for="mCharge">Minimum monthly charge</label><input id="mCharge" type="number" min="0" value="145"></div>
-          <div class="fld"><label for="mCover">Units it covers</label><input id="mCover" type="number" min="1" value="5000"></div>
-          <div class="fld"><label for="mUse">Your actual monthly average</label><input id="mUse" type="number" min="0" value="3000"></div>
-        </div>
-        <div class="fld" style="margin-top:14px;max-width:340px"><label for="mUnit">Unit</label>
-          <select id="mUnit"><option value="pages">Pages</option><option value="minutes">Minutes</option><option value="transactions">Transactions</option><option value="seats">Seats / users</option><option value="units">Units</option></select></div>
-        <div class="out" id="o3"></div>
-      </div>
-      <div class="ft"><small>Fix: pull twelve months of usage. Under the minimum most months? You're renting a number.</small><button class="btn ghost noprint" type="button" data-done="3">Mark check 3 done</button></div>
-    </section>
-
-    <!-- STEP 4 -->
-    <section class="step" id="s4">
-      <div class="hd"><div class="no">4</div><div><h2>The rate you signed is a starting rate</h2><p class="why">Look for "adjustment", "escalation" or "annual increase". It often reads like a ceiling — "up to 10% annually". In practice, the ceiling is the plan.</p></div></div>
-      <div class="bd">
-        <div class="g3">
-          <div class="fld pct"><label for="eRate">Maximum annual increase</label><input id="eRate" type="number" min="0" max="25" step="0.5" value="8"></div>
-          <div class="fld"><label for="eTerm">Term (months)</label><select id="eTerm"><option>12</option><option>24</option><option>36</option><option>48</option><option selected>60</option><option>72</option><option>84</option></select></div>
-          <div class="fld"><label for="eCap">Is a cap written in the agreement?</label><select id="eCap"><option value="yes">Yes — a number in writing</option><option value="no" selected>No / "may adjust"</option><option value="unsure">Not sure</option></select></div>
-        </div>
-        <div class="out" id="o4"><div class="ybars" id="ybars"></div></div>
-      </div>
-      <div class="ft"><small>Fix: compute the final-year payment before you sign — and get the cap in writing.</small><button class="btn ghost noprint" type="button" data-done="4">Mark check 4 done</button></div>
-    </section>
-
-    <!-- STEP 5 -->
-    <section class="step" id="s5">
-      <div class="hd"><div class="no">5</div><div><h2>Leaving costs money</h2><p class="why">Every agreement has an end, and the end has a price that was never in the proposal. You find out what it costs at the moment you have the least leverage. Find out now instead.</p></div></div>
-      <div class="bd">
-        <div class="g3">
-          <div class="fld"><label for="dEnd">Term end / renewal date</label><input id="dEnd" type="date"></div>
-          <div class="fld"><label for="dNotice">Notice required (days before)</label><input id="dNotice" type="number" min="0" value="90"></div>
-          <div class="fld"><label for="dAuto">Renews automatically?</label><select id="dAuto"><option value="yes" selected>Yes</option><option value="no">No</option><option value="unsure">Not sure</option></select></div>
-        </div>
-        <div class="out" id="o5a"></div>
-        <h3 style="font-family:var(--serif);color:var(--green);font-size:20px;margin:26px 0 8px">What leaving will cost — put a number on each</h3>
-        <p class="tip">Ask the vendor for these in writing now, well before the end of term, while nobody needs anything from you.</p>
-        <div class="costs" id="costs"></div>
-        <div class="out" id="o5b"></div>
-      </div>
-      <div class="ft"><small>Fix: put the notice deadline in your calendar today and get the exit costs in writing.</small><button class="btn ghost noprint" type="button" data-done="5">Mark check 5 done</button></div>
-    </section>
-
-    <!-- LETTER -->
-    <section class="step" id="sL">
-      <div class="hd"><div class="no">✉</div><div><h2>The non-renewal letter</h2><p class="why">If the agreement renews on its own, a short written notice inside the window stops it. Sending it doesn't mean you're leaving — it means the renewal becomes a negotiation instead of a default.</p></div></div>
-      <div class="bd">
-        <div class="g2">
-          <div class="fld"><label for="lBiz">Your business name</label><input id="lBiz" maxlength="80" placeholder="Your Business LLC"></div>
-          <div class="fld"><label for="lNum">Agreement / account number</label><input id="lNum" maxlength="40" placeholder="Agreement #"></div>
-          <div class="fld"><label for="lSign">Signer name and title</label><input id="lSign" maxlength="80" placeholder="Name, Owner"></div>
-          <div class="fld"><label for="lAddr">Vendor notice address</label><input id="lAddr" maxlength="120" placeholder="From the notices clause of the agreement"></div>
-        </div>
-        <div class="letter" id="letter"></div>
-        <div class="acts noprint" style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap">
-          <button class="btn" type="button" id="lCopy">Copy letter</button>
-          <button class="btn ghost savebtn" type="button" onclick="window.print()" hidden>Print</button>
-        </div>
-        <p class="tip" style="margin-top:16px">Check the agreement's notices clause for the required method — many specify certified mail or a specific address. Send it so you can prove delivery and the date. This is a template, not legal advice.</p>
-      </div>
-    </section>
-
-    <!-- SCORECARD -->
-    <section class="score" id="sS">
-      <p class="eyebrow">Your audit</p>
-      <h2 id="scoreHead">Your action list</h2>
-      <div class="grid">
-        <div><b id="scFlags">0</b><span>Red flags found</span></div>
-        <div><b id="scYear">$0</b><span>Overhead found per year</span></div>
-        <div><b id="scDead">—</b><span>Notice deadline</span></div>
-      </div>
-      <ol id="actions"></ol>
-      <div class="acts noprint" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px">
-        <button class="btn light savebtn" type="button" onclick="window.print()" hidden>Save my results as PDF</button>
-        <a class="btn ghost" style="color:var(--parch);border-color:var(--parch)" href="https://go.overheadmoney.com/latest" target="_blank" rel="noopener">Watch The Overhead</a>
-      </div>
-    </section>
-  </div>
-
-  <!-- 3D AUDIT FILE -->
-  <aside class="side">
-    <div class="stage" id="stage">
-      <div class="file" id="file">
-        <div class="tab">Audit file</div>
-        <h3>Findings <small id="fVendor">Your vendor</small></h3>
-        <div id="fLines"></div>
-        <div class="tot"><div class="k">Overhead found / year</div><div class="v" id="fTot">$0</div></div>
-        <div class="stamp" id="fStamp">Review now</div>
-      </div>
-    </div>
-    <div class="acts noprint">
-      <button class="btn" type="button" onclick="document.getElementById('sS').scrollIntoView()">See action list</button>
-      <button class="btn ghost" type="button" id="reset">Start over</button>
-    </div>
-    <p class="note noprint">Everything stays in this browser. Nothing you type is sent anywhere — come back to this link and your answers will still be here on this device.</p>
-  </aside>
-</main>
+<main class="wrap layout" id="wb"></main>
 
 <footer>
   <div class="wrap">
@@ -427,239 +281,38 @@ if(!ok)document.documentElement.classList.add('locked')})();
 
 <script>
 (function(){
-const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const money=n=>'$'+Math.round(n||0).toLocaleString('en-US');
-const num=id=>{const v=parseFloat($('#'+id).value);return isFinite(v)?v:0};
-const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const KEY='overhead-audit-v1';
-$('#yr').textContent=new Date().getFullYear();
-
-/* ---------- state ---------- */
-const DEFAULT_PROMISES=['Install / delivery included','Existing contract paid off ("we\'ll take care of it")','Service and supplies included','Price locked for the full term','Free upgrade or tech refresh mid-term','Training included','Removal of the old equipment included'];
-let S={promises:DEFAULT_PROMISES.map(t=>({t,v:''})),agrs:[{name:'Equipment lease',start:'',term:60,auto:false},{name:'Service agreement',start:'',term:36,auto:true}],done:{},costs:null,fields:{}};
-const COSTS=[['Return freight / shipping',575],['De-installation / pickup',0],['Restocking or packaging fee',0],['Final meter read / true-up',0],['Buyout or fair-market-value purchase',0],['Early termination / remaining payments',0]];
-try{const raw=localStorage.getItem(KEY);if(raw){const o=JSON.parse(raw);S=Object.assign(S,o)}}catch(e){}
-if(!S.costs)S.costs=COSTS.map(([t,v])=>({t,v,on:false}));
-if(S.ins===undefined)S.ins=22;
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}};
-
-/* restore simple fields */
-const FIELDS=['vName','vType','vPay','mCharge','mCover','mUse','mUnit','eRate','eTerm','eCap','dEnd','dNotice','dAuto','lBiz','lNum','lSign','lAddr'];
-FIELDS.forEach(id=>{const el=$('#'+id);if(S.fields[id]!==undefined)el.value=S.fields[id];el.addEventListener('input',()=>{S.fields[id]=el.value;render()});el.addEventListener('change',()=>{S.fields[id]=el.value;render()})});
-if(!$('#dEnd').value){const d=new Date();d.setMonth(d.getMonth()+14);$('#dEnd').value=d.toISOString().slice(0,10)}
-
-/* ---------- step 1: promises ---------- */
-function drawPromises(){
-  $('#promises tbody').innerHTML=S.promises.map((p,i)=>`<tr><td>${esc(p.t)}</td><td><div class="seg" data-i="${i}">
-    <button type="button" data-v="yes" class="${p.v==='yes'?'on':''}">In writing</button><button type="button" data-v="no" class="${p.v==='no'?'on':''}">Missing</button><button type="button" data-v="na" class="${p.v==='na'?'on':''}">Wasn't promised</button></div></td></tr>`).join('');
+var CT="39emk0mSEWcVKICJzCYhpD2RAoPcdDp7uENl0Ez06tbYazlKs7bOMBj9-MolcPa_BOVdVvu7dvBeJoID2eRL7WpOet1h-QoNmm1Njm4tEBxfuLQns8HQaxoxZPmY59tN7nap-zVkEtVNhBjq3SZVyVdFfrockkRlA8NKWYsXrpOrLI8wIuIyhNANZz69auB933QFsZJ3MHBCpkIA6B1vmx2ayLzHyEPSMwp0sgrKFFRj26d9TbJYa5GdjzAcrluCaOJX7T9uxErIeHjMnRv23IDVdlSgqRvjs9z9Mbqjvr-il3W7WrWCEk5XwBb55gJv9ntEubdplswpcTs1acXstzy6DIIGAztMlKAuk9bbXfA60WKXD4EYa8-hLTHE9K_gwdZPJzZ6uz-G20aXpnc2nob9JXVtS4kewNot5Rn7fOeq9m5ZyAi5vb_ny-yadQFMi-ypZpMFgTe2AnhcpuiLBXZ91xm2njwzXS6bL6jLYPLCAPjyFxL1wo0FZfuvuPctub6C5mJgrMAcxmKwHvjTK10WsDfLF-0NuWZmfUj4ZeMyaBQQE3Gx4NvwGgu9rjLUwipMbH1a4IuH25Uo5yQdd7jyDmRmuMQuTkHO-eX9l9_KyRQ7tCMf_Rr62atjKm8Es37LP4YqE0jwnORyJjCp20n5HwVPs9ezGWnjlU9SFwc23e00Je0oVRD_i6Lpt9Imxc6weiQVT5oTS4GkOwtkncjnCsohIa2CVI-WX4g-HgjGRASj7PyB11w9ZLzwElYc1Dynfs8Lcj2CCVEMr9WCcuK3tqQQfGsjYpCT7fzEMNwk9FUsbC_5xPVihJfngi95K0IYP05jB1vKKp4qqAn6z_uwtfiKrIeX9C2yaIHVUptlcJP9O54VLNKhuq28uQuPk7GkUBfBKMldSkd0U96gT1NCbCMHkmrdyLsIxKg-g1b0xvw1Px-jUKdskhJ0-Prj32ais4JBYSvtK74-OxGjP2QsZdXJYO75pP1XcrP17Fv_PuqO8ZO5ot7jBM_j4HxE8Wg6kjsLCHJFdbL8n7YuLi9dT67o0-sdmmXjJMUJyMG0Y2OFlE1XRUtmoai1QZji6WTX97-yh4H-FexwYx0kPVQPJJ7k9q0S-GVcpgFYs5WoZ8yAd-67DN-7KcVK45ka7xy9ltvQ5r-c8XDqcxWQbW55mknDOz0ZEP5Mj5Xx4S7pGdm_qCAnViIZAhyODnb-wO_GwZypKtr28O4ndUtK-PZ4iyGzUi5kCHIsdKMXrF2T9hrVTP7QOP4RSA1SGfC9Ax6hk4Vc-4W0kGmdu75jIFBylW80q3raM3ZDQVQPmyrnkAFvlsi9QNO09cN0u4EcvQ6Z9YJvlL7yOZ8oskWYq1eVaBcSMpzavsc1hs4khHyhgKoeemq7RscxAM9npd-lBeedwUtfXuZmHJqb6kTTEkriv9Ooynz0lIAvJvjpnC8o41oMBV6dChqUUKUNxO5g8wdD8W16XhC2S_OmbSITZUUTjQMDCjIaipB_Gf-QlMcQ7SxCiYG58W64_O6Yd9VAxQumsPljX9sOPm_nATOj8xr5plBU5Xo3JiDcc5-0Lix2tjvmz8bKkScHzBHXWj4u8IKVhH6Huk0b9PZj-1QDP52DQ13na0m-mO0ClKAiE5lajHkB8pFQjsqFfgYB4p1BIWLxMndVMLfY8mtXAsJam5umYdXS5BxNEKFIESGqVnPVGhc_ryocWr3cBh7JchigmPC5c2N3GCFubJ8x4KHFXdzWI22p3J0zVHTK6K-KwcDS-cQvSZ5eVIgSV5HSdQXRAkl5dEOoRsp3M2t21R2RCY8Efn3ikT208xNshqmVWKQ7w-LaKdIRcEIFAaC_DJgj8zb6lx-ZkBhqTM2NuBh6EnFQ8ormc1kmSi_gIsY7YY_fy_i853NTcCdt3BP8DP01HavZqPtO36lz5VL2Z9qPIYXnppgTDsztIJmso-Sc6k0LXLwFvv8r0-rlN6EQ3cPUzpFYb8vfkYLaJz_TVZJPb86jrpO1uf8JOkTtMJ4qLas7SrMBDtGVHD7GGlMD8W7fzEbQat6sVJL-F9_pGkHDwDYqhwJ7Yf60YfnPsWmsX9XXakNa-77LNCr87AreLsCnZ3wsuSF-Aay5q10RBmIeoBE24E1j47be5tkJvw_GRbX5LHd_5iz5oPAVdShryEAg01UnbjzACIN1LIhKtwCjc15HfkNLcUr-pNERGb8GCN5edGf_xDCySm071xNPp01CAXXFkUUmJapv3hz6Qd1du0Y7km5i9F4YUtXw8JVo7wQdIXGmmmqfIpjy9luEBs3CHhmOkfNhe54RJ_gOlXkpFWtzAzzIKsKrMVTIq19jmREcafZMa7GTHcKwEcPvG8rR58zuCfbdOknc5b0Li4gX9PI__4YmWLcE69ggHo_5InwLEJ7JfNUHWiCY7as_3ln7dTFyQ5yAU-86hi51WJGPXlXYpe78WcJUDFECynWk9to1a3nZ5EA46vVYHCdH1CIVMrGsdTAtumpHgJ4M1mh3TdunwtHmpXFmoqJu3tO31Tcu-qE2-DY1qfYe4sEfqhERWvfX8XNSxuEVZ1LMjJSZkuh4_FVikz7b5fDAEBH4DpJ8TFtHvzmuW8lKq_YhnKpVyaSPmV0RMZdIJxXJno0GYOuZnfo0Ig-3UoBVs6HJ0X2LfWCwjHElwsjTOnfz0psHUnaeYXnmcFEQS3ZQqHUCiI3ArhZPg1XosYAfxAz8WnrpUY7A7LnOA2g3QUINerNRxfzMmd70pXqno6o-ASHLkO8LeES4o6ZCH3poxhKnnj4-O7PtOdoWloZ453G_XwtSzsGi-7QUyrWy8szAgQy_BmQDZf6-JzA-qdwqi20Hi88Aa7gfiVDYMNSNzISQD6eQWGL-H_5Gk8MaXkyuLww_gciG5Dwuf1Xd5p4iVsojrf8zbPQqFfaEm3oVzKiMRkAKMLAcQd_3Z3yuyfum0bF8c7ZSRmovW5aXTsIP49nQpQrfU5hCulsjfZaBaUk83RxJMiquN_k9HieVp9CmrmbAqT12wJRg7VG57fvn1JitFhQn8OiPAHa8Ej5EewStbnEm5mDo1EPMbpKEjC96perQbl3V25H7hT1oxL2V_OwMmJP_0ErQbA9YBYbeLC-5dPBtnqA5XpAbKavpBdP_cAjfMmEICI13se8Gtl_M2aVVB6SW9gY4k1qRhCseF5aSf2i6rsLxRbNg2DDJIzfv-7ZO5z9CS3UfI9zQpfpijZAZj4xTtHdvBEoz4fwMRVZpkY92t_ajHSnxDYAgn4wGwIqKGwjiXoUo_lSoWS0hUQozuMYd0-pjeVqVsoE3CkoeK6n2yccJ8FI_UrP4LPf2T8e20xVHJAe5e5ps8DBXXktVJc2bgpPOItWS4HdD-QdD84-pscFh7L33y1X4RYTywZzj9IS5WGNDMuVOGbyKToXbWXPiCQ2cBeIpkGCegZefPlw7y-o8nw84e6aHKYuvuaN5CduoAreV1fM04oCw0iHjh2gMMe1YhsXDF_TyAd-jaME9FmZgLsf_MnHjgHQ2ZQOcHMQ5Obs9KVZEZHFGRAyJxUP3ZahhY5GIJRedikNaeBQ_bFHIc3Jumqd604a-9b2uusF4ev1teUGVB9j6W1P6HeCOjIpJnhSWJ3ak_ZXFM2bttc63fkSzRn28b-bU8DFdKHTR6KD_1BK7qfLDh_zUGiYdbgFictmkDIxn0ahTUVWCctg2Z9cDn8n7KuNDms9Hks64lBklp7rFiADSXdSiLf5FzGt_PIFmU199HMmAmD_Dj2o7Q3sDOa1VlCi7OfVpaC-3G3sL6E7kulpnO-YRiC-gSk8GWUbYEuH6Ms2EF5TWes-jL9lw9ICempXvvrL-2bpWwRaKvP7x9TEbRYiNmXqkxQb8dJbItv-EhtpDsmaK--XORAh_XEaHYhHEmKLRQoR3WacdmoQcsBjZluVloMoW9QezBC_sg6fXPyg-0dpHcE7KJOapJrplWJOmls6jxbxRFt5F3ubLTL9npnSh-OkugULtEu2EL9CFUznjymGPGuHWklmXfmmHeDO3--GnplQIro37YtrCw6Mk5lLC5IKLJX8x92DWbzMFxPvuskRe8b4X_b-uVs60vuhzh--inCIpUS1IlF1EmrWOdDdccMtvGmiZS4gwvPL8JicV-JbnNAXCCSAq3kizeSwpuXHOil74LxFVHcta7oRUNwgFOyelb8wSzOU8-HciI8qxKzkfJoUs_ylc7KuKTU3iTrTo0E6zb6WdnxxTCc-ZFt84SqffWDav0SSiePXbU4Q3EOVEp8cEZT_oyBKCBOVasD4Ns0NNc6CddEH8XRrm0qkvAycBXS4n7aLoYvWq_08Ey14Lq_etfn6IP4vTa1KYK4omsOPqJ-WM79ZQyb9I9xEFMse3EZ1klUsYDxUUraJ0aXRlEb97XRjztSGxDssjFVJ_NLrxFhOSc14DmEjk14D_7Qzuu39t-Lh1vIRCBvdR1QenidJS6JCkaLeXOOYPwfkjQoXmAuXqpoWSz6oy1EYXjxZsZr0oXy2TiQJ1IyTI9P0pCSDX09C8Rgj9sBBGZ5LGzHnQfem8u0tVIldzK86awhF_HlpXceLE0jRJO_0HiM2Y9KIO6QmaRfDKFqYtaxZ8DlN4vzSIWiws8BD-zTHeO5-ki5_icY3rIMYH9gwLHiurzZVSMKe23cpqa1qLKUJbQbSRhgTP3PCU1kb4MTlxsj4rKlAVRzYSimpWES4wp31s1O-Zh3mpCNO7IOPnChoBW62qu28uPMbUPqr5paTubevgeRv8IkmNIydJbYkvIp0VL0uX5JSED1sbWJkJd5pjbAo84GgLCeOlbrHLo26Po0FxWQmbjue6T4YNLJXDukmoDI_Oy7G70FvWFoy5452dF9xKHiZ8dkjDXa3L2M-EZrMxfjW_VsQ7e01hpe2tqi3dqSXbvQ7v-kgm9ogmxQIVvFjmfoe4Wptjhvg9FTD6BobK1M8iUHD7z6O3eId3QcQP19GFohWDnBZzRZK-vuXn12UvDV2fjAHCFavspw3Iw_VmnsqnDMO3QK9Q4zw14nMnOu40E6ThOAtF0JM4DPJqCvzL7GPQm39PprRrxvkzuwnxkhROP4Mdjvztw4MC0igfzDmrkNElbh87NSBnhw-1OlhstJ6DiLbvH6iloC27JL6k1MbIsLmZAinNAetsp6zxsk_wMcNjCjKVPay5BE-4RG58QCpqIb1NjLEeIkl-GPq9bk_LsIguK6HSrX0soW8LrRkdBWh1mv4fx5PcIkfhhcXJ_w9Lyav7Ho8hhsP5VbgTPR73_sTGdZBPe-r7MtA3PigYmRAN0UDAv_oJrmKHn3mgib4shatcwgtCwzwUpGTrf938t0HICwJ5XgwkiNvW75J5gck1hb2dW4WI5q99WU4TW3R_gaVJsbfXtdcC9IeHwldnvz0rZx137sTHe8yWJ4qlg_59sgfy4XSGPbtk3vVSI22KojP7upCZYWMWx8ajc3rVtZQTYZhFzrSAaxrBcbI5QJWUuxV83r7C9aGQOeOqSuDnTc5bKawXdNYAu1GsqkSmqBmpzk978ejKTrDnEh16gSJOnJJMLUEXeaV52InmvSk-pIsX9nIPYiS9nL9bleQAJiTTHGqJS4dTl1-FtYDrTvjw9lW4Y-Diw5rwXWqzyofoEzgoJuCFswfpeqhDy5pop9tw8bKAjLB165EHyi0roo2W-OJmUa8oS7I8Ugsg3JcszYLnwGHj2P_vUnB9UDeClsKgunwwzfPisKV6nRxUq-ZkyrIQEx7wEqMAFq_MCz_aPzfNIaIObSWAUVqP55A1UK79oc985rZwTRwzatKuFnHVg75468oPfvfGvs-w5ppIzPD0B8B9KD3zQdy8btwCDHV-B9ded54quMkr7ngoiM4iRIQrjKDxJhNAh59HfroiF8fg8XrcLRWiqLr6-8Tb47jtboI4Mf3rquQXBL7B1fzvgyS0-G7eaf8S2usHd0YOE6EjIFwpa8Bh1R-WE1jbb9GMF6xyVCFsT0aZVjToM5uYZy8V6giHDuUNc6nlZEpLq2EuvQDPJu9MfIHJSRR22B9Yvs6mmJ5ntUWk460gwfHW_dMoTYnBkbIsJ4deDf7_jVhMc0CccVlB8-xkdJVh9kfHZf2Fmh6nWm0TlpuA4rBJ3UcsIxWCJxraF0H444qrMC2txneVpITPeedSWpe4luNQqsXLIm8UdKJJRftyNIJgFfY362JJYvuPpvta1heZ07ey0Z1x4zLFBgEjVidIbeOk9VLwINnI50-U0NA3Don4HA9VN206napCsU8V3MFzItSMCnzqV30KXreKiNSSHK49MtK4gjEe6k-rOtR3aoQlwoae_g3cUSrpyuQOwlzL9vyEujNPwy1iXGLYJ9IklNls81eyXUaZxKEY5jHBYP9x8R_Vt2lxJsiQdnkBskUBbcdIuDiHx3HK_KkP6aPoZGimPSa6BzrGqgENRaczCSx1SHSBmWKE_-hy4FxGkhD4EXjnyq7zHVXEr-1sAixIvynbl-E2tZrPoesQtOjV30Jnsn6y9VXoADZm264yNchSHpHjrQT5NQ62ogmQC9wAcFbJHmvmBVg7ThJGktmc8R8uyr-2UfYTVLE2YX0P3CvpzB3m2IrFktFJkiLg0Y-i18W6sN8gyjlABTeBoVQFciPqGrCU43a67C5vcbsHQD92hDOUJNznDMdhs1OKFkx00EPtYY8H2HAe_Mt6Y_zIDw-9qXLLU59aFSsrsz__I065y2RVF4TlLAeqtK4yxqk-mvMme3TUg3Fwdnm3fUzkK9DC7GFK4tqj3DLMxBHt3es8kIu154slvMtQt9_JRD8C635M0D8PCnXMcx7gpANGX_DYQDGDyamQJX5e1ZZ7nTqVd6FzPGkx0H9L-J5WrJg1t--g45x3q4atFis82V_mVAVcLI6JVSu-WeC3OXhtRUcDaTiGh98YOfkxBKSdWa0SVP1J3wjW0pIAjZshdoZvkp5MxZ9cFW08Pz830xaPxVqihH7bVbhKHDdLxTZvHs_ddYh0HYhF7QKI2dwOdeQAGU69LH6BXusztGcDhgt3UDsP-EZRLxk83NNzJbty4tjXZtTO9McQaxV5zsC4lUMZDAa3Szp7R83T1MyzyO_sqit-Em_EPAEYjRjv-KrOzfvxF1olcDcr5M0XzuY1Gjsbjt44nEPiS0ehEFp2YWXaUy_7_vwD9cx8zDUdr0zrJdtO0DN23Ss0snQSX1W32Sa4OoTUGxmb5rbolSpgVXRE0bOVybdYxygZUSx5EBd8mMC4N-cd3b30aC7uDxJeUBxX6l-T4Nqr-Hj-7MUbE23umtTSWbwTyFIRb3AXElQkQi9vGO6IagEDzE0I1yqAc9x54YtvZu5G1F3PFZ494CUYoCop-Kklir0JJVVAMTBAfg25r88AFEMrx5KTGIZgE4l_hLhWqRQFUzeqjpPo0jIhGdMo3mBixkNT8MrMfQwuCYgM-J0r8XKmHiay8Y-jf-BRgk99-qqty5tl0gZkz_cQQMOCsNOogjNx75YILCrDwQGvXcyRgkUgF6UOPRQeotQWEMUS6FmQ_S1tcPCNVaETrg0hWYRHEtyNqeacf8nQNyIgT1CLAYAjgkbIifEBLsqyCw-A5TbKiFvvLYalGYYFIjlDNlwGzu29ptMZ5YYVi083OOHebrNNzYH64qZw5kvZSuoWBJup7ljh9JikMazPSATdOaeLCQTaEEQHd-bQyW8C36f1772V9GcP5rGLRuAELRBWGFTcDSR96FT6NvrhFKzK0dOkpzH4_qOON8ggBo-TooNkUFFqrE3hUTOORm-dM2npeDx38FQtM8UAeuvknKGJgIDSy0EpauQolTKTVOt01D9hBNmV_FDfM7zO7RAQV0MFww7iYtxvD4XCnmi0ahjZBuX3w9xgMQ756rV0Jeg-J6sC-VLe8clPv9nKKrFLyMm-uWlqc93WCLnKxu6kW8s9DJzxX7LP8_ZoijrFRtcq8Fuiz3PhNzlYGmc7SV1MeTFy5bPKF8XbobIL7X3soReLJyvNqx2yomZxpQGPNtFZ7VV5tzEf78WbILkxp3rA-39Q8japnAbkmhO2wp2MblLii7L897F3if0Emjmb-CYsdzBwwuC8vlDqzpU6A0QhkE8L3zVMrCuuKTAgLeC4uRIXgNnRT1qT08YCbK9nMHLH_bLObYCSYTe7ehnRfEB3fzb3W3oeaPlQq8mhvrPvIxwHZxdoEL5UwDeWNyBpMjGQD0-ZmS8Ab0eFGHUfQblp7Bm1_w8cF59a2K39azHoEci2ims9rbO3FT1NMQW6gPTVRoEAMh3Oh8AxTRdmlZRapHliB-dtt2x3VkQTwcAv4LqkDyfdKDiFdZfGM2-mVMxi5ImQZUz2DwBXq94bDGxlqCEoDsVwgX62R7mZxpzaubz573ir6btkTcMaysKco8hOEi-XFgPAVMnY__8nvxEYw-sBu25DWT2DfZHQgVa6yWLCy8h9Tb9SR-jTga31HsO0LOUldfYKf_HHR68obzDE256T9zmbztC9ZENvSA4aUbsnC2LJ_fZLC1Rlx5efzz17mtDPfjvinm8xzIDbFEvF7tYHyjazAbuHcMUz_Xk-sXTfLZzfQBZ24ivqGxOGtyIqFxNKlCSipadV05aH8_B14hpswLSVyxhWm48quvmzOvHVLB5UchYEK-Pt2k2ghPRpFEXw7SmgV4pZOunDEvMcClN7XYFD8nRkALqvA2N7937MgLI9iE9SeSJcRbagEREpagk8bOqQEy6pY1rgdnssZBM7AFzfYtYhJCJGajh4d-BXEQ_Ay1OKIds6IrRvatCAkt3Vz6rlXc79fllXE_0mPagedSJUZSg-SjOsmrYzftBaIh_O1DYT0b6pIlK9Xpw3PFT0gEFb9j8bwmKqfAaFn3v76xZhx1Goot55cEWqiQuZOFB6hi-0anP_hrWJ9qZUNmLd4DRh9xxtO-coX4748lBIuX141fvLGw2lGSd0QWkkkJ3viG2GRD6itqHn7d2PnXc-ikKy0zBwEVx_l8oXxbR4cNHQsCjuYM6lkOFeECQkGy8e7Je3-j5zaRGn2YR_FQV4mFNgy9SZmPgXU7hCqeGPu33joGDFaFbbHuhZiKEq6uAGqUwhuxmon8YwLgy0O8zi1oJJ-Tg4769McvZYT2LMXVpX_Rpdgx3EIYQAXDcS55giZJOtVQW1YtXUSGsKqfGfmKYFUC5vPUEtbKoNdU5m9wEZB2RRa5o8ISrWjaqeK1Ryivyl1PGScmJxePXH7Gr3ru_q3JoXN5xbifQJYBqVvlEfxwS96xzu4HXCkKCKdWCUPEB-jNN6NXvXiXVT_S8ltpIninDy_GACAAe3YAHQxdnvUcP9zwgW6EvfhkaTmag947HBuLAMX27RhU_tkbpfqjDnKwTKCCAPbNOGCWNoWMRKmfkq4Jrxj7xiE9TpKTyj2G0q0lAewkYQOa6Q5C8NwPtxyA4i7e3TXOYdVah5uRZ7-3BthF2mPlSfzmpvqXkMgvsM1Zx2Z8Xh8p4AFEFXrQXyqe-REOD8UiOj68rr4KxX86jjv8JWbiP0PrbJKCkfA39DemZogkNO3yJZDFwkDuTBWEFfXlGmAU3M8G0NqefRUfSZCZevfeSUrGYs2nKeAQIyVilXjqpEviSHZLFeivVpu3tljoqHy0sYQMS0Z3GAIQY4dSirLE93OTAMl9-RUowku0j2uCYjWxI6XWimj85l_fymKK54J6UgtTEVAY30BavTfxvMuRei6ikE9nke0GSMuSAB5WWNxajgLxPsQoo4L-BeLZwvyl0LzqbYBYuySFCsdWgtIObnYeMeRX1-vZRvVTWEJxdkwkAk6hbTqC1beUgt_SmBcFpAI_CfnH8AuPBisAlP0h73hal3IshMoZYxXSay60g0j7Abtcd03QhjcLn4javAog51Jb02tD5ubWzWmto9B8sK1u6K6GBJfTWNok8dUZf6Tq0CJwiyh_4eD6tpiLtS4tdsW5Eo_klhAVklxgicwXjmtCmHvcqJpMhe9XoCqkd-lGQD7WXEN-FHpJx3cR7WzG3c4PUWVzlT8P7Jz5qYFZxQeYZSVchWQ-xDG9kNq5SNQDX_xIMzAY-cF0jN5xxz-RjCt4aX1f86zk1X4L12adFOS2gUTlSFvkm2LRIgmMv31tpMLCZbH1-QuCI9rQQnWQqhMhc53Grf_3k42B-5s_P8p1JPhBvSB22eljpUh06Aw6X0t8nUTFiAbtIQ1S1We-7A-vID4MI1wF3ilwZ54MXHTAOhhUXFGTcgOC-AMXzO-HrSGZZRAhfiFkB2RoeCGRJFp4TD0hC_A96Py7Tegy-FR7fgCrihSQAwz_3ISW3LLrBVh1x64uA9oJ0eGKaen6emPBEIlTgoEjAb4ZXPsVXFSfSHHeMXvIoCR-jIusFfSEM0cf_qU-3gB0l6zPeXFrOj220JCtb-lWpPynlTEqfRhTUJABG9iiTrkVvnHVPb2C9R1-o7XcUDSmZsWWbD6WPDQanjFOV_eFsbMsx5mWCfQf1biDAKXBB1VFSAuCAKbK_bgsD7w6iJx0lIEPHJ-zomomnVJuqLhxjn5aOrNXbBm4_hPguk-4vIu7iNbZws3xB1hpN6RSLsCk46ISUcjwReiMLrVf3QPWWK73k5TyloMk_9tbilE-CES_QCem-D4KKHMzc4r6PWCt0hHAzDi1WdnI1JMscGl4mahrqi8EN-JSakCVhWyfjTXhhGYZBSAYf997xxYQXcEHsnnpQ93XdzlDWt_rW-H2ySgcfzwSp3e643NpQgvxeibQ2AkDXXOKivVgfFYV2L98loIMNzjfBxvQJGhsyN12UzeOzFZNDb6eJiIvSl9923_VAHRKZxrya2Dk7CDKsLRyJuKPaulzGxSvkgvpIIT37VyMgsa-jmL3oPF1pctj0yVZM2C0erQhy-MIC3GdtT8uRCMxH-toG0EKsCjB5S4yNE-7JlQwAlK3DouSCt-3RpatQET1QbgN5HMxrvHXsVL0JxVyEW4bJIobAZLa2nG-okUsQGVRNkJIz3QKu4joEaZ0KWm_QWNCwNqNOERV7I-AlwCncj4vShWS2EPGCzBHu8zPMkGdpqgn2fUWbFnualulWWTIKiSqJNtNeiM2_sOP6gL1mwRDfuJ2-jSKCze_hGVAm70f9UvRbSwFoR5N8nAK5QZ28sU7l-r16P91-ZueAFK_cmXZ_p0SFXd1GzZ5EFPrP-BHRi8rBmy0aR1a-LO_NZ4IUffwNYzvFCBYNz0iT5q1mxMsYl84W1xCvKuS3tMmwSdUMwcbj4k4uiZXoW269g1dn0ku48jEFqVlnhac17CpnJpu8OtO7V2WRmydq4DL817EbLtOLs2X1M2Wr2GpjjYM7CQGqzrgluF7Ih-FCzdwA_y2yvVWVirLlBeolPaEtEcrCMGOZQuzQcS8aWCxZIovtv4yTa2a-aCnGt0Dp4PDFaMLRKh2GQqPmg4zPLOVtoP5xmby-Mk0Mx1tZdpz0_SCWLsyRhsLgMDzwLmp_pWCpc_bIS8rPbyVHeh5aiaBaj0-xCJRdoX2NcWyUjTPq9GEmfdvNZZAddh0NTrv8TozjE0dxzq2XS5MeFI9Q4jOLkC9jf0l32D_sCnFXT9qb7qwA6VIoSOCjk7RsMyY0C3fIFk1ErjCfMMv22pPmyolRoSCzOJXAd5G2jyuOPh5GMGajIm8-D_rpfIik343bhjqZxQjdadkz5Fo8uakAmP7wVIvNXE1XuHvIk-haCrY6P5tW4czk901ghFAs-j9yzn1QJhipAbsAM8Kt6C0LjnoNBueO1ZNSR1ZBcZoLW0XLRVpgrvfvLX_iNT2yM3_UOXcMzCI3qdVWLbmfZQKLlMYKU2-CEflXHzmKqSroqtWgH5SXGvee51YEcLlsmYzZzNq8AlAWSUAKaw0vCZAvKKsJvDse3-UpJLkVR5bTukIOgCZ1ihA4rA5YkIjVxXIIS9AEAqNF1Mm92eI35VnIvqYMuB56VtCESPQi7WvD4mfHBetC3OOUKNUG0xrcWAW6bz-7jvfhGP06Rl1g8RXwu311iOn_gBFEvbfsyOxsrNz_diIMca7DOUCP7BTQn4tGF4X2cOo7AgUXKW-HEw-b5AGp7818FC8-a9scH5zlquTvJhLz8K8OJKVRb8m6Qvb_Rd77UduU4_QOh855ZYDC4OR23naNXMwwCs1QRHrWYMAo4ZWAoaWJEzarGa6yiR8vvsOogJcTYUdVqKlYJwik3SKCB51UC2zPLZHve7z85KiJ0k_qpxeFgKGPv620CTFrh0S0EE0UdhpdlThB2xrUmMJ3A6McVjxRwOiXnOe8fOQcOcR2QEQOhNFzFSBgxIDKcR0Yppejb3kOokXe-dJd0HklArhHeXHkQVGepq7ELaLOcf5f_7hbF_LibmWlG5uMUmKs6FT1YNzSFpi9zuhRyIxfXPdykftqnhFdSI8_JQfNfs8iqZ4bZNp0rP5834Z9zdH49-f7HJVxg7SkHzAqw5NNEB1MhL0hphmo36E9IuD6F1mfsPOToVDGBDMLuSFEioHL61nSLm9tbqQ94hg6xLNFDOetPgCCQO9fcZYBJ2m0nqbuBIENNMcyc0KJxqeFNbi_j5Ph1QeMIk4JveImcvDoSULlZfz-iKPcGyu8WGOH8eaiTcyazZrpIXM9k-3-fnc52ore3-mpoxrM499BY42UiZbunCd2e-ZQWkQWwLOq9OSDfjzOnm2UUilcMgG3pXqBq238ViKI0LANSMFptHP80L15HPcM8jfzthkN2EuG3NoObY9AZbR-_Xjm3thuPghYymHff4OB2KlorPngWbp-lFsDzqEaocjqF9nbRDutv4z_bi1RZphdCm5_lsVMk6F6dMD7OmwnyHiBPPEzoOZX_S3hlMnCgarZH5tcohoW1M-Lg00JjhH05f_Yv1gggtMigP2CCTaaAfg_tDeNHzMIocSsvTlKmXUD2rWGSDSIbukLL3udaiV5GoaW4SMOCk12aeIlPkVLXIyEgUQMR2XuVkyQ52YaOrxRCQbOt2zhOQn6KWzU6XMQrqKIyY--20Xve1A9AZxQCcooZUwHVHZ74nt2o_eItDzusOf3Eofz8iRAdPSdUf73cSf3KaPasogX8mvC9q33FwjpxvZ_Lk3M8N3nW7W3Cq4mAO-dbMPa5dbQkcbCvk05ooiimcthxmD9CHs4TUrRgzpEKBuN2AGl59kGM8v_vbIPoNeluflPi5gYAXB1DjbgiruUtpYzvJHi-aUUCvymkGpVfQmWHa0Sha139s8dJYxeXSHLtCmU3sUDZ5N_ZvMOJWPwFkaCa_2Ur50NxPO280jaldgFwMq_istTcQtMiiazCjT7izCvua2Cw9eo7GUirrMBnDsbdBOgm_rl30qfdNT5bJfTQDUqkeK322YiUnkGaSsBsrRSrGKAmfZ3rZnJ40WieGhD2KYiebQFRV4gr1VmlSSItoVsmwKaOkLWfrfPCk5xUJ8UXTAztedlRrt1xbVtHIvwTF65OJqo5Otu9C-lyVEFKsbtw5CK5-GXP2-wAdOPH346dB5hTwajUGQQqUYxG_Lm_Dq9a0B7mvr4jQyl8bvQifqILBA3fWM8EY2tPGgZnb30eyaGAixPk5wdSx6NADNz0dhHgDO4S9Lcr5OedHYhqRlQkN4u2w4KXH_kw1YK5jg0fMiGewdciCv19sN_CIUJB-48MBDkOppa6BbqNhylzECSesMoLuc-TmCr1mkhtgx4mb18VESWe5cIH00Y2F07c1ya_BeJFN94MzC3nGKU5xI20n9JvBLtELGaJBj2_aui9Tg-zutgzXy1p2RahIT4yCrpbexaqZg7LtS_eVoCjBMv2R0gC2c8NaKCw6MawRfuI8NDX_byAwg9sgfdQRXVLKzycO7Ji-y-GDML6Nj6dnJ_9eqSed6kL3OS07P88WqW_wZF9fbB_wNbOB2a_Cj3d3sq0SQKu9PKGh4qRSSgplvUbW0LQBCbtuG9KssqfwJZwk8tIASF_eNbBa-ksvbGaum_R1XbFXwmu0GO5q1old_BnmKxT_GkDE-D-QnA48crI_znWivI04RdqKPpRWgXqHgisDNZnMqe1CfPfHJNCmM79natqpZkALXZ4TuoX4bRtlwbs1eHD29Uo5egqp0_EXSRrP8wYQKU49dMjN0jqmpYcLLqs6Yc-1NJk6Wnq7xHm4ywn7yE_YEkPFvooWA5-QTRUH2qVY3H1NUtR005goQLNF2CN_04BM6XN8sLEHdjqxqZHUsY541udH3wpDycH6Ta2d4Wi4LRRLgdlPd2FHUwEIi-5f3EC-enw3Bq4DiFg6tlQggpYQTW1Q6bEdtRwrdPezH3yTogF2BtVFJh7p0tYVg72cK2jysTjE91wS8P_I5IWlaNNAvNizKcqQPlmSYjXiAzqTYaXWbDqd67zIn2ycrLoyV42-3trGSAZRQqwCsywrBEkFj-sYJyp-W1d0WsPXtP6iUIGBrJKsVAVvSCidNJLd9HvgY-aSjxXc-njYORQTCqoifS90wMrnY7DPQN45pFq0CiKlBNCRHzFGDtiiFlA8N2j2_eOENxb_Fwp8418JDzArqnQP8viDWpo7EIHMiBKPFkLIZ4cAu1VGi9Qxka7eAf9EmOtEiQVTi_ufqgFlLmgLboV0f2HNY7dfOhK3bt9dZc8SRXAEqbTc6utuuJUNFMGdYzioDbyFZgkhSvYHq850uZz1G_M7ybgF5w0JdI_IDIAyosJ3XVrZbM-iFBGG3GXVD_DT2N31Id73FD844uiiPaR48KoHXqAp-fFp9PEjF9pnJTi_FrxG2LYs321CpEvF2KqRhM_7zmNZKaeL-Jpneudr1i8BOKOQkokVBEHCv034tm633-UHIpL595fYAUs7hmRXoME3heqt5ZdbLG0hgGs5sabT8wXDhjUg_u5drhSqp3YC2yAcWoGtuvv91hv65hST6SBaIHFFmI6-sUiodvbixZvVlcq-leWdpQPYC3EXxWX8IYSK3GLhetCp7esRXocVi99PpTo5V3sDGmjMJ32_NznSnoei_4aV6k49Qv6Cbb8hOvz2XWH3XLaEFBlIrq_RuM1Q2ZuyoTEH4CiSA6niOpfChbhSrZAvy62cpj-W1qcDfrLZkWVLOKgn7-vxee40_S7MDOzGQRSCkM-1V8gMHhYHdClks349SjGUEIg0RN0QO3EqI6lQgZIsKvuOQeFQ9PCJaUCs7a9E8OPYCwhBbsYQ2xAvoc7Y0DfKDuL_DwyPvZWXkEzqeubINA2Afsef3X83iPGk0U7_WByR3uop4Y06Fzfy7jUcSJw18FcPGVNXoSam3VHP06HE1cH9Y_LTacNZd6GYDRMxcvpcLndgPv064G1bi1Y4c78KfUwlAI1b6-_NR492PGCWMMPglW6G-ZzJ0Ji6YgyF2Is0v1D4B8EhebDyC3RbcCZ9-XPiF-2fr2fYDG0llOrapmsTEoPvMw26CrGVBg2MNxLifRq1TNSX5OI0sDDb7Clr_qgBIIc_hz9tRz1J1hZC0Jvam0aULkUyqIFyP9tPxJ6WbGiW24WbA-hq_dsXZUenfNCUr6v6-T2cixl1wN_Az1jdtz7-adkrA3YyfOJe3THIni1XSFrwywEK6YorXMSpZ48le8zrf-WAFKFJ11dXami3qLyMeh9p1eOXtTki7UEar0ZnHWRqf6OMSktQblC8_uQjPxq500TV7Cv3UbZVllUy6ThMn9MsMNJzV4OZDs3UGNO8EyWrl6E_D2_Z3igrgzXX1UpeFuIc6ycBEwGb1ef3UFLBXTj__-8Ivv_Z6FyfrWC33pTqHvLJo9WOG1VbgXyCFo4N41B6zmH4VBMGs3BAfJVQBa5UgqRFFmbq1Zrs6FmwboY-0sM24RTGhQPNGwo7WbRZ9jt7RTmjUnIgIFWmVtYaRaJ4FPHm-OagptmXivGrstkAJV_KiUsucz4z-hdFZQLyiNFRrcu3O9mfL2DxuGWfDHsMPb6dzC8sd7FyGzHrR7wnrhUG5CRieeKBIP1O1NBMy9Jiz9TsN_l98qlMe0yVmTSaL1lh00IHW2vZghAGv7P7savhTnYwQ3M0D3vXliN_I9zJ7trqBIqboP03KrmtdJv5El1ho-qhV9ba6JFBmcxOxF7AgHY51tzQPYr7t66G52BPdU04yHjGBq6sEEIuyk-j0tcNSoIr5ES9-v7rFfNfrBWEkizdDrhEDg01B8Ao2gvVokbgpxR2Um7PhRdR8DBKmOCqYowb93OS6Z-zPpVORzQ210HqtRe-YWTw2ndcYMW8OrmVxvS3r8heNmEWJL7Qi87BwXmCK1Jxm9oLfQNLJ6x5_yV913EU_f2j6NfGJPTxyyq8pQGxrKMuVeoosBqAL-0QYzttHpn_vdQC4-lDMuAHior7O2ac-jBx-cKRMb6pNkZRTk_EKAr5ZP0EQ406v4VGXwKiMq7EIE3iNgVbXFHAnD4n239dBHv8oLLbjBhaROcq2B5lUHgEmWPbFNAVuIqqO2e9RijmvNQyK0oSHxZ-da6Uv3bVYF8t4Q7git_cSCZPOZUwlxBWe-YrqqB3yJlfJm49Zw8pDRYwVIraUFr__KXiTcGKyrw7tAGLM2NgeT8dOmceGqgHKXXpYxuMXfyR5qksnmkPV1R6E7-h6_Dq1UYMgw5RVwFlFfAF9VFNC8OXUwz1T2jv6RDtIQqlPjqYZgo9JDnryI9XL9uLuH0UYWxtOpX29zoxHqD69B-HSJj3ik257vU4XMUPbWk7yGpd1-mk33cxlEzbiCvD31pRNotQtDAcSrJV8Sig-J39z3RX2ILV8hL4HFY8_qpJY4h0cJ2yCwmB-MTrV9TEYGXTItYSoKgp1CQjQLLhOVuscuKkHxuYekixIZvtsGaM3oHdDoEhhj2yT0IS7eh9xeCj5MUYrEvZwHE1WmD_fuzhBuQdoeGYn_XROeSYCK-SEISJ7AiMufk52crklOR4kJmKiaMjpaCxhpdZf-f7Cv1Muz5PfTabIhAT6yBpwUhkBw7gXo6Uj9-pdty02OZ6C2zV6KRB7Y2duW-wzrvNEOuaVFotoB61Vjvom_xeIzJpPk5TVQ1Sc0rnmDT0gMXk9m626Nxf3eB9MnpQnY5klHQQcQl4C5k_qxeNH33Mp31nn205sFzcFn0t0lcG7pPqLaeT3RNidF5yyxqiypMj_4Mlh9jXRcIwHj2dZGhizvE0s39T1kI6iOHASlF8p43XcfI2wduWlrNKY4A6_Q02m82PBa_sfa3PzqCO8pHAC3q-fHjK5BRB2yFpfL9W9aiZnpW4UJQUfLAg5aNA_rE4mFqaZQDgnamdRV21j4b1c6CMxVqJahZGLX5-uJtQKmfWU77CfgGmhPKN25-pzkyQnCdaPEhdANlzpa4NXNy_O_6ITDhL4EyGaqSXNnqWzD0a1AySzaI22ZjCzLnkeZtPoSzaUJl8iAkfEPjitmQ9s21D-AkU9Ju-vVsGCh7fmUsunlSUEo36B3mn7LsgfQUM7cXgAuLC5ZO7NEDXW_r2naxBnwq_KXZ7A8lUR5fONvOeAaULOM13Zlf9DYNLwSZKS_ghEXTEhlHvto6reUJBOAPPxCsvubEorJ_5wkfSWDI4FResabk6XG7FOH41T6DeeIOgC157EcCIVt9KoWSiZzoxcBJWSqFhrveNQX_upZZkrknZLlX4JrxkPLIAPb7bt_hLJb1IvRJeG3q-rIQF0zjIKXwBdR5AgfUN0YUC3DBSyKq7fjYNZl6WqjdKJTAByB83iglQkSWjRFsv_iJz-Ka0kO0gYpEnzramRnsz-T5BSnac_j0yPFs3mvDz_OgDJ7LnFAICqwzWDIQ4PttCdnCOwPafeHhGZit7HNlV6FDwRlYGqyilPyr12urc3U5XEw4xZotwcdj_XUSGE0xUgbaTneklm1GHzvJ6BCsFjn23BbIkSFcqUoJfvDQBL8VE7dfGZ7DAvXA5VJXrZm249uRLCFFvA_d-MlFNNc2KEIjhO8GZCa6lzc5THNw0kNGL2yCErF3mYoTocrDKYSfIAYDh57m7kbdUrYZdczGVcYiTecMWBdehdYbDP_S6sGmpTrUiNsfhyGiQ-U-HKKquItjm5a5OZtK3GSVDwPoPM_d23WsG5Ua7BLMqddsw8XaniEEls38BgXw8Au7uSX8C-iNmUfppl2Vtdqoe3aL7tlImK7Dwb85pt6N2ypSYiu3wMz51YSVMuh1ioNBfiIdYeUFZNnuhl84LL1T0e2h84xGGJT8sir8JiQiUlubA5HDVgjG6yUpq4PZGrVOAE65TaLyHLuBzWbPdgbk7ufZBGHyVIGt01ax4MMh1_jUSId1o6mWE1J-sLjpfDhCu_p6LPqrqe-lReWW5P3tczAGCVVcDMw8TNFLxyfkXpQxRR19npmuPh3FktC_NztoD7SRFRdhfadbe7_m8SU90PXQ4MfPF_IDjpTDTMSCIbpcjUXVUZpnE5FNGdhhq-uQiBhH1GFF2vyGwTovQEgwLdpnIc2TCuqtQEzHmSlPommWmcR2SpCbCziAtaYoJXyxDXgAiw0mcTY9cnNHa5PkFihBBsXJJTyrZLNo7EuU_hGKvLfPWZGjl0on3LOiuXKcztbA-i-RDa2dLG-Py1C3jbMfoJjwUoBdOdbvM94Of8C9l-oCSpuzEG3XNBkHlKHI5DhMKAp9wTX_8rveSSKQqyS1S_SW3Sq3BgRJ82ZHMBOqVjqNZvpYBUvFWw7lEjbCZx-w_42CfVxwcG1xcVaTxNeyYsJUnDHaRkLM0VD-A5IukP1zXH25G46KtjzU_XKF2xk2e-oas_HtTfNjuLS3tO_Y5y_4LDv_rMAuuHDMdz2KiR4slJvWRhkqb6n1yuVwSF41cVLo8WBEq-2bw9_FEfJJI0zFvRkKVik2bc8SBNBMBxOonBzp7kT_OkbfcdNK8JNg6SwyjN_mAF7OFtzZ_OdxTbsnhiZLYz2Lxe4bpTRAkNfIey_YDEClAkfMbwzj-K5eCH0mh0JIMbk7gfIA0iQEWmO4JEg99ut4-mvqL08FgwEySXYH1vWeamiXYdE7SqwO5xoKaOxI4dOQuJyFqWdsy6zxCKtdy8xBhE3HqzYITZbRAzAxAQJC4RzBVbFKdk0JMD3AE6aDbiBxTF32ILq8q1E63RHP8hT_IW0VeDT1PUQS6xf5hoMjp1XmYpGw_7cN9fIhFvNsxaQukK_x8PoDg_5haQVthcOLAFI8c12cPFb0e4aEASDzj7bYjQ1lCbt4iKlIJRCogv-h4P3MA2WrXbuuc6TTUgdDjQQMrjBolGrnHjm89BVawCehQ3ywaT-6yYSmc-_K7wDZJ9dYEtDcsCz1DnCyWKpH6N4x415cXKdVSHk9XFn_R1Ad6XY3DtxOQnF3YgA9l4qA1SUKtpTEjCT2MykZj_6TCNTI-Im0BW6w51_BmqW_I_EaBAW_-PKtGS472q19QWrPpmFD1bG3VX7ePQAf62E0IaXyxzNhin3pJCFE4UwkRxP-tmrR08XyUmKlgUkjDiDA8g5DxT5QFeQ2bWgIiEbPPrGRxq6m2G57pV5_QaB_8YdBoU7HWNfBvogeKvYtSnNWC0WzVIJMp0qDlEcRAd9FJLfBHE-3_5G5NzJgTOAOiACwLKjtXNuw3vc8PjIkihUvAq1TLrRGpik46LNpIQ5VhAZeFRz7NRBs0jIcIkFmRbMW9iUPPMsHniGujqVzK3AVkuuww9weVYw7LZrQb0jTA7jyVEw59XIsz7mI-TEm9RVw__hpdk2vGdJFiXrcC2UY075AR0swlXjzKPb8tMFBahwAdZUcGHFLSso3M1zNmrmPMHFCIKb4w5skpyr5XF_M2ECbsqiac56WC9pccBpKkq899Io9WI2mgqilm-PAJG2hVUAXPYqdmx0IZ1OPpwp8hkMZwp_VebDrl5VY4QZx5hgUryMkM2UGYzHu1Dfz3idGCuPG2vFyaCOgQUNKfkYHvjequoyL3lLadbPle-Mw3hFLPH9nWJyNuChAd-KIgigblV5Rsfg_w1BF5XAi-lQxkJ4pQW9Bm60yJj223qxmrkDInFHwz8MX_M5pgurN7DxcxJG6x0qsnzWipIDESHO2kdGguEXHYu_ihnuthqkJOqEdf5hywje9V-gOoQ1MISKXRLSkYEmvEw8g4b2LK55vx57XE3Hp0Eiw_chkLQf-abrezTY_dZxZJwp5Ah8434PQwWJDndP7OrHy-NC32YWpbEjvVc0oKjFUgst6joC2UFLbILJoeM4WhELt1bkwGkdRJJfkb8kKXEzcrYaXPye2XbfdchDUSUO8BT2IDhZbxZiTK22p_DIxBf07hDaEdWLowu4lWfSfFNyVcC1SP4fAt3Jr1YJxaVcLE7m3h9iDHM0Dr0eSYjEbPCi6Mp-8SdIB6AHrTD9sv17JrKV5kJKqHiIHRO61ywSl_554hXh7B1Q64l_zdK_Znq8wnHsStK8xLgaLCnzwClR9vdFoSMtlPsWcg_thUqWMBzZ2RjyKK8BLfEFfhYQxvyoI4lzW9JSH9JzvbmTu0c-zZoN3RHhbxlooBOaA0dEqcaGd3k8eUpc5BOkC7REEJIvbKtefLuoG8nYfaB1mQKDkjY26Q7PdweXOii4pC8K0iC9ncMoPxaGBoXpQmzLR-l67V-LnzY93IM8PMQ9pGjYdk9OOCq0G5v1r3JjqOcO3OVondTBOvPJrbUOfeg2pnx9-J67yKu2M9AgF1e850PLTPPWLBtqmbzNDar4DF9W3LwArV0_yFiJ0RBrerF-t5o-RxrVGkwZ5ncWK-Lbci9H_IBudoDsEhmVOME55KxfuqNKhH0QOybwLQsQqUdeauvKoRoLCd1YjOYoN05nRiGQe8Cj0Kjw1haK6VTeisIGJHBIZeOfhFU6BT5Naoo5xffOhZKShd0i1uBWs2IYW9O6NWD7YmQYd_w5w1O6KcSgtUd2pxVIF093lhvLbhFleGMYtfclJgvxvSHHtL_zm6KDJ7sBzzJ3nxkvD7t2OsuQ-O-3nSj1m8J4o2io94EBcix19-TGfI1Z4je_1SX4uSYOuIBIEdrF5z8ZOIlZeJEi6XZ6HLULPy69TDWp1rNa35GzW1JXRfQfxy0z9_vJbvRVw6JE5yNpOfs46a5N0svNdyEOeACt7bjKrx-B_w7XqX2fAa1H0VlRnInPRhhnD5zMMfNaY7fWB325YrypGu6lVlFpwChm6lYWY_6tTIkR5ADIAlhLeaD3WTbfW4lwCO6o6Sl77TwcNoG3yW2mTOpBbXSl91OIlJJ7jBqc4_V42VLB8iVfRNnuW0a3q3q2Uhm8qnoWz7PeE2TIOCeeh9U2FmSVoTWbSPtNf0ON-9gBTieW4z_sTSsFy5blvCE6VS8tfO99vwgiMFRy9G4fbkx1dSLuONymzb4hYa9CARGhvzm9oR1izDf7XN8JeTQmTUAWXT6m2LwW2ErwEm5yWqPb3Eo31VUyfZH1gVl9H_y9Kl0bd9gJPxDfSmWrFCZ5MsHtDHM-1mxsYDN-0Ca8Ao7GAxOJKra47jF5SmMW9bKxaioVKcNDFv70KwieGF5-uRBzmvHD17NE39Wo9TZfr8pvj88rSmd1AZZxwfCAmAzvakdFI1_QwChzegaK4sUiwaAywwOrmuDiam0Tb2R-sofWNBXlFDBIUReT98JpStfcYggvCGhto-Yusa4tDPTHcc3GZTPd3IZf8unxUBucT4FSBwvpNKfIYgZP6Hw-43Coq_gRkEgxJn-XJI4HJVWbM_aQkVDFvTeBxNEujKPZnrDcltcX0wNgNL-5555Zuz5FEFPChu9SFYkFV0MxMNZrHgwDq5BBoEG9pwF7AHSzkNH8cqoT5BPU_XTUUgW4fir4MD57sp_aR3-ED6HEM6-SMiNnnskblg-D4-_IEkGne4g6QUsBt4oQxfOxbxmoZncytk3v0dHlr88u7hbpH0UAB8ZtCUCAjQLlu6zovJstn87VitHzZ3rMbqXKYjD2oroc_j-3hcfd_dunRIq9VuvQX2v1AMnbQcBguM7BBHR_oy2cgQdsasysfefVkrjngqOcZjNY1jhZ0XZ-tBfpDFDtScmvP337bqcox71KyWp587YU-Jx0dxNVBQtWysR6qwP5ReKnj4YAFSokKRYuDPiVQxTftzFakF0s6LZ0rGasOl27_0ubjQGUsmjF4lInuHQz-we5P0Udn7GCQ7SLfS7aVnIGozUmdrOhEspyFEmBnEhzwv9e4d3surJ0UAFNHOEMRFdTKtK8arP5AKv7u13f-YCM98RlMvQi_DTJpSn8QRrH8O_YBybF47fVkYxyfDkXbpiJo_cK5JalPJKE5BkcoLr7cXZ0A5kyo964wrLxUEubywxZo1qx_NPNU-KomfqEit1yBezJfgw4EO-y7XxS8YFKB93NGRZ_MF54OeCys98NDZezhuxOjrRtAtQkxMd7Bh5HFdQtj26098lRpOXYYDbOG4OhsN2QLLnOhZKRTXcmGYzI6rmgVNCowMgPn4CeGvnjG2alvMNOqTDUbYtAt4KVC-IcVYwo9kA-AqI6oIlmZnlNSgAFkwCrRC6hx1G4dLstJ5WWL2_67i_-MKTDPz98FfM1vpQzQXSzVy9FCjc50IzJlE_d6V0pWeYMXxdt7WbyTmPlqFd_nUY31RXYSHJDstyCgvDDaQF09l_KvwchpnJeep2xNs4A65vokdSpo4miZT0KMOrchzvDNZQ4xAzrHcpbvIhFTZYitNVoCU5tV1fb78nP2cZeYN2rq43WPuKnF7z1hpTgBZv5lPF4oO1a3JWrXHnIRAGhnni7jKl9O3ytGmZqh7ErUD97BmWGAp1IpYOWcjhz6myujmipc05Erpf6OT-FL96WIkmD1-ovt8E79KsHEzdbl6FgkNL8u3odFLYcjgd6nOu3iSOM7TDCYsY6zLZ9k4IQeMRb7GlQFz3DqK3_fVtJX6JaSsec-qUgwBze8JbMvM-p6lqAQFjTW-RfApGqq3lbn-pQhYLVoAxg5s1X7JbRCeDey69rZVE866609wNyEH1-pswBS0heijkguon1rAWy1gph3Ji-l33_iMtZabfE3wEdr1WDmhKkus8wrNjHMHZ_45cOg1sWPqy-H7P7tQnFoUPlbMAjt_UqLfpOSeslrFKWfQ_WRKjpiAKH-AlP5IucJzV0eUwgMLPWwOLVZ-B8qS9eYrVKoQuvIxDdwdKJQROR6y57ZvemUwUeO7P48DJiwt8Y1GogvuDeHvlkkKf4jXbPY2iQMBzI5I2yz6BPdc4vSLv599j9gd0_uMddOrkW89jZe3O0GA5MCjZSRIZBi-lz1GmqsAcb4EXcIn0G0bs0dGjk9NruhRn7X8nPul9A_sdq7pR6Nicv6if8viwF0w30f2DiTuN2RjKHgKcqTB9Pl9xiyTeQk57nyeK3h9CBL1Phle565CfrCJlVn0kRjtOtCynmiKI3Sdx8sPJ_igBsnhF--jGradakzlPAY1H0qk4QSHu64_84m5K4I3CYOJHaz3SZ1fz2_6IPo-7tUcfp7JPkxuCWubH9Zsp_9SzcPuotHPxafU0UfWfWVPKKLvaFN7MkvzpnUBFYI2Aq7cpsNQU820EsNt1NCI66DSPIvup4sHyAD8gDQnNxlZXPYKvki8aZ4fr1ycI3KLkmlezD7qFX97lOpCq4aBK51KWAwO0s_3BJhTxLsg9GO3Tn9MS20a0C8Sm6Wze7vIzzJl8KOfNa3LXRG3UVQbhlfmv1S0WilCUayTxJp89HoiGqUyY0hglUPVJDHVODLeKeKL8OkuwAidIz43YxcgLLCfB5Q0olJPJlLE6LqDMSWJJRu532mFYPc7iLUTdwUcMNUbxFbvtgujYBY2jJX9dlWns4CzVZ-hGi5cn3U9zA1u3GfKNYPRNVvYXwNxG0OSIiQofXkMqbYA0gNZZx29kVcj4s2HsZ-gd0LzWVtqUDGhFctMmRMg9rSXxznEvjhQ0CBlHyt6sI2rmcDjeH2vBh-AfXUEQjiOoTAP6dWJAGOO0hAhfCAuOF1496Xs_8vfyiiONRMUrS4g-uuCmlkxX0XCvXk-rSlNiq7ZT8tyLvZaywikLwbNqFuHa9yAytgXxZ_em-kD4GRbzMpJWl957YI__7TtTUVfEwr8V6ljRU4MwDmTKBixsM-W_0-JOKA1NGwCGfs0dbWRMbaMg9XYnhlVi-_DZl74vuiS4daqUXSAaCw-t5DGEa0FwdgOhHFDi-9PsB_glZN07FP6VNGZC_knPy11zVPvFmMkWutXUFHMVwb8axLpalQ4wg9qfT2x6Z79QjKDqdW40YziGsVXn9pMvqQvHRHXviGV8i9GL-fN1aK9dXdTnikAXV67RQrjT2JbD23g1iTRky8XWpv9qXc0IdrBDyGimVCBi8XRKi_rkuPbsBPJF_Ihj0ME9vC4Q7JiVGajO-19NXhieMMs9LnAH58EK__x1JmTtp9t0A1RIt3p7-Vg4Rnrd2FXn_wSfJyPpxui6s2RTjQK2_rdYmxpJD5mw7A1gwcOSNJ36lZvlSFnU80xzXM1yfj6U65LhqxV-JdahaWModLCM-F03fu3NU4vN3rZXvyGIXqN2M1X3Cx06ebAvUIp47C-gOAKjVymqqgw9PmyxzDQzP5wX3FsU2WBcWqYatGYRcH8eh9EJrAVI8-0opWCXQdSZYLSYZAhV1RO7RONGmEE4Pn5DZHeMj8sKW3UaPbzeOWw1hNPNxtZwhLHKSE-k3tKYxd51x4pdF5imNpEWmur8BoYOrIYJpzLi6jkWzBavKr-V6Mdzw6ClYtEhrZkkfrCtNFxlyza7y3kQOpyoPv1ZBYZ5aX7zCVGdi68UkEoWJmAWy-5Zv_nci1PJtO-sxDHsB5NdGBxvbw9F3qJGFrFL2bhl_QqxiMTvyMCwPZ-rSjHXr2wnH2qqa5qHXAz4W1_qy4Y6NIvCJjI01T_MnqjtZ3FBNaANPBF7_EFj7UXUZnRcoWOOqAlAZABrYTcUnwzPSHP3zY6444HJaT8W0EfC1smGgPyfV-8EoySsUXtgukgCbhUU3YcO2_aim-Y9SbLAHsBk1--dEyRupczAgk9BHW8K3iWDquOc3QGPnYkspmEcgAOCxQuZQnRR_OFEWnY_jK6zbpnUWSusaBG8Ch5hAQiiJbccAj1bnRis_m5o553zHIjAiNgr3B2dr4AOMbhoitIc1PipYS8BzBD_WxrtAjUEZzUjzd9P4iusqXjhCpK-Zb3p7OyARrSnKkZgUR9ymuLwZDTpQFNrDkbg9LH-f4Hp7S1TXqr2L_i8vzAr-MgU--PNG4T_LiCGFp8bg0NYJ5sX1uHMHVNjBX8K5Hqta_-fN5plA9xUhNoVLlY0PztJJG6Qk7BdAq_jb8X7Sbon5Btjm0_R5oJT5F8jPCKiNF-yk4t0yZgbgRp-IaeVUkyhJeA_gsrusiWX3fjNPwmzrbIQcFitRDrjN6v5YSjOhVg0OLVX7pzmGDJFu6gJl-uCXly_4F3rZo7cGJOM380oqV-uXCYRi18qNjZBagbxqo0C0ZxRMfe7-_yg93kNVEDtEMTtii0k-mUvbtvAsEm0lldqEHBeOOAkbRdNfltQBGmkwc0GXzO5KkX9s-X956FOULgcD5v0ARYMgIDlenJpln3hYyBSdR1HVauqsKRrk0yEybdXz0cwIAz1Y5EA6z-F_xO6frK3hFKU0M9a6s6cuSUl47RAH_8VwiPHi2Nz4wPb3RhPTxpvsyJZI1FjUOjWf3VQ1KkTK1vshcC3CE5C-2Gd7_w0Y3To5192oyL_aoP9nxlHuLeX9mQFgbnS22_ptxF7AeiANM6cT7vo8arTJz8TB9HiYLDmN6CZd2D1uATsAlNyylcRJwr9i9xHKXgOa136QkM0N2r7zahPOltXVq9TQowj6M29Y6TmB1UG2MdszpQe2Fph7e8Z6zzLrKuXv58ofvStXY8zmTnwokUD33072ohhAbLTMz-UYqAb2cmYqfagy6-hFy_5KmBVgDjMxG175DTMvHoMST4WAhyHtyZNBdpY6Jlm1wRiQc9T38sKa06varWSWTOCjEvwxRXjUD9Uv3t8kp8iCyOWvBxvdlNurJFz4Zg8Ss5OWGjh6tFsVsuMAo2Co1Ow2XisXWOZEgle42A3CFYOsXnTSvKaVkO_1I9spRoMYmID0DT-WWs12pq3Nr8jmtJF7p1lLBi2mcHyn8iWtDVVX8pZf6dNx5R8xNAQ54haI7GA5wsgZxp4qHoq5QbtsfI_nQFGGMseZzvJ5J53m7Rhd--sx5LoQMAJ1tjAf31spx68cQyHXhPIDJD-6FcsQAmmbue_eH0SMge0pHywN3MnLor38LEl1auC1qxAVDtHOZep5Eyo69WVskWiS6x4F8C8xa5afh_GLpDflgKErxSMkCK2Y3cWty9wMRcdjp7xnDMqkLi1FG2G13wD9HyK9149Whf8D2wuofrd6noBCySz76rpBciuHO8zNMhwUsNWXLvMzTGoatCR5iZBV1W8YcQ8737A6RlGAHSrjHcGcYcoLkO4FQzvoySn67GWvSzZuggVEP89SOp2ByeayVR56hNdo0yPrR-5imdr6gWqEKd972dN0hxDzHO8EPUNaSzoWl_Gu12CqAR0NqkUMIa3E0Ekpu-RCZlrWV2eGD0BPz4ZqU1DNQZ2-i5waXyR2Tri1crMvRx7_03jG6KmwYtVesCk0aL1nzJP5GkHmGo8STI1EOu9l57aeCTKNjji9lFGbuu43tt3X4BdGkiWnGmPsLU7bgcnfviHHbgaLajYy4XJhPU5GaMh6L24OCg0lasNtHzoaL-QFcNj1JYyrfN-SsXJ5YOG6ho-oIJpwvUvH7r-RlEFQHoDDBD1rr0K2IsjVsI6GVjfMP-zr6yZJvU3N-Fnf2HcKaImnDZNdhvvTS7cUQ1HEIWl2yJDb7-x131vtqLrLZMttTwsF-BEolSWzGV7PEVwV1ycan7REyedXsBpJSCI_UZ3aq_x_HsHLFzPbHkkvv2MLCTxJeKXldfTeXq3eSsKJG5Lg0XYtJaLg-SLlLMoyZw3KseHdou7X97CI2P3buD-jyPsdHldDhqmhoAiVXRgaUtbr0ka1P8xLlSEhUSZ8gPjT9i6CJs3KvufTorCWdUB3jsgMkOV3c9up7l1N5A5kGqnCOP9oFg294zIJWJCwnHN3mHSGqUiV5s4Qlyw9qM3H0iLl5OQqfqKp7C9RVpfpfG6ZXTI2SRCOoGrIqvdStiz0VqBwLo9b5Ggu_Zy5bKRZV67fqV3AgIR1_tlxqigO4I-cgzzMASYONIPPub3g0idn6c28_Pi7uH43Bie0lbpuuhxAa9gGJExfnA-isldQ8Pnm_qdbHIghtktdFfAUBMbPkl995F64iKYuqsC6awhnkrdTLxeGX24LIPXT4USEgzh8dwat8orZFbFfZCSw4ZcoiKc4tVHoel9MaM-veY6wYA62tydno6MYMLVADhS8pDkvCT_ZAc-QqLFZV_tjyqALg96ifTo7szCR8Ue9ih0JEjlYqSTU_12IjPyj5BpxEi6-aSM6J5fPwIiy_OXuZGb_oGOv-t3A8436AS7mYiEIwfVZpLZ1_qnSx-sasKWyvJsj3AzSXpuIAvRXI8qlog9T0IK3FKy6ZW8UOaIKdJVxDRwbeblKHtbj4YMfh765W40Ob4XThznxNux1v1lsI334sX6vkY4J1Kb0yWvfXJnax_1HNNaWtwgvSUNjlXb8ybSVH7tUeVGXtSfPDT_Iktu9yHP_KGQ16AOF-MVItTPqzIxzsFAhJPW6pVot7nRdyaXapk0Cw3Xl5Ikc7q2Oq69Gkm-q_oY0Nfws8TeXp2pO8TpCTWXePOcvFhQKQdeNmJ6kqOPi9uO69ESfh0Ep-FdDuBFn_p5QVfmhk8RZCqhIFRCW7aFXJjKY3Wo6D7eVy4WctLQ07vqK2dB-PX4eC_LWErZxCQnd8HncQWvjSKm4AZWHuBkiBuE9WV_C_K6ka9A0jJcT1fZHbLbia32QVMRtWu0SImqm8MfjJo_VtYtrjmKCogeeDzhtt3l_In2ub7g5mY51I00hAcM5_VKLeUc9MRzV1MiDFWj7ZTEChoyiMS5TrlHHvpmwYoSbX3y2aWu6VAtSJ4M3ersUmdAuwekWRqAHrCk0JgwImStv5r5d588QLfxkdTR2Hiiu1XRzo6EII9b_AugrPYvwu9QFGesLQ_sjjzy-83chPBDYf2TRi7CJrSi9Wmpe3GYMKWHSyZCsQZ3FIIGFV29jUhZuCZURy9OG8XqHqgaq7ukaXs6Gd2IfX6CxRCCAOYPr3JVDWGkQM6bW8Czf3lpm9oNCQjyqgSn0_jcirnQFXzXQSUa28ZbSVhRP6KLsBoA7pOk3sXbhIFG02823flqdbTo67bi1wB69kP5tHQQ675hNIhcNi0imk9a6jie13_QIWcXOlwYRwMvF95KqDhbsD1ELlmB2G-elEphkoLuKmhkt8ZnRprkzYOUH3EVnCmCBiRe7nhZWPqPoCLIhHdbsuULqeSuP9qFW4JxHoG_xL2Hfq2kzpb_ksmZVbV1WW_uyJnFHK94CJoYgMFvQPBJnPMzSMlc6BKnv8JQEBw4DqNAaQAEAAA5kHQZZ0ehgplOHBxC686gDKAhW9v6m_ZQiPIqIIK3r38KInAvjFaF2TIMINgAYFf6kJDVbnVy1NJ-UyZgLFqPBou621cvMdW7e2XWksvAuwjj3OmWnxVCjaBqWVwKzIYcRWjq10KBAyMXEBhhFfWMMnjnBTiAM5dQSEfowbYvlZOjxH0sD5ib7LIZt19h-vv-z8pH51AYFUcBCP9MX5aXsKZIv52MyDS6-3_e5CkWqnisRAPjbL3VFWXCbTWybTigH7hVlIM4CFKHDxDx5ds-AuiBpZW8S3HixYxnO7SBK5UddT1wCHxliQ2sFas_cwkqFhA5CODhJKJWJ8O2GjOU7m4qt4Xsyh3uugOTEmkVruDmnwRfDjszDCRQkbsa9V5qkBd_VmbZxB-XRt3T5YU_mSUS0cLmXssuC10L4sR-U5xTXvqVJTWrg7-QOaVPDKnrhPoXnUdFuLmx-Zx7IC7RIK_2QNcDIE-MQTO83WYBC85t8Wro4ErtNQM90l3BRlVRFRCqKOBrR7i4HanvmY8_ftYaHkyBhruTlVwCGxjknFmP0bsphl69DYwtZLbIBcqDrrvcja2q-e9o2t3c3kpix1Uftgi9hpQW5LAzdmtO7UajPoCNMxuToKhCKOnkyKrCVWFiKH6-Vo54j2sg_5rS27bRFVfpXCxRT0jMhaQiQKNvI0onzY_l3LVcGjytD2UZvcwQyEvShpzmENo77iil0yzD_8tvrmc7kyswfdsoR1Qu74trHCJtZJ48c8DLLZsaSW3wc033A0kRPBjuT3XVYcK9FvQs2Q7fNTy5WvRM4DRER-rJ5Q4QVjS9cW2aAUEwtH6b_xPqKnTG-Kp6uvmjJidRq0vwaznZqCf3_jPgGNHvOzRXEdYWCqSvx5S2jgXtY4jD7LKSLMwnRC_CLtjSQHeY_FxHnvy58fxRDmmJPcMJp7Ygzewc4qpSN9FjPBSWawEe5JEi_k4hcAK7AchisrFEXwiTBWU637GkIh_3PvPe-mH6CrQr7wbK8ZGTb1TorcX3tvwavrA9IZarNzjaNNg4YTfZ46owdRN1EYy5bgO7dP9D-oPneq3HT93mcVbYXcm-zbSkKnBflgS_11T_B2yRjGzoDjKffJobT0j7EVZmr5tRLPYD87boyuBrpSJSnn4EzzCRCvCf20doaGz0dY0ijv9hqbl_ZdDyoj-IllwZE7xZS5-HXoVRK164KF2cx6BpoxZC9KH6-NeJVpubv8O7h48VDZN-CdQU-hYa7XMabZ7Bqp_sNDfe2bxKz5-3Bd_MS_x9DqsUQ3SH4sLlrYEL3sKnqtYjX-_TLiLG6CHuVNVFJHtY8xV8-WfjxttMkBRxHJUPtBQ8iRKRIeZ5-eT-NcNXD2OW1-wAN919MQ5-6Q-mMz66oQPT9M7Qgoo8HVjZDR1miXGBWQAQNiprXcMzCg7dSvtgXEvXf3J0heBHr8XCp_eDMThrXZwdZiTub6Ri8PLdYzn7nN7YKoy5LNydAeMS6E6x1TLxRzVDK8MSHhIdF9Hx3tbMFEO5xjk5un3p1kQZSPaY0ATRwrmP5I-Bbaf_3Xe5PpiZRvACCoA01PoNAxU-JnZPK7pHHU5tTwAr3l2n9S59ja9RH3zlAbOMrEXsuQGtZvX8ck6E49VnEJyFygI27-uipg6bjagkWUY6kbzerPwXzboY9fqAbg7rgJ0Q-A6E4djbyzXbc0MvEkKaB1PkpZ3-97TQ2lwjTzg_Kp3OkrKwSmkCpI1aB7U5z6tqYuKd79hOfOjsFs4a5qTGzZBEI2M4NUDfQl5vbZGAp37LiURwx5dal8uu-T30Ig5eLj8iYZq-6vYHWu3BKXyPVvPdH_gz-DWu4uRIELP35wfQ3OTfrkniy545gQhC0dgGqiT5QX6w9Ws7twDAOReg4sOV3NO4T-3Pv1MiRi29H7S7NhSSFFtOgQhdYL6sXgPaBBXfkG2CO65nu8wTayBELzX7SBuQFVzr9e4bnAZzj5iVtiMMYi5hEARJEwkHgJeIb4n-XRZiB-AC0VKBRey9lyBfCfMj8lbDd4AvZrfTcv_Uy5pGUsnODw8hlM0oV4QD2X5tIttHsN0xrUlf1frOYSvN4OStlgwkjBkbCDn5HwK3lBaQEW9UZGwaCBgC-XoC2yjlNIPlFXfjhwSD_y7zLg2y8kxZbW3e9TQHcjcrP4t6Sx0w1AFWncwuAoRyM1a4YWC8VsI45KyD4vkCo4-_jAXJnpFf067VvA6kMFJMa1v3f_mptc3e6ieSTqOQKpujOJNvsAl3evl3jR9sxOzNnnMEr6sItlU3ddid8qi2i0cWl1lNsE_Pi5uZHBNqY48e5qHKT5GWX3vewsgA9HCdOCzNSmeztnIdhvfoWseQrrVV92ZRg1DE3puxZ-dnLPyTHvzgMeWvVNQqswVE6HXUqrkKP-sXGE031Yc0ZGAUV-jcjv2bcgQk71b1zRD5TMCvrwIiMlJmmQ4nO39fczeWfe8ssjHOkvAVwtmIOU5kZGiMPYT5o4tjUbUCNBekhrcEWJ9479a7ostpbPg8Ub2PlmBS-wyA0RN9WQo_Xoa-hK28_A578tD5muCkpX_ieaOwD4_YQrsHaV1HS8q1hK--ijEJ3Wf73L2kneCB8RVnUMOsW5ojAk24n5vh82vk3FUqSI-moSpraN_Ytjoe3g9C0sVnw8PSxe_GX3VWzglP74ms3LqcYT-LRn6JoQYBP5C2OUme0t0GyPyGG0dk5Sdq9qX7vrxEKseVekWVqTGA5TPZg-DdFat9rne5_bqsmmlviXW9i_WvKDqjRcjGz9Tht-nHGqeaq30RVS_ulRaofThyQ8VzYgHqw_7QqJv-yMxZ3YsGpNrhxFT1ez3bKSAiXSSFEl1iVbHzuEOCSRgqd_2R7jxguHvfTS49t_241obikcQN_JBFftMhwLSkS_xR4eh_8S-1CjwNH-_h0m1a02grbCGo3eoQu1cuM8Avb6T53-CuGx4_v2A0PFRdKz7t9MYemLqANM2boxF2kYxvFyvW5k2o-Xn6qjNnjAI4sTKct3Bvbxx4RfKvrtqSqoogGqo8fBSVX370rSqBrJYTsytUdy_Ou5Z2cJpDJBvgFAcxk_kLgl9E05_Pu4jjQzhc-CtUZn-XzUych2QPpRUjVBt7k49khkYV7piAiWgIcoNwY3xwWTOx46xWUQzd7orap0OZhbmMrz9om6Jj6M5hvP1DrAY_J40L0G_-BtL6XB6QENI6n3FfZX2hIDDiw09rXcE-KBdfXOXScSvyvKCEKsDmULY0ZeboMSk_26iDN7FosnUfgcNVQM7mI6qkMUoP_PHmGipehQVwzADiz_WBiWHUmdbaRhjGP4pIybwLq_5rA2swFe3ji7zeGWmNzeLYe-c11weL__kzJaIhXL0eohgFHFkCC4XLZTethumNpQbuK4P5PI26o93GldAIq_yPMamHOJhxzZ2w5M-0fe6s1TzTSlbkFuQ7GZqjS_D40iRsSltvEfTDsi9CVQKlUhCFS-HSk5pJSglJJIuiIr8BjA76de4Jo4ndkpJ-SGrd9xvjBzWQ6yhUgLGOUS0yQxekmldwS08gQ1sfBcmvbiLXfUoY5ByjArB1pFQwsDy63rTIN6KTEgoxki-lhwxCLHUG3-BZukgOCH6nt5uGYUPWkvgqpoISbwtBS0acvggYjSkTlBDfM5JsqRRcz0UGM8t-0E2TA0pwLxgzlUsRWiYDNjSdZS9UCQyUTIRY0GkOmha74dDOmGQzWRVd1OAqN_n7Y4LQ666rY5ScFMqdENvaN1URE8-oqMEbUcHmc__kEXikD3KHsmw274Lty2Lh723SHmpZcB7SLOV292q22KrKIJuCm9SL4IGlYLJX6ajBnq3fdPVMJu0Xl5evEoxKMXM5p96qax7KdeCaJ1_I6aKZ0So9zu-rvHJyzcAnMNBDIy3q4rUHV93JiSGO2PlkXoekLTDcijFg5g37FvCYVM8L3J2x-a5WiRqqtutfetwn4wvCEeDfAvtlQYM6XMbxkIJ7dxlggWnl7Af8L1poTWXsfmYdNY_u0p9GKKt2vFgz8mCwbmjrHDmr_BqwTJsXNycGIJMIpiJQlqKs9g8K4lkKJte2zBtpNqCGz8Y1LaPGaXvqZpX7DuboKH_7HzALooWGogffmCGV7uJNb3m3vy4jUQL3hmQ0rrZt-fb4892E8dS3gU0wnxI5wxPbDCl89oC6chClN8s-n4JvN0PmoiDK7Y7R_GVM-TSuLyJS5cscgGqRGvULFnhJpNrmE9bWQo8nhQCfE8PwhRTl0TBe_QJ1jrCKG3B6s6A1ZoBE7NDs0_BLbmphXDeldXxBQis7iDRlK4KI5puACXW70kIFVCW3RefKLSIv4P_1rhTZGfXPvZQKoBn3kQHJSceDDDsi8wcQoVKfcNbiS3jnfNX065p-pQ2K2S94nn1vT44oL6HAHasD090vVcHjnCaG56Rx9g6B3QcaOVcIqoBi6B0U-OGiDJLQlmuArZcTgAeD_3D-dzNPyU9jTbZYSsvI9aReCzp42v-mVssLuJBN6tZL3rtQr9c8QA51obMvV4cxgWApgD4AvoX5gtcWDl6t7ggNGbJutCZB4pDb86nzqUG2tI5SvvlqHbvkm-E6RgM5-g-qDAXJLAFBZQ1fzCGNjJMT5aO6SFKq3hX5jvmMQxT8GJbcD6YqBgL4k0lkJb5Z9M8Re6NckxTjbHm9qHHP1-gwD4rUU6TJPROCXyd5WIDmwZ5Ic3mwYHXSFpjICnTpyiGr5xL3kO1wwwReQaVidszP-f7G-B4uWf3zaXaXqNEBoUZJ8JWEM08ekxMP1lSfyvnjQC4KYMk3jBVvqsQrPbxOBljBI0adDS828Md5s3iXta8K2f-Msx9iutc_vFdPReqZr2lwIytTsa9Oxtzt3UAjsY64PC3FAQKOVQG-cUeKFbT9RcpR0QvMlOdPvVWobwxtQQn5BpTj2yQYn9k5ktVcwr_HSj2cL5SFlwI5wcFmUUHiGuiN6kOyxNa_17d19EKo7nngdyppbLsZQ6H_eTPPyxt9N8vRk8O9vBtF8cz2f8fdnhiOQ32QSFx_XZGrh9-uAzjAq3c07Eho9U4WD8RqllMqs2LjcwAbWtha7zuh-YvY3haCcT490lv4Yjl9qlvfUsfCQLjn-qQ0oLyqYgN3uIZMVjb7XrEirlcBG5ieyDcKWJ3_JniAyAC8ZN6_4cNzQ2rjUgMqNVSEgG-srdiLhIz1mIZVbV4UxPyWS4lQ03v7Lvf6xxMYTAWvEOfCHdmtAcDCb72yss0C4B38P3ksdzcLAFxuQdFzk1OxZbJ7dbSy-uQlFa5z52LRVWm6zQPffkUsfl87wnmRtD4gNFaLvWKvsb0Fv9KGDeBATfoSOQ7cAyEtV7SLyTH70Yyyg1lQACxMJsEgEiX1FhV7SdTdu_y4qIdpIuazgVWgyjZAj496mVkDzBcjNwtFD0PikTKFLP-p3-0W6WNbsB1etmW9_LNJaVhfHwGh4XdbNWV6ptFNdlE2z4Ov8_TUGCwqHUuNAQ3ZSC4RJVbyLXXbuiUOL9Z0enSW0WXgfpxOfcRcyoJG7qnbC8abPpecPhXFqZFTCciTqc6Bh-tZAHEjLVfYbyTG8n9lalPteFF7zHv_cQLXxcBAtgWXKHrhojtvOJW4FY54nM8ZmCaRQA9x-7X9--6RgmSyS1ne9fmFsnNBs41MpKNTQSyN4lxUS6KEzsgGI3wHqTrgymPaTIEqQVIHk8k8cGA8pNIzWWgQkhJnnn70Lk023bIHbjDKa4LUZM_rsojheK4mcD1K6xgtdeY0Lrv7FtSuFhiaL-07Y4Qp_Qdk_djz19Aybc6PyGMVFiwjDktRlpTJK8UHdk-gyX7as1rOnhYaOGrjPR_Kf9EyFPqISyfnoYeGBxpaTpIcTdfOFKZTR5lwZyo_WU7s6Y0Vb-IdxbbvS0MMsdKJs-PPXfhyttc4mYAy1WFtm5YB_JAPmFeUGoCy8ovuiCLjmZT55ZeN3ku64AlxOjLSo2B7Db_kBjeXcESxu7xIAH8oQGDl5z8cbk0PQTI_v4oZST3kPhiuzZCbMzLwaT0uOZxFi1ne2gqHCB-y43N36oHpiP2lM9VkzLXR7J0IawMnYlloI_7Dzd74RHoO1SzzFteObtRJ7LlpfD7nW3-Yc03u9Fnd9sqJU4VoRzObY6WlnnIkVw0-NjjpvnTfT1POW-AVT0nJUe0rv6fG4vHOoCBKPK3-vl1yEXPl6KC1gPBIVaMKtl2ERviU04AzaI82-5iry5a8GECsIZSTssAu16p8_geqoNBTWn7AKDrswX3mZ_6nbDsB6xlTRigs6B1lKduqzFkNEeNGA7x6a2__4q60vd6OS_VzQCrmTWPFkLJDxCZ-NxZm-R8gsJeNnLwtGHoXcSIh-CZt6ID9WtiglQaxjAgMsIIvWbh-1s0mBfal2gSJvzLxbxA-A0EWReymXaOOyYB-lCidaFnel4h21MHncrU3Zq5CBPh65hRpCrgkfPpapAowevkka3JFUKyYx6rFaFq0hZ6Uzf9dlug8plM0OdVkfqlLTLtCuhLsFztChdwRlBtwC3wazuX2Ietefa0jFf4JzVUbq-ylsigVeNjFmTn8-RDajKcjbheHwP9abWoJvhRpoFJbDz9Oh4ZeDcUsQm3OiRJqENcVSD9j4cJlQn7xiyE8j-jrD1CJ93svW5e6fHXjvEFMPPtrB-MbXucJEf_aR1N5u3YI4W8jiTSWcwAKVYF2AQTVZl0LaRV9IpshWKNKKnlvoVT9xtmfm3dCfbdE17oFmr65umnsgM_JtmcRfrrMc3K8ayIkWXXn_12TnPNaph7uIazFdz87iQEe8zYx_PDjxjrqskQqyxsF6dW_0c9Z8CRTc6EGbm1dzkIeAGvMmSANZOn0alRn9EDIAAE39ACpUod2xQuNAS5ZtIjN5CzitR3dFerZIoBms-ALq0qBvZpmKONFtNWGQSZzcjIyg3nUieieV0VRfLXlAqXLCmugyWrMX_Wcf8brtXH6IAgDBvMP28UAkRlWTwy7wibo9-0d3G9BfFYjGeoL_Bdr4e7SrMAYZFm3oWjAm_YbfS1rUCj6PhkZq3AxVHko0sNuu_ogvDQOr7Ms8bUgbgfM_TMlZSjVodIon31atO_ehl-PR0lZ-Rq9yJZaOoOmdn671_8b5a5ezYqT25jSe0q1S-nLICFELR17l6gQxBNetWMaNnIQqgtjUMk40tUaMme0MXFltZwIzJsGvvnrlAKCZHNAJicd6KYYlU9nsoQ4wf8deKRJz1vYdwYwv52Dd54icR1IoGDOhj60NQ9Tyiy0MUQ7vtNBMFo35BkP-fHV9DvfQSd6CwzcX2eyhrG2pUFFCkbEjOhC0jbxCBbHIeI8GzVjnzVfkHuJL9dc5acOkOBVmeRqG5kjlxDJOnQb5XxSw7V6ypEo-Q352rvFqqSA9S-eSzD1i0gujkKVTpz-oeuoJA9RDW7ReKzs-bKkeJC-iimZI990fjJUld815Jvay5JeTOBYpRX7lTsHSrJl5uCEC_up-g_u74hCZSGoH9UjN-yUat4nLg2ZboRve0y-ULcHL3JsRFkmXHJoKB2lq9Bl32l5UlJBCtyusLRlSnMB4oBh8okqQeI3TENMg_Z8PGbY_XBIJ9BpWQjt4XlQbmglk-tquCnBhSDeF4LdKpv9ZQOWmNSrMhwowuBPhdbBbhvmbAJtn8275JDg8Q5RhvOLAARHw4IcadupqmcqbcpAWeFmR6AUyEAOX2F7vVatxb8As00WHPNF--6s_AFESDhGTk1o8FbvA5PeGxF0voy6VeU66dwZ1jcrUVAsxzaBMJJ5PK-62U_xUCu2O4o1VQlyBzqv8t22hiLJX1VO1mDZ561dxLF7ohxLU4x4qvtbfWmseHXpK8hW-ATPoNzSTac2T7isRlId0LQwxOmBCRlb2TrUwjNqq_mduSbrhJLEe2zuv5qizsVbPlTPLC1PrFmmg6-lvgblPNRrwQhHKHSU_3JidycryhkrECQIl0ALY1-BU_RJo9MU3pPFNogdJbKqOXsQfRbG6KC8LA9-ySLiOENTO6dXOjPloS2dgGKNrX2UlWlS9C8kWWN0j7ExGEDbPbhw6ImmZCZNH2lQvqKaG9W9Yj0q9CzFgO2VmmBe1cl530FCWAUorsratVVECzm87cjCpciM4uvYNS8wcM5qja3hqe7PgwtgIg3XlNZe9vDhtIbEee_z7sy47x84WunSjCCT4cvLchVWV1iYvWJF8cEOURPQopUcNPp7pqZfni_STZCokvH7gBQksYgyre_kFTNoA-2wWDenM263BWOzA3BySY97z1U46a4MmZYM8fLl-zHBRW7C22yDmFJ1O6IkoPLDPEJIR9S0eGNcgpgGHAZ_gmsPv0mOiHxrU0e_hvWVHgfstiv2573DlPBsElPsNUD0k7osruL8qJzUQ12tp_j-SbiRBLbypFRyC0xTLE3UnrW_m8Flhcbj4b6lswsusUlgcsmTnJUmS8d3l4vDjUKZYGiVZE1pdvocA60ZxVXFi4aMcoecEriJWntbtCpTXEdEk_MPwg_dUvERSFOQIk0kFZYEwUbJ-2SigaUYmz7NoEp2eIQx3ggzeeGWOxP1CMMPN9SlNNquRBJKXqa8RufakzoLM_Z5IHvDlwR90y9_YbNDqBiL6XJIOWVHoIbXNWlWK7UKfFWkJrGdKAzpzKL_3X5qqIeXlHcVvvinN7Opw4M7_8pSNLyZdaytQcxn0T_CzhtHgX1ZYRbFF786QNZn1inbj-y364Y0lBDdJErIVl1z_ayhJq1YyI9HAkzSmbp77MlYdm6LuppM2s7-j34-mWnENLIaSCeveRJb40KUOQxW_RQz8nltGcVlgpRUKIbo7HRH0X13oj2vxp1ctFcqdBOxPmhSoXxrVZ7FP2RUwJVTd11sXiZs-ZRtpfnreR6qZz9bIrqiYyyCeCNaJ9syZGhLzMaae_th0IpVg08KV6zDXd7mXaJTisySdQIyYrzraiPXX6WdLLTEwPBY7Lw2J_IyKN1wl-echvNY7cFuS-k7MqyEJALG0pVa2FLrQ9knk8_hzcZWVUEv1QiN1nNoC0XLkUzE0KOmRmoLdNm7mgkxYFg4o4yq5FXF91_BatonbtJLfuJLiCuF2cUxAxmYhUHtUOMmcqZtzHP7ed-bfMbDecHLeynwbLQvc4ydKB-pJwyFMOe_mLY83HbgsDq7-kZtLg3rb5E6_7Y-4t7dBLyLDesou-v-Kzs4O0FjYMqMp0qdo-CkwEUB6A4pOZsdEqxtsSUnXsh6hmys_0Rz3XS5OYFumhQHjCtSxf_GcalBVhb-RtIouEOei8uq0gWsFAbkr9Us7KPfzBaXPtZ7DImk_E2KHPDisWwgG0SRR8zCgRhkAHJP0PexxfrsqXlAPfYqcn8PKzKvTD7CHUoobGvYHDr6hKwUAUVVmX8T4flX9D3D7aWDyGe1rzW8XuI8YhqsuNrfmjGa7EPHdFU57KNE4EYlqxdWyUuOEYHpo5WDYCFVktEWF2cYfRPhay_QRUJfpa3wQziNGIp_8SNWNliV83XOC5L9Gdxaj22vkgBKM8g2y8t6AqqQ82EOtScUgZqQNxP5vNUnbFI82dECJVb4BR97gii6RHsMlGFnCYkmUD3Fri6bd1tSentbOqVIw_ts6B2nkTJaWgoP01rAhJxLzLlN0F_Y1CW3ajAjKeYcU2o2NSJ_sNhd9jYQOThM8F7odW3Las0pVWQTmNqMLZgx9XrO210K73d_mDpPfdp7P2f9xeM-yM45bUys6hVhG83Xc766rbfCz_27nkc6JTnxfP7s1RZK2EmaPftxG9cD11xH_Ivsvkb2GV0mmkGXL3_qnphu8RNHZR7P02kbn98eREc2EsyVmHJP2TVrdnOeeLZtKvW9Hb4O1zqT2nIzrFUmyHoODKEmm41Wt8ie21Ac6GZf66cwfqgr-RXrvLJ4HxevEFxAxN47McFa2swRLnWvbM-ZblKibvmsFSG2I_ZBf_Strs--2ZUksNEybvdg_lrwMHtLUvpZQt9rymjHR9-SXS_onULAEYq2lr8HPhxGhkadpW4aDHaTRv4biZVNM4L4lHm-yqne0gdgBLq3NsZXTiVd_6YLsfl-8R-Ca1D4Tr64VmMPy2oNVmBdOrWsAWp9AgvqkJD32IWwIs_WFG4gqwVPh-SvAgcoGLi-I1BQLzLWFi24jCJCTuQi6HT7n0u8xm4BIfCLTnvQKqvJAywy8NUJxd5M1C3Bgxv7A0yYilHsoNe0BUBnoirO4_lrYIsCxdhhkUHXJS2R7WBO1Ny1HMD2jpgZJjiX35WgYgf-KQwVJ3MI9LuuCAbBsazVdYFymYhoCTDi5Oc1F9Phbt58ZAbMKKPbdCMFqf3Rv0lsWEhjGR7632bBsBr1aHeexUc6DZkFLIhE-1f68Us_Q189Hics0FrvXY9e28s5lc2-4xA8DXUJ7ZW70XPHkgVpYkUwy_iC0ERnC0oReBkQ6DbEwbQR0HocYMmDB_J0GTUG6oS6xKmYJl0nd9GeLwBGFokktYDdUjqnzMEq_fuR55ZNnixQodWsZPBS1rKwpli_ImHS6OVNnTElKhqApb1HoMUAz54pSYDaCrFG8VAEK-jsT9l9MEVdqIRRB1cWJ06wDHm0d8nPI5gAOjFhk3smdlvU1a8tcfodzRybNTLBmkCgwHNzhIIlJxdFDxQ25g0vzYWTft3Nsl_4YsKfnmt3ToflndXU9GlM6ht7aSCeRFAV4Dfx1gBmYBwuxSqnXU1yhjLf6pm7t_wPoxDU8zADS2x3Xg8IhS1P-JZ1yU6iE6MWrZyzOsh8HttG53-8r6C8acyeUN0QWYNEc0puc7VGIDCNg8OQajcLJTMz0Gmwz7XCRRrD_EGh7VUUTI0Xfr1ew6zXDnc6VvUr3bqUnftc9CtmWb8PIj52SGrT_sGFsZTm8vIwTXNeZf6cRqSuvrFzdWWcBSHK3yAKBHAOYzJ84Z_D8k7dMQ_gdxoNZLTarktGuJ8vkpM9AtJtZ0_sMbfzG708JMWLp3j-sNXZ-DShUIygL_BitxZxWc7yf7g4bRBkFOxewZ8HHQMvVQlKA51C0Yl6KLdl7wdwKLC1eVJ9WyawkEVu9zOuMp3hMv9sNEUxernDJacCsu5ZzZwm-V-R2GYqQdSXRHCSVzjmN5Ho3kw0RqWDhtQV-qJLZ_6RD9wOojVQPSw8uiNkjWealJnZCGOMkkqVTtgLkj1Z50yIc36H99kR0F9qjjYu7TImRPB7yQrC5NKYzRmW_v43OsTimIa7Ma94Rkk5bN-NlfOAUtIVkWLfnmpyrIgjHwNXBplm16nB5FGIozEi7AADXE1gTXknXunsW96z_9GumJhOFv_IBZCxuNwrV4lj3AIBu-Y66pRXtjDP9rs9aRlmNNsC-Rb9ZQN861mS0DcCqe4yVMK8nlkPgK-eKFPw0ZE39ahGH2eJa0cTd4BuIRe_Kg2_MTaRpmzdrLT51fdVm90Nr03L7K1D0E9qPrLEauJc1FLTR4gyOKxBly7yDKT4icwTxcGo4Y-TJA6gTCay7UVldY-D-BiTzZkpx1AgJS1EqSOIdGq11uN3dr7w_z40jDy5-BUFp7aNtnnIxGy767WYifgHj5hETe7vR1Vi1FwHx_2WUbpUCE3QvuuFeHhQvAhy_FG08vMUbTa-mvSM2XOx9KxdIU-x31KrbmSe-eoDfsL7Zbc3SUHiiHlFU-tB8HzzFMLlsXBVcAJemCWfMQ88RyW9pdV5kV3_4At7DETbpjWpi6OKCYx7_dM-4I4EtLM-ak7Y9_VLj5OevfOYDAwwqFoNqDqR2Xr0tpL1SvbrcRjkzD5nmc4wDWRsMymrk3-SXOe4hCWy74cj9i6nQTFq6kjUV1Z4m33Pg4Mm_HUchZCWEhi5Fswp_DAKiRm_DpCVIIAr9GfKDvhnab1sniieyq5JcCXfdu44VhOoQaTvcvArqX3cGJNHMmGiHrSzxMRdc-rJtjB7yngfuUgMzD-EjIxYbQ6H0Jf71EciC2pg0FpOfr0mXnQ0tCQ7JHUXU5dBKnElLT_mgJvmMa8if7jdi4NoQhzKa2UmTPG0saPXOMU2IPdlsa22VDaRKGv5PNCwMdpQn1W9lrJtqpL0ZfaKDozbSMKgRQuCvBsuqJghNzL_apSkxZEc7qtOCT_yDqESyF6OUhCx6EKk5MIJtu15fluF2TcCoKW4Llq8ZxupD00WHvMY3FhOw_0xStSeYVP5FCmi0TBNUzOy4doR9Ih42nfJGCk7K8tupnCVqLwThNF8nAmL1ka8yqmygVQt4b_0mOW6H9WTIBiDtDZjCoY6um1GoOqYpFb31IydEX9v-vu-puehsNPlhyO-FfvqGC9EicDLTmzt76jHXR_RL4e8UKz2Fs8VB6z-SN9TtO98Ny5B0zSQorHbc3K2yVU9PrvkT3ED1BlzCN7MsFblar-JGLTOg9hJ6flX_iWmHDpkgmFYDcwRKOaad-cHlEwlshLsEKI-hX_PyaqwMmskk-MTrBneELQvrSHIPLOvqABXfR5A6X4Wp16w5WtnOg6Mirt9DqnDHN7uMRk5vuUJswarCI8bRVFZA_Sotuh42RIxDRnV5e5gGUPb1o0F-KfxRnL-JvTPYmVUOjaJ0M6SC3JMjGjUAvboIoy8aVSePnXckns3T7wPpgdqKjuwqYJzzAg-Z1Kgn8Je3HAX2Cp1fME-9_1jF4F8S4pCsUAFI25ui5a8208iQz2Uj9Y4sjFuC6ezNKNPMo28Yd5NujDPkmKJo1r0LGwSCJPBrUAkN1qhp1IclC6vHmdMMLAoVvTnA3EIj1xnZ1ZX1ghaoqBRu7Oyfq7nGvlz5pfGLosY_GwD40PV2ZBnnbmJZ9k33oSHw1qZb2a2tLE7zNqk3I3ssp1pFwJq8-QfcpEQ2fgm2g2_Qj-F54EniYQ0N1TSn6XwLOdrpbTj-23PZVSBxBL1ohSGL_ZdTVu47Cm9hlm7GiuWLWdlL0H5LDgiwrdPmHHpyMi-T1yeL-ounBUZXbUZ-r0e1891ws84znqNiWNYlI9UABrM6BTTFzailjmOlmcTXZ0teqBZJJSt_8m-GsbsSe-6R57o7ZRUYwsvF8l6wBS4gurxXhpm5jVtjGj5vK0IRhZ4Ec8XcQXA_VYk5Hy-mp5gMy-mbpDTXZojtErKk7q7noZE8eaelu0R373KAmIZ6gho0VT33LMyG9Foq2lypOHMhrqE5W116bmyCsGLvxRO3PYijtbdmHjh4Ptlzn1X4Hy7cvOmLHQeUIeV8sElEqHq3kb-RBUapNZ-p3PpPpOBTEyX8_jAyqGEIkR7arjp3eNV2vCx4Ekvy7Htk30587FP1lbPVVbxBtqWRTOXNl7j1nXbuMJN2ErvczxcS2TZ4D3ilnYQSmIPjRNnmwRyrBYLiw0SNnwsA0M_mm1veidfRNfTWtksbuf44_JlACBsekwWFBoxMirqkfuvlLVoYvQl5r584yea77AB8apV9g8fUSCn-WkgSh0y5Ftskt_A4TyEaRbS3dGlHx6pLpFScgT13GXDJ0dHxA0IY6jvhYVZp7aJx-5ORMkdIOyPD80MphDNRACUndk_KAujJXGgI1zC4gi9jLLbo6RU05G5grgRAZV81KgPjVs0tpW9g2uQVQvw_gRNA12evzaKABbm93IGwKJGGXfDrCaLB2wKlFgZ69Ic5ysiFba3Zw_wt9YS-GgERoLfI-vD7Cq0Vw-fBYwOwEDWi7qnPE_tZLUT8qq-oNiO9GRDnv5iqDNsTl2JTMJivNm-6KGaUDPhoqUg-mgsA_s2htxG-qBlOQXvTe5-bIO1s2sOi8ef2AKO2SyblisKEoRfn066zfUheczi1KnYPiLzui3m3VCQiJCwVcGOcCsLSTVaHp5vU31Ibu7M8TmJo7oFAHeqLziWrG-2wfFSk2WEtPa-1cIZ60tTBDV4DVh5qmgK-et2QvMQ-Rvd_mc7xBjFblY5Q0KpcVepP7to_apRHe2cHC0wUWXmiBzvICDJjQlppNHBAOIq-HVEl-Wgg14HRapgB6htuQK1v1Kj4UEpYpHQKgnLJeyC9PuJ2LZRdkVUaAIoZlwye6Q0cj8E8HiWm-Of8D7pbymvzsRmJW_VEYhEdsGyBJx3BHE-X6x11d1SLy_ArccSSk44ZvpHiHqETAPjzpTHXIXYDWPg-_Pt5CjqsK4Q-HHcisSu2Jp19icd-05NXwWlczyXpwXSQLZkMWbaL15sMIP7OztQvRXpSL7wWtVdx6X8XdgUgoVZN84tftBGdj3rdwl3Njc1SenoMZSeHdGsY8lzcwQcUFX5N4e46s9lQnunKno6UY6kVJAvkGe6mVOrS_MARcuuaidmkSA1uTSFmdexXyHh8kqCFHLC9rETiyWNZb8MelH6ggOYFGRUsHMY0NG2l3Kp-4r55Z8AN5QX4w-sNPm6UQQnYsGdSsmRAnArCWFLwIVBhBIy7h_d4lr72TKq18fiwugOFYcgvJf5GPuBTB3o4GOgztfavxIkHLtvjI1k4KAxnQevWWuGAbv4bpd4fqoBGT6nHTybjQeyZ_xocxVAJksCQqbKU-fdpWexUsjUorA2NpQu0lIWsp6Y2IjrL-YgL_XzjkHFxe7lDpNrrd4NENN09atjjflU_lmeQozpwvWgWOz1w4FOkkBg",IV="iZB_6fK3uS9jub51",STORE="overhead-wb-key";
+function d(s){s=s.replace(/-/g,"+").replace(/_/g,"/");s+="===".slice((s.length+3)%4);var b=atob(s),u=new Uint8Array(b.length);for(var i=0;i<b.length;i++)u[i]=b.charCodeAt(i);return u}
+function hashParts(){var h=location.hash.replace(/^#/,""),o={};h.split("&").forEach(function(p){var i=p.indexOf("=");if(i>0)o[p.slice(0,i)]=decodeURIComponent(p.slice(i+1))});return o}
+var opened=false;
+function open(k){
+  if(opened)return Promise.resolve();
+  return crypto.subtle.importKey("raw",d(k),"AES-GCM",false,["decrypt"]).then(function(key){
+    return crypto.subtle.decrypt({name:"AES-GCM",iv:d(IV)},key,d(CT))}).then(function(buf){
+    var p=JSON.parse(new TextDecoder().decode(buf));
+    document.getElementById("wb").innerHTML=p.html;
+    var sc=document.createElement("script");sc.textContent=p.js;document.body.appendChild(sc);
+    opened=true;try{localStorage.setItem(STORE,k)}catch(e){}
+    document.documentElement.classList.remove("locked","opening");
+  });
 }
-$('#promises').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;const i=+b.parentNode.dataset.i;S.promises[i].v=S.promises[i].v===b.dataset.v?'':b.dataset.v;drawPromises();render()});
-$('#pAdd').addEventListener('click',()=>{const v=$('#pNew').value.trim();if(!v)return;S.promises.push({t:v,v:'no'});$('#pNew').value='';drawPromises();render()});
-$('#pNew').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('#pAdd').click()}});
-
-/* ---------- step 2: agreements ---------- */
-function drawAgrs(){
-  $('#agrs').innerHTML=S.agrs.map((a,i)=>`<div class="agr" data-i="${i}">
-    <div class="fld"><label>Agreement</label><input data-k="name" value="${esc(a.name)}" maxlength="40"></div>
-    <div class="fld"><label>Start date</label><input data-k="start" type="date" value="${esc(a.start)}"></div>
-    <div class="fld"><label>Term (months)</label><input data-k="term" type="number" min="1" value="${a.term}"></div>
-    <label class="chk"><input data-k="auto" type="checkbox" ${a.auto?'checked':''}> Auto-renews</label>
-    <span></span>
-    <button class="x noprint" type="button" title="Remove" data-x="${i}">×</button></div>`).join('');
-}
-$('#agrs').addEventListener('input',e=>{const r=e.target.closest('.agr');if(!r)return;const a=S.agrs[+r.dataset.i],k=e.target.dataset.k;a[k]=k==='auto'?e.target.checked:k==='term'?(+e.target.value||1):e.target.value;render()});
-$('#agrs').addEventListener('click',e=>{if(e.target.dataset.x!==undefined){S.agrs.splice(+e.target.dataset.x,1);drawAgrs();render()}});
-$('#aAdd').addEventListener('click',()=>{S.agrs.push({name:'Agreement '+(S.agrs.length+1),start:'',term:36,auto:false});drawAgrs();render()});
-
-/* ---------- step 5 costs ---------- */
-function drawCosts(){
-  $('#costs').innerHTML=S.costs.map((c,i)=>`<div class="c"><input type="checkbox" data-i="${i}" data-k="on" ${c.on?'checked':''} aria-label="Applies"><span>${esc(c.t)}</span><input type="number" min="0" data-i="${i}" data-k="v" value="${c.v}"></div>`).join('')+
-  `<div class="c"><input type="checkbox" data-k="ins" ${S.insOn?'checked':''} aria-label="Applies"><span>Lessor insurance charge, per month <small style="color:var(--muted)">(only if you never sent your own certificate)</small></span><input type="number" min="0" data-k="insv" value="${S.ins}"></div>`;
-}
-$('#costs').addEventListener('input',e=>{const k=e.target.dataset.k;if(k==='ins'){S.insOn=e.target.checked}else if(k==='insv'){S.ins=+e.target.value||0}else{const c=S.costs[+e.target.dataset.i];if(k==='on')c.on=e.target.checked;else c.v=+e.target.value||0}render()});
-
-/* ---------- done buttons ---------- */
-$$('[data-done]').forEach(b=>b.addEventListener('click',()=>{const n=b.dataset.done;S.done[n]=!S.done[n];render();if(S.done[n]){const nx=$('#s'+(+n+1))||$('#sL');nx&&nx.scrollIntoView({behavior:'smooth'})}}));
-$('#reset').addEventListener('click',()=>{if(!confirmReset())return;try{localStorage.removeItem(KEY)}catch(e){}location.reload()});
-let resetArmed=false;function confirmReset(){if(resetArmed)return true;resetArmed=true;toast('Tap “Start over” again to clear everything');setTimeout(()=>resetArmed=false,4000);return false}
-
-/* ---------- helpers ---------- */
-function addMonths(d,m){const x=new Date(d);x.setMonth(x.getMonth()+m);return x}
-const fmtD=d=>d.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-function toast(t){const el=$('#toast');el.textContent=t;el.classList.add('on');setTimeout(()=>el.classList.remove('on'),2600)}
-
-/* ---------- render ---------- */
-function render(){
-  const vendor=$('#vName').value.trim()||'Your vendor', pay=num('vPay');
-  const lines=[]; const actions=[]; let flags=0; let perYear=0;
-
-  /* 1 */
-  const missing=S.promises.filter(p=>p.v==='no'), inw=S.promises.filter(p=>p.v==='yes').length, answered=S.promises.filter(p=>p.v).length;
-  $('#o1').innerHTML=answered?`<div class="k">Promises not in the signed agreement</div><div class="v ${missing.length?'bad':''}">${missing.length}</div>
-    ${missing.length?`<ul>${missing.map(m=>`<li>${esc(m.t)}</li>`).join('')}</ul><p>Ask for each of these as a signed addendum. Until it's signed, it doesn't exist.</p>`:`<p>${inw} promise${inw===1?'':'s'} confirmed in writing. That's how it should look.</p>`}`
-    :`<div class="k">Waiting on you</div><p>Mark each promise above to see what's missing.</p>`;
-  if(answered){lines.push([`Promises in writing`,`${inw}/${inw+missing.length}`,missing.length?'flag':'ok']);
-    if(missing.length){flags++;actions.push(`Request a signed addendum covering: ${missing.map(m=>m.t.replace(/\s*\(.*\)/,'')).join('; ')}.`)}}
-
-  /* 2 */
-  const ends=S.agrs.map(a=>a.start?addMonths(a.start,+a.term||0):null);
-  const known=ends.filter(Boolean); const W=700,H=Math.max(70,30+S.agrs.length*34);
-  let svg='';
-  if(S.agrs.length&&known.length){
-    const starts=S.agrs.map(a=>a.start?new Date(a.start):null).filter(Boolean);
-    const t0=Math.min(...starts.map(d=>+d)),t1=Math.max(...known.map(d=>+d)); const span=Math.max(1,t1-t0);
-    const X=t=>150+(W-260)*(t-t0)/span;
-    S.agrs.forEach((a,i)=>{const y=18+i*34;svg+=`<text x="0" y="${y+15}" font-size="13" fill="#1B2420" font-family="Source Sans 3,Arial">${esc(a.name).slice(0,20)}</text>`;
-      if(a.start){const x0=X(+new Date(a.start)),x1=X(+ends[i]);svg+=`<rect x="${x0}" y="${y}" width="${Math.max(4,x1-x0)}" height="20" rx="4" fill="${i%2?'#C9A961':'#1E4034'}"/><text x="${x1+8}" y="${y+15}" font-size="12" fill="#5A6660" font-family="Source Sans 3,Arial">${fmtD(ends[i])}${a.auto?' ↻':''}</text>`}
-      else svg+=`<text x="150" y="${y+15}" font-size="12" fill="#8C2E2E" font-family="Source Sans 3,Arial">add a start date</text>`});
-  } else svg=`<text x="0" y="40" font-size="14" fill="#5A6660" font-family="Source Sans 3,Arial">Add start dates to see your agreements on one timeline.</text>`;
-  $('#tlSvg').setAttribute('viewBox',`0 0 ${W} ${H}`);$('#tlSvg').innerHTML=svg;
-  let gapMonths=0; if(known.length>1){gapMonths=Math.round((Math.max(...known.map(d=>+d))-Math.min(...known.map(d=>+d)))/(30.44*864e5))}
-  const autoAny=S.agrs.some(a=>a.auto);
-  $('#o2').innerHTML=known.length>1?`<div class="k">Distance between end dates</div><div class="v ${gapMonths>1?'bad':''}">${gapMonths} month${gapMonths===1?'':'s'}</div>
-    <p>${gapMonths>1?`Your agreements end ${gapMonths} months apart${autoAny?', and at least one renews on its own':''}. Replace the equipment at the first end date and you can keep paying on the other agreement for equipment that has already left the building.`:'Your end dates line up. Good — keep it that way at renewal.'}</p>`
-    :`<div class="k">Waiting on you</div><p>Add a start date and term for at least two agreements tied to this payment.</p>`;
-  if(known.length>1){lines.push(['End dates apart',`${gapMonths} mo`,gapMonths>1?'flag':'ok']);if(gapMonths>1){flags++;actions.push(`Line up the end dates. Ask the dealer to co-terminate the ${S.agrs.filter(a=>a.auto).map(a=>a.name.toLowerCase()).join(' and ')||'service agreement'} with the lease, in writing.`)}}
-
-  /* 3 */
-  const mc=num('mCharge'),mv=Math.max(1,num('mCover')),mu=num('mUse'),unit=$('#mUnit').value;
-  const q=mc/mv, real=mu>0?mc/mu:0, under=Math.max(0,mv-mu), waste=mu<mv?under*q*12:0;
-  const fmtRate=x=>x<1?(x*100).toFixed(1)+'¢':'$'+x.toFixed(2);
-  const pct=mu>0&&mu<mv?Math.round((real/q-1)*100):0;
-  $('#o3').innerHTML=`<div class="k">Paid for ${unit} you never used, per year</div><div class="v ${waste>0?'bad':''}">${money(waste)}</div>
-    <div class="row"><div><b>${fmtRate(q)}</b><span>Rate you were quoted</span></div><div><b>${mu>0?fmtRate(mu<mv?real:q):'—'}</b><span>Your real rate</span></div><div><b>${pct>0?'+'+pct+'%':'0%'}</b><span>More per ${unit.replace(/s$/,'')}</span></div></div>
-    <p>${waste>0?`You're ${under.toLocaleString()} ${unit} a month under the floor. Your rate never changed — your size did.`:`You're at or over the minimum, so the quoted rate is real. Watch it if volume drops.`}</p>`;
-  if(waste>0){perYear+=waste;flags++;lines.push(['Unused minimum',money(waste)+'/yr','flag']);actions.push(`Ask to reset the minimum to your real volume (about ${mu.toLocaleString()} ${unit} a month). That's ${money(waste)} a year you're paying for nothing.`)}
-  else lines.push(['Minimum','Covered','ok']);
-
-  /* 4 */
-  const r=num('eRate')/100,t=+$('#eTerm').value,base=pay;let total=0,last=base;const yrs=[];
-  for(let y=0;y<Math.ceil(t/12);y++){const m=Math.min(12,t-y*12);const p=base*Math.pow(1+r,y);yrs.push(p);total+=p*m;last=p}
-  const extra=total-base*t, extraYr=extra/(t/12), cap=$('#eCap').value;
-  const mx=Math.max(...yrs,1);
-  $('#o4').innerHTML=`<div class="k">Over the term, the "${money(base)} a month" contract really costs</div><div class="v ${extra>0?'bad':''}">${money(total)}</div>
-    <div class="row"><div><b>${money(base*t)}</b><span>What you remember signing</span></div><div><b>${money(last)}</b><span>Final-year payment</span></div><div><b>${money(extra)}</b><span>Extra over the term</span></div></div>
-    <div class="ybars" id="ybars">${yrs.map((p,i)=>`<div class="${i?'':'base'}" style="height:${Math.max(6,p/mx*100)}%"><span>${money(p)}</span><em>Yr ${i+1}</em></div>`).join('')}</div><div style="height:22px"></div>
-    <p>${cap==='yes'?'You have a cap in writing — this is the worst case, not a guess.':'No cap in writing means the cap is whatever they decide. This chart is the polite version.'}</p>`;
-  if(extra>0){perYear+=extraYr;lines.push(['Escalator cost',money(extraYr)+'/yr','flag']);flags++;actions.push(cap==='yes'?`Budget for ${money(last)} a month by the final year — not ${money(base)}.`:`Get the annual increase capped in writing. At ${num('eRate')}% you'll be paying ${money(last)} a month by the final year.`)}
-  else lines.push(['Escalator','None','ok']);
-
-  /* 5 */
-  const end=$('#dEnd').value?new Date($('#dEnd').value+'T12:00:00'):null, nd=num('dNotice'), auto=$('#dAuto').value;
-  let deadline=null,days=null;
-  if(end){deadline=new Date(end);deadline.setDate(deadline.getDate()-nd);days=Math.ceil((deadline-new Date())/864e5)}
-  const cls=days===null?'ok':days<0?'late':days<=60?'soon':'ok';
-  $('#o5a').innerHTML=end?`<div class="k">Last day to send written notice</div>
-    <div class="dl"><div class="big">${fmtD(deadline)}</div><span class="urg ${cls}">${days<0?`Passed ${-days} days ago`:days===0?'Today':`${days} days left`}</span></div>
-    <p>${auto==='no'?'This agreement doesn\'t renew on its own — but the notice date still sets your leverage.':days<0?'The window has passed for this term. Find the next renewal date and put it in the calendar now so it doesn\'t happen twice.':'Miss this date and the agreement can renew on the old terms. Send the letter below inside the window — it turns the renewal into a negotiation.'}</p>
-    <div class="acts noprint" style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn light" type="button" id="ics">Add deadline to my calendar</button></div>`
-    :`<div class="k">Waiting on you</div><p>Enter the term end date from the agreement.</p>`;
-  const ic=$('#ics'); if(ic) ic.onclick=()=>downloadICS(deadline,vendor);
-  const exitTotal=S.costs.filter(c=>c.on).reduce((a,c)=>a+(+c.v||0),0);
-  const insYr=S.insOn?(+S.ins||0)*12:0;
-  $('#o5b').innerHTML=`<div class="k">Known cost of leaving</div><div class="v ${exitTotal>0?'bad':''}">${money(exitTotal)}</div>
-    ${insYr?`<p>Plus <b>${money(insYr)} a year</b> in lessor insurance — usually removable by sending a certificate from your own carrier.</p>`:''}
-    <p>${exitTotal?'Get each of these confirmed in writing now, while nobody needs anything from you.':'Tick the costs your agreement mentions and put a number on each.'}</p>`;
-  if(end&&auto!=='no'&&days!==null&&days<=120){flags++;lines.push(['Notice deadline',days<0?'Passed':days+' days','flag'])}else if(end)lines.push(['Notice deadline',fmtD(deadline),'ok']);
-  if(exitTotal){lines.push(['Cost to leave',money(exitTotal),'flag'])}
-  if(insYr){perYear+=insYr;flags++;lines.push(['Lessor insurance',money(insYr)+'/yr','flag']);actions.push(`Email your insurance agent for a certificate of insurance naming the lessor, and send it to the leasing company. That removes about ${money(insYr)} a year.`)}
-  if(end&&auto!=='no')actions.push(`Put ${fmtD(deadline)} in your calendar as the last day to send notice — then send the non-renewal letter above before it.`);
-  if(exitTotal||!S.costs.some(c=>c.on))actions.push('Ask the vendor, in writing, for the full cost of returning or buying out the equipment at the end of term.');
-
-  /* letter */
-  const biz=$('#lBiz').value.trim()||'[Your business name]', anum=$('#lNum').value.trim()||'[agreement number]', sign=$('#lSign').value.trim()||'[Name, Title]', addr=$('#lAddr').value.trim()||'[Notice address from the agreement]';
-  $('#letter').textContent=`${fmtD(new Date())}
-
-${vendor}
-${addr}
-
-Re: Notice of non-renewal — Agreement ${anum}
-
-This letter is written notice that ${biz} does not wish to renew or extend Agreement ${anum} beyond its current term${end?`, which ends ${fmtD(end)}`:''}.
-
-Please confirm receipt in writing, and send the end-of-term options, including any return, buyout and final-billing amounts, to the address below.
-
-We are open to discussing new terms before the current term ends.
-
-Sincerely,
-
-${sign}
-${biz}`;
-
-  /* audit file */
-  $('#fVendor').textContent=vendor;
-  $('#fLines').innerHTML=[['Monthly payment',money(pay),'']].concat(lines).map(([a,b,c])=>`<div class="ln ${c}"><span>${esc(a)}</span><span>${esc(b)}</span></div>`).join('');
-  $('#fTot').textContent=money(perYear);
-  $('#fStamp').classList.toggle('on',flags>=2);
-
-  /* score */
-  $('#scFlags').textContent=flags;$('#scYear').textContent=money(perYear);$('#scDead').textContent=end?fmtD(deadline):'—';
-  $('#scoreHead').textContent=flags?`${flags} thing${flags===1?'':'s'} to fix with ${vendor==='Your vendor'?'this vendor':vendor}`:'Your action list';
-  $('#actions').innerHTML=actions.length?actions.map(a=>`<li>${esc(a)}</li>`).join(''):'<li class="empty">Work through the checks above — your action list builds itself here.</li>';
-
-  /* progress */
-  const n=[1,2,3,4,5].filter(i=>S.done[i]).length;
-  [1,2,3,4,5].forEach(i=>{$('#s'+i).classList.toggle('done',!!S.done[i]);const b=$(`[data-done="${i}"]`);b.textContent=S.done[i]?'✓ Done — undo':`Mark check ${i} done`});
-  $('#progTxt').textContent=`${n} of 5 checks`;$('#progBar').style.width=(n/5*100)+'%';
-  $$('.out').forEach(o=>{const k=o.querySelector('.k');o.classList.toggle('wait',!!k&&k.textContent==='Waiting on you')});
-  const touched=Object.keys(S.fields).length||S.promises.some(p=>p.v)||Object.values(S.done).some(Boolean)||S.agrs.some(a=>a.start)||S.costs.some(c=>c.on);
-  $$('.savebtn').forEach(b=>b.hidden=!touched);
-  save();
-}
-
-/* printing: show answers as plain text, never empty form boxes */
-function snapshot(){
-  $$('.pv').forEach(e=>e.remove());
-  $$('.fld input,.fld select,.agr input:not([type=checkbox]),.costs input[type=number]').forEach(el=>{
-    let v=el.tagName==='SELECT'?el.options[el.selectedIndex].text:el.value.trim();
-    if(v&&el.type==='date'){v=fmtD(new Date(v+'T12:00:00'))}
-    if(v&&el.closest('.money,.costs'))v='$'+(+v).toLocaleString('en-US');
-    if(v&&el.closest('.pct'))v+='%';
-    const d=document.createElement('div');d.className='pv'+(v?'':' empty');d.textContent=v||'—';el.after(d)});
-  $$('.chk input').forEach(el=>{const d=document.createElement('span');d.className='pv';d.style.display='inline';d.textContent=el.checked?'✓':'✗';el.after(d)});
-  $$('.costs .c').forEach(c=>{const cb=c.querySelector('input[type=checkbox]');c.classList.toggle('off',!cb.checked)});
-  $('#printNote').textContent='Your audit · saved '+fmtD(new Date())+' · overheadmoney.com/workbook';
-}
-addEventListener('beforeprint',snapshot);
-addEventListener('afterprint',()=>$$('.pv').forEach(e=>e.remove()));
-
-/* calendar file */
-function downloadICS(d,vendor){
-  const ymd=x=>x.toISOString().slice(0,10).replace(/-/g,'');const nxt=new Date(d);nxt.setDate(nxt.getDate()+1);
-  const ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//The Overhead//Contract Audit//EN','BEGIN:VEVENT',`UID:${Date.now()}@overheadmoney.com`,`DTSTAMP:${new Date().toISOString().replace(/[-:]/g,'').split('.')[0]}Z`,
-    `DTSTART;VALUE=DATE:${ymd(d)}`,`DTEND;VALUE=DATE:${ymd(nxt)}`,`SUMMARY:Last day to send non-renewal notice — ${vendor}`,
-    'DESCRIPTION:Send written notice per the agreement\'s notices clause. Template: overheadmoney.com/workbook/',
-    'BEGIN:VALARM','TRIGGER:-P14D','ACTION:DISPLAY','DESCRIPTION:Non-renewal notice due in 14 days','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'}));a.download='notice-deadline.ics';a.click();toast('Calendar file downloaded');
-}
-
-/* copy letter */
-$('#lCopy').addEventListener('click',async()=>{try{await navigator.clipboard.writeText($('#letter').textContent);toast('Letter copied')}catch(e){const r=document.createRange();r.selectNodeContents($('#letter'));const s=getSelection();s.removeAllRanges();s.addRange(r);toast('Selected — press Ctrl/⌘ C')}});
-
-/* 3D tilt */
-const fine=matchMedia('(pointer:fine)').matches,rm=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const file=$('#file');
-if(fine&&!rm){addEventListener('mousemove',e=>{const x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;file.style.transform=`rotateY(${-8+x*14}deg) rotateX(${4-y*10}deg)`},{passive:true})}
-else file.style.transform='rotateY(-6deg) rotateX(3deg)';
-
-drawPromises();drawAgrs();drawCosts();render();
-
-/* opt-in gate */
-const EP='https://script.google.com/macros/s/AKfycbyjLAJoMEqICwKDuc4_aiCE7YEgJICjJJemooETPwaJFopQP_icJY-YcOyHfguQDE5l/exec';
-$('#gf').addEventListener('submit',async ev=>{ev.preventDefault();
-  const f=ev.target,msg=$('#g-msg'),btn=$('#g-btn'),email=f.email.value.trim();msg.textContent='';
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){msg.textContent='That email doesn\u2019t look right \u2014 check it and try again.';f.email.focus();return}
-  btn.disabled=true;btn.textContent='One second\u2026';
-  const body=new URLSearchParams({email,first:f.first.value.trim(),company:f.company.value,source:'workbook-gate',ref:location.href,ua:navigator.userAgent.slice(0,200)});
-  let status='ok';
-  try{const r=await fetch(EP,{method:'POST',body});const j=await r.json();status=j.status||'ok'}
-  catch(e){try{await fetch(EP,{method:'POST',body,mode:'no-cors'})}catch(e2){status='error'}}
-  btn.disabled=false;btn.textContent='Open the workbook';
-  if(status==='ok'||status==='exists'){try{localStorage.setItem('overhead-wb-access','1')}catch(e){}document.documentElement.classList.remove('locked');toast('You\u2019re in \u2014 a copy is on its way to your inbox');scrollTo({top:0})}
-  else if(status==='invalid'){msg.textContent='That email was rejected. Try a different address.'}
-  else{msg.textContent='Something went wrong on our end. Email value@overheadmoney.com and we\u2019ll send it by hand.'}
-});
+function jump(sec){var el=sec&&document.getElementById(sec);if(el)setTimeout(function(){el.scrollIntoView({behavior:"smooth"})},250)}
+window.overheadUnlock=function(k){return open(k).then(function(){scrollTo({top:0});jump("s0")}).catch(function(){
+  document.documentElement.classList.remove("opening");document.documentElement.classList.add("locked")})};
+var hp=hashParts(),k=hp.k,stored=null;try{stored=localStorage.getItem(STORE)}catch(e){}
+var tryKey=k||stored;
+if(!tryKey){document.documentElement.classList.add("locked");return}
+document.documentElement.classList.add("opening");
+open(tryKey).then(function(){
+  if(k){try{history.replaceState(null,"",location.pathname+location.search)}catch(e){}}
+  jump(hp.s);
+}).catch(function(){
+  if(k&&stored&&stored!==k){return open(stored).then(function(){jump(hp.s)})}
+  throw 0;
+}).catch(function(){try{localStorage.removeItem(STORE)}catch(e){}
+  document.documentElement.classList.remove("opening");document.documentElement.classList.add("locked")});
 })();
 </script>
+<script src="/optin.js" defer></script>
 </body>
 </html>

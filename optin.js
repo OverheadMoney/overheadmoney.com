@@ -1,0 +1,132 @@
+/* The Overhead — email opt-in with a 6-digit confirmation code.
+   Any <form data-optin> with an email input (and optional first-name input) gets:
+   step 1: email -> we email a 6-digit code from value@overheadmoney.com
+   step 2: enter the code -> confirmed -> the workbook opens (key returned by the server). */
+(function () {
+  var EP = 'https://script.google.com/macros/s/AKfycbyjLAJoMEqICwKDuc4_aiCE7YEgJICjJJemooETPwaJFopQP_icJY-YcOyHfguQDE5l/exec';
+  var KEY_STORE = 'overhead-wb-key';
+
+  var css = '' +
+    '.oc-step{animation:ocIn .35s ease both}@keyframes ocIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}' +
+    '.oc-step h3{font-family:"Playfair Display",Georgia,serif;font-weight:800;font-size:24px;line-height:1.2;margin:0 0 6px;color:inherit}' +
+    '.oc-step p{margin:0 0 16px;font-size:15px;opacity:.85;line-height:1.5}' +
+    '.oc-step p b{opacity:1;word-break:break-all}' +
+    '.oc-code{display:block;width:100%;box-sizing:border-box;padding:14px 10px!important;margin:0 0 14px!important;text-align:center;font-family:"Playfair Display",Georgia,serif!important;font-weight:800;font-size:34px!important;letter-spacing:.42em;text-indent:.42em;border-radius:6px!important}' +
+    '.oc-links{display:flex;justify-content:space-between;gap:12px;margin-top:14px;font-size:13.5px}' +
+    '.oc-links button{background:none;border:0;padding:0;color:inherit;opacity:.75;text-decoration:underline;cursor:pointer;font:inherit}' +
+    '.oc-links button[disabled]{opacity:.4;cursor:default;text-decoration:none}' +
+    '.oc-msg{margin-top:12px;font-size:14.5px;min-height:20px;line-height:1.4}.oc-msg.err{color:#F2C6C6}.oc-msg.ok{color:#E3C77D}' +
+    '.oc-done{text-align:center;padding:10px 0}.oc-done .tick{width:54px;height:54px;border-radius:50%;margin:0 auto 12px;display:grid;place-items:center;background:#E8E8C8;color:#1E4034;font-size:28px;font-weight:800}';
+  var st = document.createElement('style'); st.textContent = css; document.head.appendChild(st);
+
+  function post(data) {
+    var body = new URLSearchParams(data);
+    return fetch(EP, { method: 'POST', body: body }).then(function (r) { return r.json(); })
+      .catch(function () { return { status: 'error' }; });
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function storeKey(k) { try { localStorage.setItem(KEY_STORE, k); } catch (e) {} }
+
+  function init(form) {
+    var source = form.getAttribute('data-source') || 'website';
+    var original = form.innerHTML;
+    form.addEventListener('submit', function (ev) {
+      if (form.dataset.step === 'code') return;           // handled by step 2
+      ev.preventDefault(); ev.stopImmediatePropagation();
+      var emailEl = form.querySelector('input[type=email]');
+      var firstEl = form.querySelector('input[name=first], input[autocomplete=given-name]');
+      var hp = form.querySelector('input[name=company]');
+      var btn = form.querySelector('button[type=submit]');
+      var msg = form.querySelector('.msg, .oc-msg');
+      var email = (emailEl.value || '').trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
+        if (msg) { msg.className = msg.className.replace(/\b(ok|err)\b/g, '') + ' err'; msg.textContent = 'That email doesn’t look right — check it and try again.'; }
+        emailEl.focus(); return;
+      }
+      var label = btn.textContent; btn.disabled = true; btn.textContent = 'Sending your code…';
+      var data = { action: 'request', email: email, first: firstEl ? firstEl.value.trim() : '', company: hp ? hp.value : '',
+        source: source, ref: location.href.split('#')[0], ua: navigator.userAgent.slice(0, 200) };
+      post(data).then(function (j) {
+        btn.disabled = false; btn.textContent = label;
+        if (j.status === 'code_sent' || j.status === 'wait') return codeStep(form, data, original);
+        if (msg) { msg.className = 'msg err'; msg.textContent = j.status === 'invalid' ? 'That email was rejected. Try a different address.'
+          : j.status === 'limit' ? 'Too many codes requested for this address. Try again in an hour.'
+          : 'Something went wrong on our end. Email value@overheadmoney.com and we’ll send it by hand.'; }
+      });
+    }, true);
+  }
+
+  function codeStep(form, data, original) {
+    form.dataset.step = 'code';
+    form.innerHTML = '<div class="oc-step">' +
+      '<h3>Check your inbox for a code.</h3>' +
+      '<p>We sent a 6-digit code to <b>' + esc(data.email) + '</b> from value@overheadmoney.com. Enter it below to open the workbook.</p>' +
+      '<input class="oc-code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="6" placeholder="••••••" aria-label="6-digit code">' +
+      '<button class="btn btn-solid light" type="submit">Confirm and open the workbook</button>' +
+      '<div class="oc-msg" aria-live="polite"></div>' +
+      '<div class="oc-links"><button type="button" data-a="resend">Resend code</button><button type="button" data-a="change">Use a different email</button></div>' +
+      '<p style="margin:14px 0 0;font-size:12.5px;opacity:.6">Not there? Check Promotions or Spam. The code works for 15 minutes.</p></div>';
+    var input = form.querySelector('.oc-code'), btn = form.querySelector('button[type=submit]'), msg = form.querySelector('.oc-msg');
+    var resend = form.querySelector('[data-a=resend]');
+    input.focus();
+    cooldown(resend, 45);
+    input.addEventListener('input', function () {
+      input.value = input.value.replace(/\D/g, '').slice(0, 6);
+      if (input.value.length === 6) verify();
+    });
+    form.onsubmit = function (ev) { ev.preventDefault(); verify(); };
+    form.querySelector('[data-a=change]').onclick = function () {
+      form.dataset.step = ''; form.onsubmit = null; form.innerHTML = original;
+      var e = form.querySelector('input[type=email]'); if (e) { e.value = data.email; e.focus(); }
+    };
+    resend.onclick = function () {
+      resend.disabled = true; msg.className = 'oc-msg'; msg.textContent = 'Sending a new code…';
+      post(Object.assign({}, data, { action: 'request' })).then(function (j) {
+        if (j.status === 'code_sent') { msg.className = 'oc-msg ok'; msg.textContent = 'New code sent. Use the newest one.'; cooldown(resend, 45); }
+        else if (j.status === 'limit') { msg.className = 'oc-msg err'; msg.textContent = 'Too many codes for this address. Try again in an hour.'; }
+        else if (j.status === 'wait') { msg.className = 'oc-msg'; msg.textContent = 'Give it a minute — the last code is still on its way.'; cooldown(resend, 30); }
+        else { msg.className = 'oc-msg err'; msg.textContent = 'Couldn’t send a new code. Try again in a moment.'; resend.disabled = false; }
+      });
+    };
+    var busy = false;
+    function verify() {
+      if (busy) return;
+      var code = input.value.replace(/\D/g, '');
+      if (code.length !== 6) { msg.className = 'oc-msg err'; msg.textContent = 'Enter all 6 digits.'; input.focus(); return; }
+      busy = true; btn.disabled = true; btn.textContent = 'Checking…'; msg.textContent = '';
+      post({ action: 'verify', email: data.email, code: code }).then(function (j) {
+        busy = false; btn.disabled = false; btn.textContent = 'Confirm and open the workbook';
+        if ((j.status === 'ok' || j.status === 'exists') && j.key) return done(form, j.key);
+        msg.className = 'oc-msg err';
+        msg.textContent = j.status === 'wrong' ? 'That code doesn’t match. ' + (j.left ? j.left + ' tr' + (j.left === 1 ? 'y' : 'ies') + ' left.' : '')
+          : j.status === 'expired' ? 'That code has expired. Tap “Resend code” for a new one.'
+          : j.status === 'locked' ? 'Too many wrong tries. Tap “Resend code” for a new one.'
+          : 'Something went wrong on our end. Try again in a moment.';
+        input.select();
+      });
+    }
+  }
+
+  function cooldown(b, s) {
+    b.disabled = true; var t = s, base = 'Resend code';
+    b.textContent = base + ' (' + t + 's)';
+    var iv = setInterval(function () { t--; if (t <= 0) { clearInterval(iv); b.disabled = false; b.textContent = base; } else b.textContent = base + ' (' + t + 's)'; }, 1000);
+  }
+
+  function done(form, key) {
+    storeKey(key);
+    if (typeof window.overheadUnlock === 'function') {              // on the workbook page itself
+      form.innerHTML = '<div class="oc-done"><div class="tick">✓</div><h3 style="margin:0">You’re in.</h3></div>';
+      setTimeout(function () { window.overheadUnlock(key); }, 500);
+      return;
+    }
+    var url = '/workbook/#k=' + key;
+    form.innerHTML = '<div class="oc-done oc-step"><div class="tick">✓</div>' +
+      '<h3>You’re confirmed.</h3><p>Opening the workbook… We also emailed you the link and a fillable PDF copy.</p>' +
+      '<a class="btn btn-solid" href="' + url + '" style="width:auto">Open the workbook →</a></div>';
+    setTimeout(function () { location.href = url; }, 1400);
+  }
+
+  function boot() { Array.prototype.forEach.call(document.querySelectorAll('form[data-optin]'), init); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
+})();
